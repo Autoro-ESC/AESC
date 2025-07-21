@@ -3,161 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Manual Download</title>
+    <title>产品说明书 | Product Manual</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+        }
+        body {
+            max-width: 900px;
+            margin: 0 auto;
             padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            min-height: 100vh;
+            background-color: #f7f9fc;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .language-selector {
             display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
-        
-        .container {
+        .lang-btn {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 600px;
-            padding: 30px;
-            text-align: center;
+            border: 1px solid #4a6ee0;
+            color: #4a6ee0;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        
+        .lang-btn:hover, .lang-btn.active {
+            background: #4a6ee0;
+            color: white;
+        }
+        .manual-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
         h1 {
             color: #2c3e50;
-            margin-bottom: 10px;
-            font-weight: 600;
         }
-        
-        .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-        }
-        
-        .language-card {
+        .actions {
             display: flex;
-            flex-direction: column;
             gap: 15px;
-            margin: 30px 0;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
-        
         .btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: transform 0.2s;
         }
-        
         .btn:hover {
-            background: #2980b9;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
         }
-        
-        .btn i {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .footer {
-            color: #95a5a6;
-            font-size: 0.9rem;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid #ecf0f1;
-        }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: #3498db;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .btn-preview {
+            background: #4a6ee0;
             color: white;
-            font-size: 2rem;
-            font-weight: bold;
+        }
+        .btn-download {
+            background: #2ecc71;
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 600px) {
+            .actions {
+                flex-direction: column;
+            }
+            .btn {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">PDF</div>
-        <h1>Download</h1>
-        <div class="subtitle">Please select the language version you need</div>
-        
-        <div class="language-card">
-            <button class="btn" onclick="downloadManual('en')">
-                <i>🌐</i> English (英语)
-            </button>
-            <button class="btn" onclick="downloadManual('de')">
-                <i>🇩🇪</i> Deutsch (德语)
-            </button>
-            <button class="btn" onclick="downloadManual('fr')">
-                <i>🇫🇷</i> Français (法语)
-            </button>
-            <button class="btn" onclick="downloadManual('es')">
-                <i>🇪🇸</i> Español (西班牙语)
-            </button>
-            <button class="btn" onclick="downloadManual('it')">
-                <i>🇮🇹</i> Italiano (意大利语)
-            </button>
+    <header>
+        <h1 id="title">产品说明书 | Product Manual</h1>
+        <div class="language-selector" id="langSelector">
+            <!-- 语言按钮由JS生成 -->
         </div>
-        
-        <p class="footer">© 2025 Autoro | Support: Autoro.service@hotmail.com</p>
-    </div>
+    </header>
+    
+    <main>
+        <section class="manual-container">
+            <div id="manual-content">
+                <p id="loading-text">正在加载说明书...</p>
+            </div>
+            
+            <div class="actions" id="actionButtons">
+                <!-- 按钮由JS生成 -->
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <p>© 2025 Autoro | version 1.0</p>
+    </footer>
 
     <script>
-        // 多语言PDF文件映射表
-        const pdfMap = {
-            'en': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
-            'de': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
-            'fr': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
-            'es': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
-            'it': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V'
-        };
-        
-        // 自动检测用户语言
-        function detectLanguage() {
-            const userLang = navigator.language || navigator.userLanguage;
-            const langCode = userLang.split('-')[0];
-            
-            // 检查是否支持该语言
-            if (pdfMap[langCode]) {
-                return langCode;
+        // ========== 多语言配置文件 ==========
+        const manuals = {
+            "en": {
+                title: "Product Manual",
+                preview: "Preview Manual",
+                download: "Download PDF",
+                loading: "Loading manual...",
+                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+            },
+            "es": {
+                title: "Manual del Producto",
+                preview: "Vista Previa",
+                download: "Descargar PDF",
+                loading: "Cargando manual...",
+                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+            },
+            "fr": {
+                title: "Manuel d'Utilisation",
+                preview: "Aperçu",
+                download: "Télécharger PDF",
+                loading: "Chargement du manuel...",
+                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+            },
+            "de": {
+                title: "Bedienungsanleitung",
+                preview: "Vorschau",
+                download: "PDF Herunterladen",
+                loading: "Handbuch wird geladen...",
+                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+            },
+            "zh": {
+                title: "产品说明书",
+                preview: "预览说明书",
+                download: "下载PDF",
+                loading: "正在加载说明书...",
+                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
             }
-            
-            return 'en'; // 默认英语
-        }
-        
-        // 下载手册函数
-        function downloadManual(langCode = null) {
-            const code = langCode || detectLanguage();
-            const pdfUrl = pdfMap[code] || pdfMap['en'];
-            window.open(pdfUrl, '_blank');
-        }
-        
-        // 页面加载完成后尝试自动检测语言
-        document.addEventListener('DOMContentLoaded', function() {
-            // 延迟执行以防用户想手动选择
-            setTimeout(() => {
-                downloadManual();
-            }, 2000); // 2秒后自动重定向
+        };
+
+        // ========== 核心功能脚本 ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 初始化语言选择器
+            const langSelector = document.getElementById('langSelector');
+            Object.keys(manuals).forEach(lang => {
+                const btn = document.createElement('button');
+                btn.className = 'lang-btn';
+                btn.textContent = lang.toUpperCase();
+                btn.dataset.lang = lang;
+                btn.addEventListener('click', () => setLanguage(lang));
+                langSelector.appendChild(btn);
+            });
+
+            // 2. 检测浏览器语言并设置初始语言
+            const browserLang = navigator.language.split('-')[0];
+            setLanguage(manuals[browserLang] ? browserLang : 'en');
         });
+
+        function setLanguage(lang) {
+            const config = manuals[lang];
+            if (!config) return;
+
+            // 更新UI文本
+            document.getElementById('title').textContent = config.title;
+            document.getElementById('loading-text').textContent = config.loading;
+            
+            // 设置活动语言按钮
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // 更新操作按钮
+            updateActionButtons(config);
+        }
+
+        function updateActionButtons(config) {
+            const container = document.getElementById('actionButtons');
+            container.innerHTML = '';
+            
+            // 创建预览按钮
+            const previewBtn = document.createElement('a');
+            previewBtn.className = 'btn btn-preview';
+            previewBtn.href = `https://drive.google.com/file/d/${config.id}/preview`;
+            previewBtn.target = "_blank";
+            previewBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+            </svg>${config.preview}`;
+            
+            // 创建下载按钮
+            const downloadBtn = document.createElement('a');
+            downloadBtn.className = 'btn btn-download';
+            downloadBtn.href = `https://drive.google.com/uc?export=download&id=${config.id}`;
+            downloadBtn.download = `${config.title}.pdf`;
+            downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+            </svg>${config.download}`;
+            
+            container.appendChild(previewBtn);
+            container.appendChild(downloadBtn);
+        }
     </script>
 </body>
 </html>
