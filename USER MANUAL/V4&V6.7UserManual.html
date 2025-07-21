@@ -4,23 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>产品说明书 | Product Manual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
         }
         body {
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f7f9fc;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             color: #333;
+            min-height: 100vh;
+            position: relative;
         }
         header {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
         }
         .language-selector {
             display: flex;
@@ -33,70 +43,175 @@
             background: white;
             border: 1px solid #4a6ee0;
             color: #4a6ee0;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .lang-btn:hover, .lang-btn.active {
             background: #4a6ee0;
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(74, 110, 224, 0.3);
         }
         .manual-container {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        .manual-container:hover {
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
         }
         h1 {
             color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
         }
         .actions {
             display: flex;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 30px 0 20px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .btn {
             display: inline-flex;
             align-items: center;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 500;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
             text-decoration: none;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            min-width: 220px;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
+            box-shadow: 0 7px 15px rgba(0,0,0,0.15);
         }
         .btn-preview {
-            background: #4a6ee0;
+            background: linear-gradient(135deg, #4a6ee0 0%, #6a82fb 100%);
             color: white;
         }
         .btn-download {
-            background: #2ecc71;
+            background: linear-gradient(135deg, #2ecc71 0%, #1abc9c 100%);
+            color: white;
+        }
+        .btn-view {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
             color: white;
         }
         .footer {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
             color: #7f8c8d;
             font-size: 0.9rem;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #4a6ee0;
+        }
+        .info-box h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #4a6ee0;
+            margin-bottom: 15px;
+        }
+        .feature-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
         @media (max-width: 600px) {
             .actions {
                 flex-direction: column;
+                gap: 15px;
             }
             .btn {
-                justify-content: center;
+                width: 100%;
+                min-width: auto;
             }
+            h1 {
+                font-size: 2rem;
+            }
+            .manual-container {
+                padding: 20px;
+            }
+        }
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(74, 110, 224, 0.2);
+            border-top: 5px solid #4a6ee0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .lang-flag {
+            width: 24px;
+            height: 16px;
+            border-radius: 2px;
+            box-shadow: 0 0 3px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
     <header>
         <h1 id="title">产品说明书 | Product Manual</h1>
+        <p class="subtitle" id="subtitle">随时随地访问产品文档</p>
         <div class="language-selector" id="langSelector">
             <!-- 语言按钮由JS生成 -->
         </div>
@@ -104,74 +219,124 @@
     
     <main>
         <section class="manual-container">
-            <div id="manual-content">
-                <p id="loading-text">正在加载说明书...</p>
+            <!-- <div class="loading-container" id="loadingContainer">
+                <div class="loading-spinner"></div>
+                <p id="loading-text">正在加载说明书内容...</p>
+            </div>  -->
+            
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+                <p id="info-content">选择语言后，您可以预览或下载产品说明书。所有文档已托管在高速CDN上，确保全球访问速度。</p>
             </div>
             
             <div class="actions" id="actionButtons">
                 <!-- 按钮由JS生成 -->
             </div>
+            
+			<!--
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-globe-americas"></i>
+                    <h4>全球访问</h4>
+                    <p>通过CDN加速，确保全球用户快速访问</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>移动端优化</h4>
+                    <p>专为手机和平板设备优化体验</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <h4>高速下载</h4>
+                    <p>文档托管在高速服务器上，下载迅速</p>
+                </div>
+            </div> -->
         </section>
     </main>
     
     <footer class="footer">
-        <p>© 2025 Autoro | version 1.0</p>
+        <p>© 2025 Autoro | version 2.0 | 文档托管在GitHub</p>
+        <!-- <p>所有文档通过CDN分发，确保全球访问速度</p> -->
     </footer>
 
     <script>
-        // ========== 多语言配置文件 ==========
+        // 多语言配置
         const manuals = {
             "en": {
                 title: "Product Manual",
+                subtitle: "Access product documentation anytime, anywhere",
                 preview: "Preview Manual",
                 download: "Download PDF",
-                loading: "Loading manual...",
-                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+                info: "After selecting a language, you can preview or download the product manual. All documents are hosted on a high-speed CDN to ensure global access speed.",
+                loading: "Loading manual content...",
+                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/USER MANUAL/V4&V6.7_en.pdf",
+                flag: "🇬🇧"
             },
             "es": {
                 title: "Manual del Producto",
+                subtitle: "Acceda a la documentación del producto en cualquier momento y lugar",
                 preview: "Vista Previa",
                 download: "Descargar PDF",
-                loading: "Cargando manual...",
-                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+                info: "Después de seleccionar un idioma, puede previsualizar o descargar el manual del producto. Todos los documentos están alojados en una CDN de alta velocidad para garantizar el acceso global.",
+                loading: "Cargando contenido del manual...",
+                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/USER MANUAL/V4&V6.7_en.pdf",
+                flag: "🇪🇸"
             },
             "fr": {
                 title: "Manuel d'Utilisation",
+                subtitle: "Accédez à la documentation du produit à tout moment, n'importe où",
                 preview: "Aperçu",
                 download: "Télécharger PDF",
-                loading: "Chargement du manuel...",
-                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+                info: "Après avoir sélectionné une langue, vous pouvez prévisualiser ou télécharger le manuel du produit. Tous les documents sont hébergés sur un CDN haut débit pour garantir un accès mondial rapide.",
+                loading: "Chargement du contenu du manuel...",
+                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/USER MANUAL/V4&V6.7_en.pdf",
+                flag: "🇫🇷"
             },
             "de": {
                 title: "Bedienungsanleitung",
+                subtitle: "Greifen Sie jederzeit und überall auf die Produktdokumentation zu",
                 preview: "Vorschau",
                 download: "PDF Herunterladen",
-                loading: "Handbuch wird geladen...",
-                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+                info: "Nach Auswahl einer Sprache können Sie die Bedienungsanleitung anzeigen oder herunterladen. Alle Dokumente sind auf einem Hochgeschwindigkeits-CDN gehostet, um eine globale Zugriffsgeschwindigkeit zu gewährleisten.",
+                loading: "Handbuchinhalt wird geladen...",
+                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/USER MANUAL/V4&V6.7_en.pdf",
+                flag: "🇩🇪"
             },
             "zh": {
                 title: "产品说明书",
+                subtitle: "随时随地访问产品文档",
                 preview: "预览说明书",
                 download: "下载PDF",
-                loading: "正在加载说明书...",
-                id: "1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V"  // 替换为实际ID
+                info: "选择语言后，您可以预览或下载产品说明书。所有文档已托管在高速CDN上，确保全球访问速度。",
+                loading: "正在加载说明书内容...",
+                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/USER MANUAL/V4&V6.7_en.pdf",
+                flag: "🇨🇳"
+            },
+            "ja": {
+                title: "製品マニュアル",
+                subtitle: "いつでもどこでも製品ドキュメントにアクセス",
+                preview: "マニュアルをプレビュー",
+                download: "PDFをダウンロード",
+                info: "言語を選択すると、製品マニュアルをプレビューまたはダウンロードできます。すべてのドキュメントは高速CDNでホストされ、グローバルなアクセス速度を確保します。",
+                loading: "マニュアルの内容を読み込み中...",
+                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/USER MANUAL/V4&V6.7_en.pdf",
+                flag: "🇯🇵"
             }
         };
 
-        // ========== 核心功能脚本 ==========
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. 初始化语言选择器
+            // 初始化语言选择器
             const langSelector = document.getElementById('langSelector');
             Object.keys(manuals).forEach(lang => {
                 const btn = document.createElement('button');
                 btn.className = 'lang-btn';
-                btn.textContent = lang.toUpperCase();
+                btn.innerHTML = `<span class="lang-flag">${manuals[lang].flag}</span> ${lang.toUpperCase()}`;
                 btn.dataset.lang = lang;
                 btn.addEventListener('click', () => setLanguage(lang));
                 langSelector.appendChild(btn);
             });
 
-            // 2. 检测浏览器语言并设置初始语言
+            // 设置初始语言
             const browserLang = navigator.language.split('-')[0];
             setLanguage(manuals[browserLang] ? browserLang : 'en');
         });
@@ -182,7 +347,9 @@
 
             // 更新UI文本
             document.getElementById('title').textContent = config.title;
-            document.getElementById('loading-text').textContent = config.loading;
+            document.getElementById('subtitle').textContent = config.subtitle;
+            <!-- document.getElementById('loading-text').textContent = config.loading; -->
+            document.getElementById('info-content').textContent = config.info;
             
             // 设置活动语言按钮
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -200,25 +367,27 @@
             // 创建预览按钮
             const previewBtn = document.createElement('a');
             previewBtn.className = 'btn btn-preview';
-            previewBtn.href = `https://drive.google.com/file/d/${config.id}/preview`;
+            previewBtn.href = config.url;
             previewBtn.target = "_blank";
-            previewBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px">
-                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-            </svg>${config.preview}`;
+            previewBtn.innerHTML = `<i class="fas fa-eye"></i> ${config.preview}`;
             
             // 创建下载按钮
             const downloadBtn = document.createElement('a');
             downloadBtn.className = 'btn btn-download';
-            downloadBtn.href = `https://drive.google.com/uc?export=download&id=${config.id}`;
+            downloadBtn.href = config.url;
             downloadBtn.download = `${config.title}.pdf`;
-            downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px">
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-            </svg>${config.download}`;
+            downloadBtn.innerHTML = `<i class="fas fa-download"></i> ${config.download}`;
+            
+            // 创建直接查看按钮
+            const viewBtn = document.createElement('a');
+            viewBtn.className = 'btn btn-view';
+            viewBtn.href = config.url;
+            viewBtn.target = "_blank";
+            viewBtn.innerHTML = `<i class="fas fa-file-pdf"></i> ${config.title}`;
             
             container.appendChild(previewBtn);
             container.appendChild(downloadBtn);
+            container.appendChild(viewBtn);
         }
     </script>
 </body>
