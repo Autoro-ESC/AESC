@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Manual Download</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .language-card {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .footer {
+            color: #95a5a6;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">PDF</div>
+        <h1>Download</h1>
+        <div class="subtitle">Please select the language version you need</div>
+        
+        <div class="language-card">
+            <button class="btn" onclick="downloadManual('en')">
+                <i>🌐</i> English (英语)
+            </button>
+            <button class="btn" onclick="downloadManual('de')">
+                <i>🇩🇪</i> Deutsch (德语)
+            </button>
+            <button class="btn" onclick="downloadManual('fr')">
+                <i>🇫🇷</i> Français (法语)
+            </button>
+            <button class="btn" onclick="downloadManual('es')">
+                <i>🇪🇸</i> Español (西班牙语)
+            </button>
+            <button class="btn" onclick="downloadManual('it')">
+                <i>🇮🇹</i> Italiano (意大利语)
+            </button>
+        </div>
+        
+        <p class="footer">© 2025 Autoro | Support: Autoro.service@hotmail.com</p>
+    </div>
+
+    <script>
+        // 多语言PDF文件映射表
+        const pdfMap = {
+            'en': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
+            'de': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
+            'fr': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
+            'es': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V',
+            'it': 'https://drive.google.com/uc?export=download&id=1Wqv02TIhQLMu0XFeCv2vXCyFVx28yE4V'
+        };
+        
+        // 自动检测用户语言
+        function detectLanguage() {
+            const userLang = navigator.language || navigator.userLanguage;
+            const langCode = userLang.split('-')[0];
+            
+            // 检查是否支持该语言
+            if (pdfMap[langCode]) {
+                return langCode;
+            }
+            
+            return 'en'; // 默认英语
+        }
+        
+        // 下载手册函数
+        function downloadManual(langCode = null) {
+            const code = langCode || detectLanguage();
+            const pdfUrl = pdfMap[code] || pdfMap['en'];
+            window.open(pdfUrl, '_blank');
+        }
+        
+        // 页面加载完成后尝试自动检测语言
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟执行以防用户想手动选择
+            setTimeout(() => {
+                downloadManual();
+            }, 2000); // 2秒后自动重定向
+        });
+    </script>
+</body>
+</html>
