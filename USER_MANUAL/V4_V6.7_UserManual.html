@@ -592,6 +592,7 @@
             }
             h2.selector-title {
                 font-size: 1.8rem;
+                margin-bottom: 20px;
             }
             .subtitle {
                 font-size: 1.2rem;
@@ -600,6 +601,7 @@
             .selector-container {
                 grid-template-columns: 1fr;
                 max-width: 400px;
+                gap: 18px;
             }
             .logo {
                 height: 50px;
@@ -629,18 +631,69 @@
             .navigation-buttons {
                 flex-direction: column;
                 gap: 15px;
+                margin-top: 30px;
             }
             .product-selection-bar {
                 flex-direction: column;
                 border-radius: 15px;
                 text-align: center;
+                padding: 12px;
+                margin-bottom: 20px;
             }
             .product-selection-label {
                 margin-right: 0;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
             .selected-product-display {
+                margin-bottom: 8px;
+                padding: 6px 15px;
+            }
+            
+            /* 移动端卡片大小优化 */
+            .product-card, .language-card {
+                padding: 18px 16px;
+                border-radius: 14px;
+            }
+            
+            .product-icon, .language-icon {
+                font-size: 2.2rem;
+                margin-bottom: 12px;
+            }
+            
+            .product-name, .language-name {
+                font-size: 1.3rem;
+                margin-bottom: 8px;
+            }
+            
+            .product-text, .language-text {
+                font-size: 0.95rem;
                 margin-bottom: 10px;
+            }
+            
+            .product-specs {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+            }
+            
+            .product-tag {
+                padding: 4px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .nav-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .redirect-message {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+                padding: 0 15px;
+            }
+            
+            .timer {
+                font-size: 1.1rem;
+                padding: 6px 16px;
             }
         }
         
@@ -655,6 +708,26 @@
             }
             .logo {
                 height: 45px;
+            }
+            
+            .product-card, .language-card {
+                padding: 14px 12px;
+            }
+            
+            .product-icon, .language-icon {
+                font-size: 1.8rem;
+            }
+            
+            .product-name, .language-name {
+                font-size: 1.1rem;
+            }
+            
+            .product-text, .language-text {
+                font-size: 0.85rem;
+            }
+            
+            .product-specs {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -683,7 +756,7 @@
                     If the product selection doesn't load automatically in a few seconds, you'll be able to select manually.
                 </div>
                 <div class="timer">
-                    <i class="fas fa-clock"></i> Loading product selection in: <span id="countdown">5</span> seconds
+                    <i class="fas fa-clock"></i> Loading product selection in: <span id="countdown">3</span> seconds
                 </div>
             </div>
             
@@ -880,7 +953,7 @@
         
         // Start countdown function
         function startCountdown() {
-            let seconds = 5;
+            let seconds = 3;
             const countdownEl = document.getElementById('countdown');
             countdownEl.textContent = seconds;
             
@@ -950,8 +1023,8 @@
                 history.pushState(null, '', `?product=${selectedProduct}&lang=${langId}`);
             }
         }
-		
-    // Download the manual
+        
+  // Download the manual
 		function downloadManual(productId, langId) {
 			// 创建真实的PDF文件URL
 			const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
@@ -973,6 +1046,9 @@
 			
 			// 标记已下载
 			manualDownloaded = true;
+			
+			// 显示重新下载按钮
+			<!-- document.getElementById('manual-redirect-btn').style.display = 'block'; -->
 			
 			// 可选：添加下载成功提示
 			const successMsg = document.createElement('div');
