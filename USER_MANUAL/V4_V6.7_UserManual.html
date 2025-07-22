@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Manual | 产品说明书</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>AESC Product Manual | 产品说明书</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         // 语言重定向逻辑
         function redirectToManual() {
@@ -55,7 +55,7 @@
         
         // 手动语言切换
         function selectLanguage(lang) {
-            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/";
+            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
             const supportedLangs = {
                 en: 'V4_V6.7_en.pdf',
                 zh: 'V4_V6.7_en.pdf',
@@ -81,9 +81,18 @@
             box-sizing: border-box;
         }
         
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --accent: #3b82f6;
+            --light: #eff6ff;
+            --dark: #0f172a;
+            --border: #dbeafe;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -100,63 +109,112 @@
             max-width: 1200px;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 50px rgba(0, 45, 104, 0.15);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             min-height: 85vh;
+            position: relative;
+            border: 1px solid var(--border);
         }
         
         .header {
-            background: linear-gradient(90deg, #2c3e50, #4a6491);
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
             color: white;
             padding: 30px 20px;
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
         
-        .logo {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2" d="M 0,100 Q 50,50 100,100 T 200,100" /></svg>');
+            background-size: 300px 300px;
+        }
+        
+        /* Logo Container */
+        .logo-container {
             position: absolute;
             top: 20px;
             left: 20px;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.15);
+            z-index: 2;
+        }
+        
+        /* Logo Image Styling */
+        .logo {
+            height: 65px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-rings {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 85px;
+            height: 85px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
+            z-index: -1;
+        }
+        
+        .logo-rings::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
         }
         
         h1 {
             font-size: 2.8rem;
             margin: 15px 0 10px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
         
         .subtitle {
             font-size: 1.4rem;
-            opacity: 0.9;
-            margin-bottom: 10px;
+            opacity: 0.95;
+            margin-bottom: 15px;
+            position: relative;
+            font-weight: 300;
         }
         
         .product-image {
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             height: auto;
-            margin: 0 auto;
+            margin: 10px auto 0;
             display: block;
-            border: 8px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
+            border: 12px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
             transform: translateY(30px);
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            padding: 15px;
         }
         
         .content {
-            padding: 50px 20px 30px;
+            padding: 70px 20px 40px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -164,7 +222,7 @@
         
         /* Auto Redirect Section */
         #auto-redirect {
-            padding: 40px 0;
+            padding: 40px 0 30px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -175,75 +233,114 @@
         .redirect-message {
             font-size: 1.3rem;
             margin-bottom: 40px;
-            color: #4a6491;
+            color: var(--primary);
             font-weight: 500;
+            max-width: 600px;
+            line-height: 1.8;
         }
         
         .timer {
-            font-size: 1.2rem;
-            color: #2c3e50;
-            margin-top: 20px;
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-top: 25px;
             font-weight: 500;
+            padding: 8px 20px;
+            background: #dbeafe;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .timer i {
+            margin-right: 8px;
         }
         
         /* Language Selector */
         #language-selector {
             display: none;
-            padding: 30px 0;
+            padding: 30px 0 20px;
             width: 100%;
         }
         
         .selector-title {
-            font-size: 1.8rem;
-            color: #2c3e50;
-            margin-bottom: 30px;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 40px;
             font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .selector-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
         }
         
         .languages {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
         .language-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px 20px;
+            background: var(--light);
+            border-radius: 16px;
+            padding: 28px 25px;
             transition: all 0.3s ease;
             cursor: pointer;
-            border: 2px solid #e9ecef;
+            border: 2px solid var(--border);
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
         }
         
         .language-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-            border-color: #4a6491;
-            background: #fff;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+            border-color: var(--accent);
+            background: white;
         }
         
         .language-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #4a6491;
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
         }
         
         .language-name {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #2c3e50;
+            margin-bottom: 10px;
+            color: var(--dark);
         }
         
         .language-text {
-            font-size: 1rem;
-            color: #6c757d;
+            font-size: 1.05rem;
+            color: #4b5563;
+            font-weight: 500;
         }
         
         /* Loader */
@@ -251,17 +348,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 30px 0 40px;
+            margin: 30px 0 50px;
         }
         
         .loader {
-            border: 8px solid rgba(74, 100, 145, 0.2);
-            border-top: 8px solid #4a6491;
+            border: 10px solid rgba(30, 58, 138, 0.1);
+            border-top: 10px solid var(--primary);
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            animation: spin 1.2s linear infinite;
-            margin-bottom: 25px;
+            width: 80px;
+            height: 80px;
+            animation: spin 1.4s linear infinite;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
         }
         
         @keyframes spin {
@@ -270,19 +368,73 @@
         }
         
         .redirect-text {
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #4a6491;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+        
+        .redirect-text i {
+            margin-right: 8px;
         }
         
         /* Footer */
         .footer {
-            background: #f8f9fa;
-            padding: 20px;
-            border-top: 1px solid #e9ecef;
-            font-size: 0.9rem;
-            color: #6c757d;
+            background: var(--light);
+            padding: 25px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: #475569;
             margin-top: auto;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item i {
+            color: var(--secondary);
+        }
+        
+        .manual-redirect {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .manual-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .manual-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .language-flag {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 1.4rem;
+            vertical-align: middle;
         }
         
         @media (max-width: 768px) {
@@ -294,6 +446,17 @@
             }
             .languages {
                 grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+            .logo {
+                height: 55px;
+            }
+            .logo-rings {
+                width: 75px;
+                height: 75px;
+            }
+            .product-image {
+                max-width: 85%;
             }
         }
     </style>
@@ -301,10 +464,14 @@
 <body onload="init()">
     <div class="container">
         <div class="header">
-            <div class="logo">AESC</div>
-            <h1>Product Manual</h1>
-            <div class="subtitle">产品说明书</div>
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%234a6491'/%3E%3Crect x='30' y='30' width='240' height='140' rx='10' fill='%232c3e50'/%3E%3Ctext x='150' y='110' font-family='Arial' font-size='30' fill='white' text-anchor='middle'%3EAESC Controller%3C/text%3E%3C/svg%3E" alt="Product Image" class="product-image">
+            <div class="logo-container">
+                <div class="logo-rings"></div>
+                <!-- Logo图片已添加 -->
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" alt="AESC Logo" class="logo">
+            </div>
+            <h1>User Manual</h1>
+            <div class="subtitle">AESC V4_V6.7</div>
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 280'><rect width='500' height='280' rx='20' fill='%231e3a8a'/><rect x='30' y='30' width='440' height='220' rx='10' fill='%233b82f6'/><text x='250' y='150' font-family='Arial' font-size='25' fill='white' text-anchor='middle' font-weight='bold'>High Performance Motor Controller</text><text x='250' y='200' font-family='Arial' font-size='24' fill='white' text-anchor='middle'>AESC</text></svg>" alt="Product Image" class="product-image">
         </div>
         
         <div class="content">
@@ -312,10 +479,14 @@
             <div id="auto-redirect">
                 <div class="loader-container">
                     <div class="loader"></div>
-                    <p class="redirect-text">Loading manual... / 正在加载说明书...</p>
+                    <p class="redirect-text"><i class="fas fa-spinner fa-spin"></i> Loading manual... / 正在加载说明书...</p>
                 </div>
                 <div class="redirect-message">
-                    You will be automatically redirected to your language version in <span id="countdown">5</span> seconds
+                    We're redirecting you to the product manual in your preferred language. 
+                    If the manual doesn't load automatically in a few seconds, you'll be able to select your language manually.
+                </div>
+                <div class="timer">
+                    <i class="fas fa-clock"></i> Redirect in: <span id="countdown">5</span> seconds
                 </div>
             </div>
             
@@ -361,10 +532,30 @@
                     </div>
                 </div>
             </div>
+            
+            <div id="manual-redirect-btn" class="manual-redirect">
+                <button class="manual-btn" onclick="redirectToManual()">
+                    <i class="fas fa-file-download"></i> Automatically Redirect Again / 重新自动跳转
+                </button>
+            </div>
         </div>
         
         <div class="footer">
-            <p>© 2023 Autoro-ESC. All rights reserved.</p>
+            <p>© 2025 Autoro. All rights reserved.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>www.autoro.cn</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Autoro.service@hotmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+1 (800) 123-4567</span>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -374,6 +565,8 @@
         function init() {
             // 启动倒计时
             let seconds = 5;
+            document.getElementById('countdown').textContent = seconds;
+            
             countdownInterval = setInterval(function() {
                 seconds--;
                 document.getElementById('countdown').textContent = seconds;
@@ -392,6 +585,9 @@
                 clearInterval(countdownInterval);
                 showLanguageSelector();
             }
+            
+            // 初始化隐藏手动跳转按钮
+            document.getElementById('manual-redirect-btn').style.display = 'none';
         }
         
         // 从URL中检查是否有语言参数
@@ -404,16 +600,16 @@
     
     <!-- 降级处理 -->
     <noscript>
-        <div style="color:red; text-align:center; padding:50px;">
-            <h2>JavaScript Required / 需要启用JavaScript</h2>
-            <p>Please select manual language:</p>
+        <div style="color:#0f172a; text-align:center; padding:50px 20px; background:#dbeafe; border-radius:15px; max-width:800px; margin:50px auto;">
+            <h2 style="font-size:2rem; margin-bottom:20px; color:#1e3a8a;">JavaScript Required / 需要启用JavaScript</h2>
+            <p style="font-size:1.1rem; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto;">Please enable JavaScript for automatic redirection or select your manual language:</p>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px;">
-                <a href="manuals/manual_en.pdf" style="padding: 10px 15px; background: #f0f0f0; border-radius: 5px; text-decoration: none;">English</a>
-                <a href="manuals/manual_zh.pdf" style="padding: 10px 15px; background: #f0f0f0; border-radius: 5px; text-decoration: none;">中文</a>
-                <a href="manuals/manual_es.pdf" style="padding: 10px 15px; background: #f0f0f0; border-radius: 5px; text-decoration: none;">Español</a>
-                <a href="manuals/manual_fr.pdf" style="padding: 10px 15px; background: #f0f0f0; border-radius: 5px; text-decoration: none;">Français</a>
-                <a href="manuals/manual_de.pdf" style="padding: 10px 15px; background: #f0f0f0; border-radius: 5px; text-decoration: none;">Deutsch</a>
-                <a href="manuals/manual_ja.pdf" style="padding: 10px 15px; background: #f0f0f0; border-radius: 5px; text-decoration: none;">日本語</a>
+                <a href="manuals/manual_en.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇬🇧</span> English</a>
+                <a href="manuals/manual_zh.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇨🇳</span> 中文</a>
+                <a href="manuals/manual_es.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇪🇸</span> Español</a>
+                <a href="manuals/manual_fr.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇫🇷</span> Français</a>
+                <a href="manuals/manual_de.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇩🇪</span> Deutsch</a>
+                <a href="manuals/manual_ja.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇯🇵</span> 日本語</a>
             </div>
         </div>
     </noscript>
