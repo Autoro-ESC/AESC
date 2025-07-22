@@ -16,19 +16,19 @@
             const browserLang = navigator.language || navigator.userLanguage;
             
             // 3. 设置PDF文件路径
-            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/";
+            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
             
             // 4. 支持的语言映射
             const supportedLangs = {
-                en: 'V4&V6.7_en.pdf',
-                zh: 'V4&V6.7_en.pdf',
-                es: 'V4&V6.7_en.pdf',
-                fr: 'V4&V6.7_en.pdf',
-                ja: 'V4&V6.7_en.pdf',
-                ar: 'V4&V6.7_en.pdf',
-                ru: 'V4&V6.7_en.pdf',
-                pt: 'V4&V6.7_en.pdf',
-                de: 'V4&V6.7_en.pdf'
+                en: 'V4_V6.7_en.pdf',
+                zh: 'V4_V6.7_en.pdf',
+                es: 'V4_V6.7_en.pdf',
+                fr: 'V4_V6.7_en.pdf',
+                ja: 'V4_V6.7_en.pdf',
+                ar: 'V4_V6.7_en.pdf',
+                ru: 'V4_V6.7_en.pdf',
+                pt: 'V4_V6.7_en.pdf',
+                de: 'V4_V6.7_en.pdf'
             };
             
             // 5. 优先使用URL参数 > 浏览器语言 > 默认英语
@@ -57,15 +57,15 @@
         function selectLanguage(lang) {
             const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/";
             const supportedLangs = {
-                en: 'V4&V6.7_en.pdf',
-                zh: 'V4&V6.7_en.pdf',
-                es: 'V4&V6.7_en.pdf',
-                fr: 'V4&V6.7_en.pdf',
-                ja: 'V4&V6.7_en.pdf',
-                ar: 'V4&V6.7_en.pdf',
-                ru: 'V4&V6.7_en.pdf',
-                pt: 'V4&V6.7_en.pdf',
-                de: 'V4&V6.7_en.pdf'
+                en: 'V4_V6.7_en.pdf',
+                zh: 'V4_V6.7_en.pdf',
+                es: 'V4_V6.7_en.pdf',
+                fr: 'V4_V6.7_en.pdf',
+                ja: 'V4_V6.7_en.pdf',
+                ar: 'V4_V6.7_en.pdf',
+                ru: 'V4_V6.7_en.pdf',
+                pt: 'V4_V6.7_en.pdf',
+                de: 'V4_V6.7_en.pdf'
             };
             
             if(supportedLangs[lang]) {
