@@ -5,75 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AESC Product Manual | 产品说明书</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // 语言重定向逻辑
-        function redirectToManual() {
-            // 1. 获取URL中的语言参数
-            const urlParams = new URLSearchParams(window.location.search);
-            const langParam = urlParams.get('lang');
-            
-            // 2. 获取浏览器首选语言
-            const browserLang = navigator.language || navigator.userLanguage;
-            
-            // 3. 设置PDF文件路径
-            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
-            
-            // 4. 支持的语言映射
-            const supportedLangs = {
-                en: 'V4_V6.7_en.pdf',
-                zh: 'V4_V6.7_en.pdf',
-                es: 'V4_V6.7_en.pdf',
-                fr: 'V4_V6.7_en.pdf',
-                ja: 'V4_V6.7_en.pdf',
-                ar: 'V4_V6.7_en.pdf',
-                ru: 'V4_V6.7_en.pdf',
-                pt: 'V4_V6.7_en.pdf',
-                de: 'V4_V6.7_en.pdf'
-            };
-            
-            // 5. 优先使用URL参数 > 浏览器语言 > 默认英语
-            let pdfKey = 'en';
-            if(langParam && supportedLangs[langParam]) {
-                pdfKey = langParam;
-            } else {
-                // 提取浏览器语言前缀
-                const primaryLang = browserLang.split('-')[0].toLowerCase();
-                if(supportedLangs[primaryLang]) {
-                    pdfKey = primaryLang;
-                }
-            }
-            
-            // 6. 跳转到PDF文件
-            window.location.href = pdfBaseUrl + supportedLangs[pdfKey];
-        }
-        
-        // 显示语言选择面板
-        function showLanguageSelector() {
-            document.getElementById('auto-redirect').style.display = 'none';
-            document.getElementById('language-selector').style.display = 'block';
-        }
-        
-        // 手动语言切换
-        function selectLanguage(lang) {
-            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
-            const supportedLangs = {
-                en: 'V4_V6.7_en.pdf',
-                zh: 'V4_V6.7_en.pdf',
-                es: 'V4_V6.7_en.pdf',
-                fr: 'V4_V6.7_en.pdf',
-                ja: 'V4_V6.7_en.pdf',
-                ar: 'V4_V6.7_en.pdf',
-                ru: 'V4_V6.7_en.pdf',
-                pt: 'V4_V6.7_en.pdf',
-                de: 'V4_V6.7_en.pdf'
-            };
-            
-            if(supportedLangs[lang]) {
-                window.location.href = pdfBaseUrl + supportedLangs[lang];
-            }
-        }
-    </script>
-    
     <style>
         * {
             margin: 0;
@@ -461,7 +392,7 @@
         }
     </style>
 </head>
-<body onload="init()">
+<body>
     <div class="container">
         <div class="header">
             <div class="logo-container">
@@ -495,37 +426,37 @@
                 <h2 class="selector-title">Select Manual Language / 选择说明书语言</h2>
                 
                 <div class="languages">
-                    <div class="language-card" onclick="selectLanguage('en')">
+                    <div class="language-card" data-lang="en">
                         <div class="language-icon">🇬🇧</div>
                         <div class="language-name">English</div>
                         <div class="language-text">English Manual</div>
                     </div>
                     
-                    <div class="language-card" onclick="selectLanguage('zh')">
+                    <div class="language-card" data-lang="zh">
                         <div class="language-icon">🇨🇳</div>
                         <div class="language-name">中文 (Chinese)</div>
                         <div class="language-text">中文说明书</div>
                     </div>
                     
-                    <div class="language-card" onclick="selectLanguage('es')">
+                    <div class="language-card" data-lang="es">
                         <div class="language-icon">🇪🇸</div>
                         <div class="language-name">Español</div>
                         <div class="language-text">Manual en Español</div>
                     </div>
                     
-                    <div class="language-card" onclick="selectLanguage('fr')">
+                    <div class="language-card" data-lang="fr">
                         <div class="language-icon">🇫🇷</div>
                         <div class="language-name">Français</div>
                         <div class="language-text">Manuel en Français</div>
                     </div>
                     
-                    <div class="language-card" onclick="selectLanguage('de')">
+                    <div class="language-card" data-lang="de">
                         <div class="language-icon">🇩🇪</div>
                         <div class="language-name">Deutsch</div>
                         <div class="language-text">Deutsche Anleitung</div>
                     </div>
                     
-                    <div class="language-card" onclick="selectLanguage('ja')">
+                    <div class="language-card" data-lang="ja">
                         <div class="language-icon">🇯🇵</div>
                         <div class="language-name">日本語 (Japanese)</div>
                         <div class="language-text">日本語マニュアル</div>
@@ -534,7 +465,7 @@
             </div>
             
             <div id="manual-redirect-btn" class="manual-redirect">
-                <button class="manual-btn" onclick="redirectToManual()">
+                <button class="manual-btn" id="redirect-button">
                     <i class="fas fa-file-download"></i> Automatically Redirect Again / 重新自动跳转
                 </button>
             </div>
@@ -560,16 +491,84 @@
     </div>
     
     <script>
-        let countdownInterval;
+        // 语言重定向逻辑
+        function redirectToManual() {
+            // 1. 获取URL中的语言参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            
+            // 2. 获取浏览器首选语言
+            const browserLang = navigator.language || navigator.userLanguage;
+            
+            // 3. 设置PDF文件路径
+            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
+            
+            // 4. 支持的语言映射
+            const supportedLangs = {
+                en: 'V4_V6.7_en.pdf',
+                zh: 'V4_V6.7_en.pdf',
+                es: 'V4_V6.7_en.pdf',
+                fr: 'V4_V6.7_en.pdf',
+                ja: 'V4_V6.7_en.pdf',
+                ar: 'V4_V6.7_en.pdf',
+                ru: 'V4_V6.7_en.pdf',
+                pt: 'V4_V6.7_en.pdf',
+                de: 'V4_V6.7_en.pdf'
+            };
+            
+            // 5. 优先使用URL参数 > 浏览器语言 > 默认英语
+            let pdfKey = 'en';
+            if(langParam && supportedLangs[langParam]) {
+                pdfKey = langParam;
+            } else {
+                // 提取浏览器语言前缀
+                const primaryLang = browserLang.split('-')[0].toLowerCase();
+                if(supportedLangs[primaryLang]) {
+                    pdfKey = primaryLang;
+                }
+            }
+            
+            // 6. 跳转到PDF文件
+            window.location.href = pdfBaseUrl + supportedLangs[pdfKey];
+        }
         
+        // 显示语言选择面板
+        function showLanguageSelector() {
+            document.getElementById('auto-redirect').style.display = 'none';
+            document.getElementById('language-selector').style.display = 'block';
+            document.getElementById('manual-redirect-btn').style.display = 'block';
+        }
+        
+        // 手动语言切换
+        function selectLanguage(lang) {
+            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
+            const supportedLangs = {
+                en: 'V4_V6.7_en.pdf',
+                zh: 'V4_V6.7_en.pdf',
+                es: 'V4_V6.7_en.pdf',
+                fr: 'V4_V6.7_en.pdf',
+                ja: 'V4_V6.7_en.pdf',
+                ar: 'V4_V6.7_en.pdf',
+                ru: 'V4_V6.7_en.pdf',
+                pt: 'V4_V6.7_en.pdf',
+                de: 'V4_V6.7_en.pdf'
+            };
+            
+            if(supportedLangs[lang]) {
+                window.location.href = pdfBaseUrl + supportedLangs[lang];
+            }
+        }
+        
+        // 初始化函数
         function init() {
             // 启动倒计时
             let seconds = 5;
-            document.getElementById('countdown').textContent = seconds;
+            const countdownEl = document.getElementById('countdown');
+            countdownEl.textContent = seconds;
             
-            countdownInterval = setInterval(function() {
+            const countdownInterval = setInterval(function() {
                 seconds--;
-                document.getElementById('countdown').textContent = seconds;
+                countdownEl.textContent = seconds;
                 
                 if (seconds <= 0) {
                     clearInterval(countdownInterval);
@@ -586,16 +585,56 @@
                 showLanguageSelector();
             }
             
-            // 初始化隐藏手动跳转按钮
-            document.getElementById('manual-redirect-btn').style.display = 'none';
+            // 检测微信浏览器并添加点击提示
+            if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
+                setTimeout(() => {
+                    showLanguageSelector();
+                }, 200);
+            }
         }
         
-        // 从URL中检查是否有语言参数
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('showLang')) {
-            clearInterval(countdownInterval);
-            showLanguageSelector();
+        // 事件绑定函数
+        function setupEventListeners() {
+            // 事件委托处理语言卡片点击
+            document.getElementById('language-selector').addEventListener('click', function(e) {
+                const card = e.target.closest('.language-card');
+                if (card) {
+                    const lang = card.getAttribute('data-lang');
+                    selectLanguage(lang);
+                    e.preventDefault();
+                }
+            });
+            
+            // 支持触摸事件（用于移动端）
+            document.getElementById('language-selector').addEventListener('touchend', function(e) {
+                const card = e.target.closest('.language-card');
+                if (card) {
+                    const lang = card.getAttribute('data-lang');
+                    selectLanguage(lang);
+                    e.preventDefault();
+                }
+            });
+            
+            // 手动跳转按钮
+            const redirectButton = document.getElementById('redirect-button');
+            redirectButton.addEventListener('click', redirectToManual);
+            redirectButton.addEventListener('touchend', function(e) {
+                redirectToManual();
+                e.preventDefault();
+            });
         }
+        
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            setupEventListeners();
+            
+            // 检查URL参数以决定是否直接显示选择器
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('showLang')) {
+                showLanguageSelector();
+            }
+        });
     </script>
     
     <!-- 降级处理 -->
