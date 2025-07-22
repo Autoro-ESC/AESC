@@ -1,753 +1,96 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>产品说明书 | 移动端优化访问</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Product Manual | 产品说明书</title>
+    <script>
+        // 语言重定向逻辑
+        function redirectToManual() {
+            // 1. 获取URL中的语言参数（扫码时可带?lang=zh参数）
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            
+            // 2. 获取浏览器首选语言
+            const browserLang = navigator.language || navigator.userLanguage;
+            
+            // 3. 设置PDF文件路径 (在GitHub仓库中按语言分类存储)
+            //const pdfBaseUrl = "https://Autoro-ESC.github.io/AESC/USER MANUAL/";
+			const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/";
+            
+            // 4. 支持的语言映射 (扩展更多语言在此添加)
+            const supportedLangs = {
+                en: 'V4&V6.7_en.pdf',
+                zh: 'V4&V6.7_en.pdf',
+                es: 'V4&V6.7_en.pdf',
+                fr: 'V4&V6.7_en.pdf',
+                ja: 'V4&V6.7_en.pdf',
+                ar: 'V4&V6.7_en.pdf',
+                ru: 'V4&V6.7_en.pdf',
+                pt: 'V4&V6.7_en.pdf',
+                de: 'V4&V6.7_en.pdf'
+            };
+            
+            // 5. 优先使用URL参数 > 浏览器语言 > 默认英语
+            let pdfKey = 'en';
+            if(langParam && supportedLangs[langParam]) {
+                pdfKey = langParam;
+            } else {
+                // 提取浏览器语言前缀 (如 zh-CN -> zh)
+                const primaryLang = browserLang.split('-')[0].toLowerCase();
+                if(supportedLangs[primaryLang]) {
+                    pdfKey = primaryLang;
+                }
+            }
+            
+            // 6. 跳转到PDF文件
+            window.location.href = pdfBaseUrl + supportedLangs[pdfKey];
+        }
+    </script>
+    
+    <!-- 加速优化 -->
+    <link rel="dns-prefetch" href="https://github.com">
+    <link rel="preconnect" href="https://github.githubassets.com">
     <style>
-        :root {
-            --primary: #4a6ee0;
-            --primary-light: #6a82fb;
-            --secondary: #2ecc71;
-            --accent: #9b59b6;
-            --warning: #f39c12;
-            --light: #f8f9ff;
-            --dark: #2c3e50;
-            --gray: #7f8c8d;
-            --border-radius: 18px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --transition: all 0.4s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-        }
-        
+        /* 基础加载样式 */
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: var(--dark);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(74, 110, 224, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(46, 204, 113, 0.05) 0%, transparent 20%);
-            z-index: -1;
-        }
-        
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            margin: 20px auto;
-        }
-        
-        /* 头部样式 */
-        header {
+            font-family: Arial, sans-serif;
             text-align: center;
-            margin-bottom: 30px;
-            padding: 40px 25px 50px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            color: white;
-            position: relative;
-            overflow: hidden;
+            padding: 50px;
+            background: #f5f5f5;
         }
-        
-        .header-wave {
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" fill="%23f5f7fa"/></svg>');
-            background-size: cover;
-        }
-        
-        .logo {
-            width: 100px;
-            height: 100px;
-            background: white;
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .logo i {
-            font-size: 50px;
-            color: var(--primary);
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            text-shadow: 0 3px 6px rgba(0,0,0,0.15);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .subtitle {
-            font-size: 1.4rem;
-            opacity: 0.92;
-            max-width: 800px;
-            margin: 0 auto 30px;
-            font-weight: 400;
-            position: relative;
-            z-index: 2;
-        }
-        
-        /* 语言选择器 */
-        .language-selector {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0 10px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            color: white;
-            padding: 14px 28px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(5px);
-            font-size: 1.1rem;
-        }
-        
-        .lang-btn:hover, .lang-btn.active {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* 主内容区域 */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 35px;
-            margin-bottom: 50px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 40px 35px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card-title {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            color: var(--dark);
-        }
-        
-        .card-title i {
-            font-size: 32px;
-            color: var(--primary);
-            background: rgba(74, 110, 224, 0.1);
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .card-title h2 {
-            font-size: 1.8rem;
-        }
-        
-        /* 移动端提示 */
-        .mobile-tip {
-            background: #fff8e6;
-            border-radius: 16px;
-            padding: 25px;
-            margin: 30px 0;
-            border-left: 5px solid var(--warning);
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.3); }
-            70% { box-shadow: 0 0 0 15px rgba(243, 156, 18, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
-        }
-        
-        .mobile-tip i {
-            font-size: 3rem;
-            color: var(--warning);
-            flex-shrink: 0;
-        }
-        
-        .mobile-tip-content h3 {
-            margin-bottom: 12px;
-            font-size: 1.5rem;
-            color: var(--dark);
-        }
-        
-        /* 操作按钮 */
-        .actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 50px 0 40px;
-        }
-        
-        .action-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,255,0.9) 100%);
-            border-radius: 18px;
-            padding: 35px 30px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            transition: var(--transition);
-            border: 1px solid rgba(74, 110, 224, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .action-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-            background: white;
-        }
-        
-        .action-card i {
-            font-size: 4rem;
-            margin-bottom: 25px;
-            color: var(--primary);
-            background: rgba(74, 110, 224, 0.1);
-            width: 100px;
-            height: 100px;
-            line-height: 100px;
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
             border-radius: 50%;
-            text-align: center;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
         }
-        
-        .action-card.preview i { color: var(--primary); }
-        .action-card.download i { color: var(--secondary); }
-        .action-card.direct i { color: var(--accent); }
-        
-        .action-card h3 {
-            font-size: 1.7rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .action-card p {
-            color: var(--gray);
-            margin-bottom: 25px;
-            flex-grow: 1;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 16px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            max-width: 280px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        
-        .btn-preview {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-        }
-        
-        .btn-download {
-            background: linear-gradient(135deg, var(--secondary) 0%, #1abc9c 100%);
-            color: white;
-        }
-        
-        .btn-direct {
-            background: linear-gradient(135deg, var(--accent) 0%, #8e44ad 100%);
-            color: white;
-        }
-        
-        /* 功能特性 */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 50px 0 30px;
-        }
-        
-        .feature-card {
-            background: white;
-            border-radius: 18px;
-            padding: 35px 30px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.07);
-            transition: var(--transition);
-            border: 1px solid #eee;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-        }
-        
-        .feature-card i {
-            font-size: 3.5rem;
-            color: var(--primary);
-            margin-bottom: 25px;
-            background: rgba(74, 110, 224, 0.1);
-            width: 100px;
-            height: 100px;
-            line-height: 100px;
-            border-radius: 50%;
-            text-align: center;
-            margin: 0 auto;
-        }
-        
-        .feature-card h4 {
-            color: var(--dark);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        
-        .feature-card p {
-            color: var(--gray);
-            line-height: 1.7;
-        }
-        
-        /* 页脚 */
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: var(--gray);
-            font-size: 1rem;
-            padding: 30px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-        }
-        
-        footer p {
-            margin-bottom: 10px;
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 900px) {
-            .actions {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-            
-            .action-card {
-                padding: 30px 25px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                padding: 30px 20px 40px;
-            }
-            
-            h1 {
-                font-size: 2.3rem;
-            }
-            
-            .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .lang-btn {
-                padding: 12px 22px;
-                font-size: 1rem;
-            }
-            
-            .card {
-                padding: 35px 25px;
-            }
-            
-            .card-title {
-                gap: 15px;
-            }
-            
-            .card-title i {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
-            }
-            
-            .mobile-tip {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .lang-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .card-title {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .card-title h2 {
-                font-size: 1.6rem;
-            }
-            
-            .feature-card {
-                padding: 30px 20px;
-            }
-        }
-        
-        /* 动画效果 */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .floating {
-            animation: float 6s ease-in-out infinite;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="logo floating">
-                <i class="fas fa-file-pdf"></i>
-            </div>
-            <h1 id="title">产品说明书</h1>
-            <p class="subtitle" id="subtitle">移动端优化访问解决方案 - 扫码后轻松预览和下载</p>
-            
-            <div class="language-selector" id="langSelector">
-                <!-- 语言按钮由JS生成 -->
-            </div>
-            
-            <div class="header-wave"></div>
-        </header>
-        
-        <div class="main-content">
-            <div class="card">
-                <div class="card-title">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h2>移动端访问指南</h2>
-                </div>
-                
-                <div class="mobile-tip">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <div class="mobile-tip-content">
-                        <h3>手机扫码访问提示</h3>
-                        <p>如果您在微信或其他应用中无法打开PDF文件，请点击右上角菜单选择在浏览器中打开。本页面已针对移动设备全面优化，提供多种访问方式。</p>
-                    </div>
-                </div>
-                
-                <div class="actions" id="actionButtons">
-                    <!-- 操作卡片由JS生成 -->
-                </div>
-                
-                <div class="features">
-                    <div class="feature-card">
-                        <i class="fas fa-sync-alt"></i>
-                        <h4>无需重复扫码</h4>
-                        <p>一次扫码，永久访问，说明书更新后自动获取最新版本</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>安全可靠</h4>
-                        <p>通过HTTPS安全传输，文档内容不会被篡改</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-bolt"></i>
-                        <h4>极速访问</h4>
-                        <p>全球CDN加速，确保文档秒级加载</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-title">
-                    <i class="fab fa-github"></i>
-                    <h2>技术实现方案</h2>
-                </div>
-                
-                <div class="features">
-                    <div class="feature-card">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h4>GitHub托管</h4>
-                        <p>利用GitHub仓库存储PDF文件，提供稳定可靠的存储服务</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <h4>CDN加速</h4>
-                        <p>通过jsDelivr CDN全球分发，确保世界各地快速访问</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-mobile"></i>
-                        <h4>移动优先</h4>
-                        <p>针对手机和平板设备优化，触控友好，布局自适应</p>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 40px; background: rgba(74, 110, 224, 0.05); padding: 30px; border-radius: 16px;">
-                    <h3 style="text-align: center; margin-bottom: 25px; color: var(--primary);">
-                        <i class="fas fa-cogs"></i> 技术优势
-                    </h3>
-                    <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; list-style: none;">
-                        <li style="display: flex; align-items: flex-start; gap: 15px;">
-                            <i class="fas fa-check-circle" style="color: var(--secondary); font-size: 1.5rem; margin-top: 3px;"></i>
-                            <div>
-                                <strong>免费解决方案</strong>
-                                <p>GitHub和jsDelivr提供免费服务，无额外成本</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start; gap: 15px;">
-                            <i class="fas fa-check-circle" style="color: var(--secondary); font-size: 1.5rem; margin-top: 3px;"></i>
-                            <div>
-                                <strong>无流量限制</strong>
-                                <p>jsDelivr CDN无流量限制，支持高并发访问</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start; gap: 15px;">
-                            <i class="fas fa-check-circle" style="color: var(--secondary); font-size: 1.5rem; margin-top: 3px;"></i>
-                            <div>
-                                <strong>自动更新</strong>
-                                <p>GitHub更新后，CDN自动同步最新版本</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; align-items: flex-start; gap: 15px;">
-                            <i class="fas fa-check-circle" style="color: var(--secondary); font-size: 1.5rem; margin-top: 3px;"></i>
-                            <div>
-                                <strong>全球加速</strong>
-                                <p>通过全球300+节点，确保各地用户快速访问</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<body onload="redirectToManual()">
+    <!-- 加载动画 -->
+    <div class="loader"></div>
+    <p>Loading manual... / 正在加载说明书...</p>
+    
+    <!-- 降级处理 -->
+    <noscript>
+        <div style="color:red;">
+            <h2>JavaScript Required / 需要启用JavaScript</h2>
+            <p>Please select manual language:</p>
+            <ul>
+                <li><a href="manuals/manual_en.pdf">English Manual</a></li>
+                <li><a href="manuals/manual_zh.pdf">中文说明书</a></li>
+                <li><a href="manuals/manual_es.pdf">Manual en Español</a></li>
+                <!-- 添加更多语言链接 -->
+            </ul>
         </div>
-        
-        <footer>
-            <p>© 2025 Autoro 产品文档中心 | 版本 3.0</p>
-            <p>文档托管在GitHub + jsDelivr CDN | 技术支持: support@autoro.com</p>
-            <p style="margin-top: 15px; color: var(--primary); font-weight: 500;">
-                <i class="fas fa-mobile-alt"></i> 手机访问优化方案 | 扫码后轻松预览和下载
-            </p>
-        </footer>
-    </div>
-
-    <script>
-        // 多语言配置
-        const manuals = {
-            "en": {
-                title: "Product Manual",
-                subtitle: "Mobile-optimized access solution - Easy preview and download after scanning",
-                preview: "Preview Manual",
-                download: "Download PDF",
-                direct: "Open Directly",
-                mobileTip: "If you cannot open the PDF file in WeChat or other apps, please click the menu in the upper right corner and choose 'Open in Browser'. This page is fully optimized for mobile devices and offers multiple access methods.",
-                features: [
-                    "No need to scan repeatedly",
-                    "Secure and reliable",
-                    "Lightning fast access"
-                ],
-                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/V4&V6.7_en.pdf",
-                flag: "🇬🇧"
-            },
-            "zh": {
-                title: "产品说明书",
-                subtitle: "移动端优化访问解决方案 - 扫码后轻松预览和下载",
-                preview: "预览说明书",
-                download: "下载PDF",
-                direct: "直接打开",
-                mobileTip: "如果您在微信或其他应用中无法打开PDF文件，请点击右上角菜单选择在浏览器中打开。本页面已针对移动设备全面优化，提供多种访问方式。",
-                features: [
-                    "无需重复扫码",
-                    "安全可靠",
-                    "极速访问"
-                ],
-                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/V4&V6.7_en.pdf",
-                flag: "🇨🇳"
-            },
-            "es": {
-                title: "Manual del Producto",
-                subtitle: "Solución de acceso optimizado para móviles - Vista previa y descarga fácil después de escanear",
-                preview: "Vista Previa",
-                download: "Descargar PDF",
-                direct: "Abrir Directamente",
-                mobileTip: "Si no puede abrir el archivo PDF en WeChat u otras aplicaciones, haga clic en el menú en la esquina superior derecha y elija 'Abrir en el navegador'. Esta página está completamente optimizada para dispositivos móviles y ofrece múltiples métodos de acceso.",
-                features: [
-                    "No es necesario escanear repetidamente",
-                    "Seguro y confiable",
-                    "Acceso ultrarrápido"
-                ],
-                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/V4&V6.7_en.pdf",
-                flag: "🇪🇸"
-            },
-            "fr": {
-                title: "Manuel du Produit",
-                subtitle: "Solution d'accès optimisé pour mobile - Aperçu et téléchargement faciles après numérisation",
-                preview: "Aperçu",
-                download: "Télécharger PDF",
-                direct: "Ouvrir Directement",
-                mobileTip: "Si vous ne parvenez pas à ouvrir le fichier PDF dans WeChat ou d'autres applications, cliquez sur le menu en haut à droite et choisissez 'Ouvrir dans le navigateur'. Cette page est entièrement optimisée pour les appareils mobiles et offre plusieurs méthodes d'accès.",
-                features: [
-                    "Pas besoin de scanner plusieurs fois",
-                    "Sécurisé et fiable",
-                    "Accès ultra-rapide"
-                ],
-                url: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER MANUAL/V4&V6.7_en.pdf",
-                flag: "🇫🇷"
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // 初始化语言选择器
-            const langSelector = document.getElementById('langSelector');
-            Object.keys(manuals).forEach(lang => {
-                const btn = document.createElement('button');
-                btn.className = 'lang-btn';
-                btn.innerHTML = `${manuals[lang].flag} ${lang.toUpperCase()}`;
-                btn.dataset.lang = lang;
-                btn.addEventListener('click', () => setLanguage(lang));
-                langSelector.appendChild(btn);
-            });
-
-            // 设置初始语言
-            const browserLang = navigator.language.split('-')[0];
-            setLanguage(manuals[browserLang] ? browserLang : 'en');
-        });
-
-        function setLanguage(lang) {
-            const config = manuals[lang];
-            if (!config) return;
-
-            // 更新UI文本
-            document.getElementById('title').textContent = config.title;
-            document.getElementById('subtitle').textContent = config.subtitle;
-            document.querySelector('.mobile-tip-content p').textContent = config.mobileTip;
-            
-            // 设置活动语言按钮
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-
-            // 更新操作卡片
-            updateActionCards(config);
-        }
-
-        function updateActionCards(config) {
-            const container = document.getElementById('actionButtons');
-            container.innerHTML = '';
-            
-            // 创建预览卡片
-            const previewCard = document.createElement('div');
-            previewCard.className = 'action-card preview';
-            previewCard.innerHTML = `
-                <i class="fas fa-eye"></i>
-                <h3>${config.preview}</h3>
-                <p>在线预览产品说明书，无需下载即可查看所有内容</p>
-                <a href="${config.url}" target="_blank" class="btn btn-preview">${config.preview}</a>
-            `;
-            
-            // 创建下载卡片
-            const downloadCard = document.createElement('div');
-            downloadCard.className = 'action-card download';
-            downloadCard.innerHTML = `
-                <i class="fas fa-download"></i>
-                <h3>${config.download}</h3>
-                <p>将说明书下载到设备中，随时随地离线查看</p>
-                <a href="${config.url}" download="${config.title}.pdf" class="btn btn-download">${config.download}</a>
-            `;
-            
-            // 创建直接打开卡片
-            const directCard = document.createElement('div');
-            directCard.className = 'action-card direct';
-            directCard.innerHTML = `
-                <i class="fas fa-external-link-alt"></i>
-                <h3>${config.direct}</h3>
-                <p>在浏览器中直接打开PDF文件，使用系统查看器</p>
-                <a href="${config.url}" target="_blank" class="btn btn-direct">${config.direct}</a>
-            `;
-            
-            container.appendChild(previewCard);
-            container.appendChild(downloadCard);
-            container.appendChild(directCard);
-        }
-    </script>
+    </noscript>
 </body>
 </html>
