@@ -72,8 +72,8 @@
         /* Logo Container */
         .logo-container {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             z-index: 2;
         }
         
@@ -368,18 +368,17 @@
             vertical-align: middle;
         }
         
-        /* 解决小屏幕文字重叠的优化 */
+        /* 手机端布局优化 */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.2rem;
-                /* 增加上边距避免重叠 */
-                margin-top: 55px;
-                /* 给标题添加左右内边距 */
-                padding: 0 10px;
+                /* 增加上边距避免与logo重叠 */
+                margin-top: 65px;
+                /* 确保在小屏幕上有左右内边距 */
+                padding: 0 15px;
             }
             .subtitle {
                 font-size: 1.2rem;
-                /* 给副标题添加左右内边距 */
                 padding: 0 20px;
             }
             .languages {
@@ -387,28 +386,50 @@
                 max-width: 400px;
             }
             .logo {
-                height: 55px;
+                /* 稍微缩小logo尺寸 */
+                height: 50px;
             }
             .logo-rings {
-                width: 75px;
-                height: 75px;
+                width: 70px;
+                height: 70px;
             }
             .product-image {
                 max-width: 85%;
-                /* 调整图片位置 */
+                /* 调整图片位置避免与logo重叠 */
                 transform: translateY(15px);
             }
-            /* 调整头部内边距 */
             .header {
-                padding-top: 25px;
-                padding-bottom: 35px;
+                /* 增加顶部内边距给logo空间 */
+                padding-top: 20px;
+                padding-bottom: 25px;
             }
-            /* 调整logo位置 */
+            /* 保持Logo在左上角 */
             .logo-container {
                 top: 15px;
-                left: 50%;
-                transform: translateX(-50%);
-                text-align: center;
+                left: 15px;
+                /* 恢复左上角位置 */
+                transform: none;
+            }
+            /* 确保Logo区域不会太大影响内容 */
+            .logo-rings {
+                top: -8px;
+                left: -8px;
+                width: 66px;
+                height: 66px;
+            }
+        }
+        
+        /* 超小屏幕优化（如iPhone 5/SE）*/
+        @media (max-width: 320px) {
+            h1 {
+                font-size: 1.8rem;
+                margin-top: 55px;
+            }
+            .subtitle {
+                font-size: 1.0rem;
+            }
+            .logo {
+                height: 45px;
             }
         }
     </style>
@@ -418,7 +439,6 @@
         <div class="header">
             <div class="logo-container">
                 <div class="logo-rings"></div>
-                <!-- Logo图片已添加 -->
                 <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" alt="AESC Logo" class="logo">
             </div>
             <h1>User Manual</h1>
@@ -474,6 +494,7 @@
                     <div class="language-card" data-lang="de">
                         <div class="language-icon">🇩🇪</div>
                         <div class="language-name">Deutsch</div>
+                       极速赛车开奖官方网站
                         <div class="language-text">Deutsche Anleitung</div>
                     </div>
                     
@@ -515,7 +536,7 @@
         // 语言重定向逻辑
         function redirectToManual() {
             // 1. 获取URL中的语言参数
-            const urlParams = new URLSearchParams(window.location.search);
+            const urlParams = new极速赛车开奖官方网站URLSearchParams(window.location.search);
             const langParam = urlParams.get('lang');
             
             // 2. 获取浏览器首选语言
@@ -665,9 +686,9 @@
             <p style="font-size:1.1rem; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto;">Please enable JavaScript for automatic redirection or select your manual language:</p>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px;">
                 <a href="manuals/manual_en.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇬🇧</span> English</a>
-                <a href="manuals/manual_zh.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇨🇳</span> 中文</a>
+                <a href="manuals/manual_zh.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba极速赛车开奖官方网站(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇨🇳</span> 中文</a>
                 <a href="manuals/manual_es.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇪🇸</span> Español</a>
-                <a href="manuals/manual_fr.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇫🇷</span> Français</a>
+                <a href="manuals/manual_fr.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.极速赛车开奖官方网站1); display:flex; align-items:center;"><span class="language-flag">🇫🇷</span> Français</a>
                 <a href="manuals/manual_de.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇩🇪</span> Deutsch</a>
                 <a href="manuals/manual_ja.pdf" style="padding: 12px 25px; background: white; border-radius: 8px; text-decoration: none; color: #1e3a8a; font-weight: 600; border: 2px solid #dbeafe; box-shadow: 0 4px 6px rgba(30,58,138,0.1); display:flex; align-items:center;"><span class="language-flag">🇯🇵</span> 日本語</a>
             </div>
