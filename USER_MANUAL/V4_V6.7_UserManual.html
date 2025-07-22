@@ -368,12 +368,19 @@
             vertical-align: middle;
         }
         
+        /* 解决小屏幕文字重叠的优化 */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.2rem;
+                /* 增加上边距避免重叠 */
+                margin-top: 55px;
+                /* 给标题添加左右内边距 */
+                padding: 0 10px;
             }
             .subtitle {
                 font-size: 1.2rem;
+                /* 给副标题添加左右内边距 */
+                padding: 0 20px;
             }
             .languages {
                 grid-template-columns: 1fr;
@@ -388,6 +395,20 @@
             }
             .product-image {
                 max-width: 85%;
+                /* 调整图片位置 */
+                transform: translateY(15px);
+            }
+            /* 调整头部内边距 */
+            .header {
+                padding-top: 25px;
+                padding-bottom: 35px;
+            }
+            /* 调整logo位置 */
+            .logo-container {
+                top: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
             }
         }
     </style>
