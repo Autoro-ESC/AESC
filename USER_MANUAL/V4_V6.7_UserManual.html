@@ -19,6 +19,8 @@
             --light: #eff6ff;
             --dark: #0f172a;
             --border: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
         }
         
         body {
@@ -120,6 +122,27 @@
             position: relative;
         }
         
+        h2.selector-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .selector-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
         .subtitle {
             font-size: 1.4rem;
             opacity: 0.95;
@@ -186,35 +209,15 @@
             margin-right: 8px;
         }
         
-        /* Language Selector */
+        /* Selectors */
+        #product-selector,
         #language-selector {
             display: none;
             padding: 30px 0 20px;
             width: 100%;
         }
         
-        .selector-title {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 40px;
-            font-weight: 600;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .selector-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--accent), var(--primary));
-            border-radius: 2px;
-        }
-        
-        .languages {
+        .selector-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
@@ -223,6 +226,109 @@
             margin: 0 auto;
         }
         
+        /* Product Card Styling */
+        .product-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 28px 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+            border-color: var(--accent);
+            background: white;
+        }
+        
+        .product-card.selected {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+        }
+        
+        .product-card.selected::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--success), var(--accent));
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+        }
+        
+        .product-icon {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+        }
+        
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-text {
+            font-size: 1.05rem;
+            color: #4b5563;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .product-specs {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .product-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .tag-standard {
+            background-color: #dbeafe;
+            color: var(--primary);
+        }
+        
+        .tag-pro {
+            background-color: #ede9fe;
+            color: #8b5cf6;
+        }
+        
+        .tag-premium {
+            background-color: #f0fdf4;
+            color: var(--success);
+        }
+        
+        /* Language Card Styling */
         .language-card {
             background: var(--light);
             border-radius: 16px;
@@ -237,6 +343,13 @@
             overflow: hidden;
         }
         
+        .language-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+            border-color: var(--accent);
+            background: white;
+        }
+        
         .language-card::before {
             content: '';
             position: absolute;
@@ -245,13 +358,6 @@
             right: 0;
             height: 4px;
             background: linear-gradient(to right, var(--secondary), var(--accent));
-        }
-        
-        .language-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
-            border-color: var(--accent);
-            background: white;
         }
         
         .language-icon {
@@ -272,6 +378,115 @@
             font-size: 1.05rem;
             color: #4b5563;
             font-weight: 500;
+        }
+        
+        /* Product Selection Bar */
+        .product-selection-bar {
+            display: none;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 50px;
+            margin: 20px auto 30px;
+            max-width: 600px;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+        }
+        
+        .product-selection-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-selection-label i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        .selected-product-display {
+            background: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+        }
+        
+        .selected-product-display i {
+            margin-right: 8px;
+            color: var(--success);
+        }
+        
+        .change-product-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-left: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        
+        .change-product-btn:hover {
+            color: var(--accent);
+        }
+        
+        .change-product-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Navigation Buttons */
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .nav-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        
+        .nav-btn i {
+            margin-right: 8px;
         }
         
         /* Loader */
@@ -372,21 +587,21 @@
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.2rem;
-                /* 增加上边距避免与logo重叠 */
                 margin-top: 65px;
-                /* 确保在小屏幕上有左右内边距 */
                 padding: 0 15px;
+            }
+            h2.selector-title {
+                font-size: 1.8rem;
             }
             .subtitle {
                 font-size: 1.2rem;
                 padding: 0 20px;
             }
-            .languages {
+            .selector-container {
                 grid-template-columns: 1fr;
                 max-width: 400px;
             }
             .logo {
-                /* 稍微缩小logo尺寸 */
                 height: 50px;
             }
             .logo-rings {
@@ -395,27 +610,37 @@
             }
             .product-image {
                 max-width: 85%;
-                /* 调整图片位置避免与logo重叠 */
                 transform: translateY(15px);
             }
             .header {
-                /* 增加顶部内边距给logo空间 */
                 padding-top: 20px;
                 padding-bottom: 25px;
             }
-            /* 保持Logo在左上角 */
             .logo-container {
                 top: 15px;
                 left: 15px;
-                /* 恢复左上角位置 */
-                transform: none;
             }
-            /* 确保Logo区域不会太大影响内容 */
             .logo-rings {
                 top: -8px;
                 left: -8px;
                 width: 66px;
                 height: 66px;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .product-selection-bar {
+                flex-direction: column;
+                border-radius: 15px;
+                text-align: center;
+            }
+            .product-selection-label {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .selected-product-display {
+                margin-bottom: 10px;
             }
         }
         
@@ -441,8 +666,8 @@
                 <div class="logo-rings"></div>
                 <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" alt="AESC Logo" class="logo">
             </div>
-            <h1>User Manual</h1>
-            <div class="subtitle">AESC V4_V6.7</div>
+            <h1>Product Manual</h1>
+            <div class="subtitle">Select your product for the correct manual</div>
             <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 280'><rect width='500' height='280' rx='20' fill='%231e3a8a'/><rect x='30' y='30' width='440' height='220' rx='10' fill='%233b82f6'/><text x='250' y='150' font-family='Arial' font-size='25' fill='white' text-anchor='middle' font-weight='bold'>High Performance Motor Controller</text><text x='250' y='200' font-family='Arial' font-size='24' fill='white' text-anchor='middle'>AESC</text></svg>" alt="Product Image" class="product-image">
         </div>
         
@@ -451,22 +676,89 @@
             <div id="auto-redirect">
                 <div class="loader-container">
                     <div class="loader"></div>
-                    <p class="redirect-text"><i class="fas fa-spinner fa-spin"></i> Loading manual... / 正在加载说明书...</p>
+                    <p class="redirect-text"><i class="fas fa-spinner fa-spin"></i> Loading product selection...</p>
                 </div>
                 <div class="redirect-message">
-                    We're redirecting you to the product manual in your preferred language. 
-                    If the manual doesn't load automatically in a few seconds, you'll be able to select your language manually.
+                    We're getting the latest product manuals. 
+                    If the product selection doesn't load automatically in a few seconds, you'll be able to select manually.
                 </div>
                 <div class="timer">
-                    <i class="fas fa-clock"></i> Redirect in: <span id="countdown">5</span> seconds
+                    <i class="fas fa-clock"></i> Loading product selection in: <span id="countdown">5</span> seconds
                 </div>
             </div>
             
-            <!-- Language Selector Section (initially hidden) -->
+            <!-- Product Selector Section -->
+            <div id="product-selector">
+                <h2 class="selector-title">Select Product Model / 选择产品型号</h2>
+                
+                <div class="selector-container">
+                    <div class="product-card" data-product="V4_V6.7">
+                        <div class="product-tag tag-standard">Standard</div>
+                        <div class="product-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="product-name">V4 / V6.7</div>
+                        <div class="product-text">Standard Version</div>
+                        <div class="product-specs">Current: 50A Continuous<br>Voltage: 3S-12S</div>
+                    </div>
+                    
+                    <div class="product-card" data-product="V4_Pro_V6.7_Pro">
+                        <div class="product-tag tag-pro">Pro</div>
+                        <div class="product-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="product-name">V4 Pro / V6.7 Pro</div>
+                        <div class="product-text">Professional Version</div>
+                        <div class="product-specs">Current: 80A Continuous<br>Voltage: 3S-12S</div>
+                    </div>
+                    
+                    <div class="product-card" data-product="V75100">
+                        <div class="product-tag tag-premium">Premium</div>
+                        <div class="product-icon"><i class="fas fa-crown"></i></div>
+                        <div class="product-name">V75100</div>
+                        <div class="product-text">Premium Performance</div>
+                        <div class="product-specs">Current: 100A Continuous<br>Voltage: 3S-20S</div>
+                    </div>
+                    
+                    <div class="product-card" data-product="V75200">
+                        <div class="product-tag tag-premium">Premium</div>
+                        <div class="product-icon"><i class="fas fa-gem"></i></div>
+                        <div class="product-name">V75200</div>
+                        <div class="product-text">Industrial Grade</div>
+                        <div class="product-specs">Current: 200A Continuous<br>Voltage: 3S-20S</div>
+                    </div>
+                    
+                    <div class="product-card" data-product="V75300">
+                        <div class="product-tag tag-premium">Premium</div>
+                        <div class="product-icon"><i class="fas fa-star"></i></div>
+                        <div class="product-name">V75300</div>
+                        <div class="product-text">Industrial Grade</div>
+                        <div class="product-specs">Current: 300A Continuous<br>Voltage: 3S-20S</div>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="product-next-btn" class="nav-btn" disabled>
+                        <i class="fas fa-arrow-right"></i> Next: Select Language
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Selected Product Display -->
+            <div class="product-selection-bar">
+                <span class="product-selection-label">
+                    <i class="fas fa-microchip"></i> Selected Product:
+                </span>
+                <span class="selected-product-display">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="selected-product-text">None selected</span>
+                </span>
+                <button class="change-product-btn" id="change-product-btn">
+                    <i class="fas fa-exchange-alt"></i> Change Product
+                </button>
+            </div>
+            
+            <!-- Language Selector Section -->
             <div id="language-selector">
                 <h2 class="selector-title">Select Manual Language / 选择说明书语言</h2>
                 
-                <div class="languages">
+                <div class="selector-container">
                     <div class="language-card" data-lang="en">
                         <div class="language-icon">🇬🇧</div>
                         <div class="language-name">English</div>
@@ -503,11 +795,20 @@
                         <div class="language-text">日本語マニュアル</div>
                     </div>
                 </div>
+                
+                <div class="navigation-buttons">
+                    <button id="language-back-btn" class="nav-btn nav-btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Products
+                    </button>
+                    <button id="language-download-btn" class="nav-btn" disabled>
+                        <i class="fas fa-download"></i> Download Manual
+                    </button>
+                </div>
             </div>
             
             <div id="manual-redirect-btn" class="manual-redirect">
                 <button class="manual-btn" id="redirect-button">
-                    <i class="fas fa-file-download"></i> Automatically Redirect Again / 重新自动跳转
+                    <i class="fas fa-file-download"></i> Download Manual Again
                 </button>
             </div>
         </div>
@@ -532,77 +833,53 @@
     </div>
     
     <script>
-        // 语言重定向逻辑
-        function redirectToManual() {
-            // 1. 获取URL中的语言参数
+        // State variables
+        let selectedProduct = null;
+        let selectedLanguage = null;
+        let manualDownloaded = false;
+        
+        // Element references
+        const autoRedirectSection = document.getElementById('auto-redirect');
+        const productSelectorSection = document.getElementById('product-selector');
+        const languageSelectorSection = document.getElementById('language-selector');
+        const productSelectionBar = document.querySelector('.product-selection-bar');
+        const selectedProductText = document.getElementById('selected-product-text');
+        const changeProductBtn = document.getElementById('change-product-btn');
+        const productNextBtn = document.getElementById('product-next-btn');
+        const languageBackBtn = document.getElementById('language-back-btn');
+        const languageDownloadBtn = document.getElementById('language-download-btn');
+        const redirectButton = document.getElementById('redirect-button');
+        
+        // Initialize the app
+        function init() {
+            // Hide the manual redirect button initially
+            document.getElementById('manual-redirect-btn').style.display = 'none';
+            
+            // Hide other sections initially
+            productSelectorSection.style.display = 'none';
+            languageSelectorSection.style.display = 'none';
+            
+            // Start countdown
+            startCountdown();
+            
+            // Try to get from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
+            const productParam = urlParams.get('product');
             const langParam = urlParams.get('lang');
             
-            // 2. 获取浏览器首选语言
-            const browserLang = navigator.language || navigator.userLanguage;
-            
-            // 3. 设置PDF文件路径
-            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
-            
-            // 4. 支持的语言映射
-            const supportedLangs = {
-                en: 'V4_V6.7_en.pdf',
-                zh: 'V4_V6.7_en.pdf',
-                es: 'V4_V6.7_en.pdf',
-                fr: 'V4_V6.7_en.pdf',
-                ja: 'V4_V6.7_en.pdf',
-                ar: 'V4_V6.7_en.pdf',
-                ru: 'V4_V6.7_en.pdf',
-                pt: 'V4_V6.7_en.pdf',
-                de: 'V4_V6.7_en.pdf'
-            };
-            
-            // 5. 优先使用URL参数 > 浏览器语言 > 默认英语
-            let pdfKey = 'en';
-            if(langParam && supportedLangs[langParam]) {
-                pdfKey = langParam;
-            } else {
-                // 提取浏览器语言前缀
-                const primaryLang = browserLang.split('-')[0].toLowerCase();
-                if(supportedLangs[primaryLang]) {
-                    pdfKey = primaryLang;
-                }
+            // If both parameters are present, try to redirect
+            if (productParam && langParam) {
+                downloadManual(productParam, langParam);
             }
-            
-            // 6. 跳转到PDF文件
-            window.location.href = pdfBaseUrl + supportedLangs[pdfKey];
-        }
-        
-        // 显示语言选择面板
-        function showLanguageSelector() {
-            document.getElementById('auto-redirect').style.display = 'none';
-            document.getElementById('language-selector').style.display = 'block';
-            document.getElementById('manual-redirect-btn').style.display = 'block';
-        }
-        
-        // 手动语言切换
-        function selectLanguage(lang) {
-            const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
-            const supportedLangs = {
-                en: 'V4_V6.7_en.pdf',
-                zh: 'V4_V6.7_en.pdf',
-                es: 'V4_V6.7_en.pdf',
-                fr: 'V4_V6.7_en.pdf',
-                ja: 'V4_V6.7_en.pdf',
-                ar: 'V4_V6.7_en.pdf',
-                ru: 'V4_V6.7_en.pdf',
-                pt: 'V4_V6.7_en.pdf',
-                de: 'V4_V6.7_en.pdf'
-            };
-            
-            if(supportedLangs[lang]) {
-                window.location.href = pdfBaseUrl + supportedLangs[lang];
+            // If only product parameter is present, go to language selection
+            else if (productParam) {
+                selectProduct(productParam);
+                showLanguageSelector();
             }
         }
         
-        // 初始化函数
-        function init() {
-            // 启动倒计时
+        // Start countdown function
+        function startCountdown() {
             let seconds = 5;
             const countdownEl = document.getElementById('countdown');
             countdownEl.textContent = seconds;
@@ -613,68 +890,201 @@
                 
                 if (seconds <= 0) {
                     clearInterval(countdownInterval);
-                    showLanguageSelector();
+                    showProductSelector();
                 }
             }, 1000);
+        }
+        
+        // Show the product selector
+        function showProductSelector() {
+            autoRedirectSection.style.display = 'none';
+            productSelectorSection.style.display = 'block';
+            languageSelectorSection.style.display = 'none';
+            productSelectionBar.style.display = 'none';
+        }
+        
+        // Show the language selector
+        function showLanguageSelector() {
+            autoRedirectSection.style.display = 'none';
+            productSelectorSection.style.display = 'none';
+            languageSelectorSection.style.display = 'block';
+            productSelectionBar.style.display = 'flex';
             
-            // 尝试自动跳转
-            try {
-                redirectToManual();
-            } catch (e) {
-                console.error("Auto redirect failed", e);
-                clearInterval(countdownInterval);
-                showLanguageSelector();
-            }
-            
-            // 检测微信浏览器并添加点击提示
-            if (navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1) {
-                setTimeout(() => {
-                    showLanguageSelector();
-                }, 200);
+            // Enable download button if language already selected
+            if (selectedLanguage) {
+                languageDownloadBtn.disabled = false;
             }
         }
         
-        // 事件绑定函数
-        function setupEventListeners() {
-            // 事件委托处理语言卡片点击
-            document.getElementById('language-selector').addEventListener('click', function(e) {
-                const card = e.target.closest('.language-card');
-                if (card) {
-                    const lang = card.getAttribute('data-lang');
-                    selectLanguage(lang);
-                    e.preventDefault();
-                }
+        // Handle product selection
+        function selectProduct(productId) {
+            // Deselect any previously selected product
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.remove('selected');
             });
             
-            // 支持触摸事件（用于移动端）
-            document.getElementById('language-selector').addEventListener('touchend', function(e) {
-                const card = e.target.closest('.language-card');
-                if (card) {
-                    const lang = card.getAttribute('data-lang');
-                    selectLanguage(lang);
-                    e.preventDefault();
-                }
-            });
-            
-            // 手动跳转按钮
-            const redirectButton = document.getElementById('redirect-button');
-            redirectButton.addEventListener('click', redirectToManual);
-            redirectButton.addEventListener('touchend', function(e) {
-                redirectToManual();
-                e.preventDefault();
-            });
+            // Select the clicked product
+            const selectedCard = document.querySelector(`.product-card[data-product="${productId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+                selectedProduct = productId;
+                
+                // Enable the next button
+                productNextBtn.disabled = false;
+                
+                // Update the product display bar
+                selectedProductText.textContent = getProductName(productId);
+                
+                // Update URL without reloading
+                history.pushState(null, '', `?product=${productId}`);
+            }
         }
         
-        // DOM加载完成后初始化
+        // Handle language selection
+        function selectLanguage(langId) {
+            selectedLanguage = langId;
+            languageDownloadBtn.disabled = false;
+            
+            // Update URL without reloading
+            if (selectedProduct) {
+                history.pushState(null, '', `?product=${selectedProduct}&lang=${langId}`);
+            }
+        }
+		
+    // Download the manual
+		function downloadManual(productId, langId) {
+			// 创建真实的PDF文件URL
+			const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
+			const pdfFileName = `${productId}_${langId}.pdf`;
+			const pdfUrl = pdfBaseUrl + pdfFileName;
+
+			// 创建一个隐藏的<a>元素用于下载
+			const downloadLink = document.createElement('a');
+			downloadLink.href = pdfUrl;
+			downloadLink.target = '_blank';
+			downloadLink.download = `AESC_${getProductName(productId)}_${getLanguageName(langId)}_Manual.pdf`;
+			
+			// 添加到DOM并触发点击
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			
+			// 清理DOM
+			document.body.removeChild(downloadLink);
+			
+			// 标记已下载
+			manualDownloaded = true;
+			
+			// 可选：添加下载成功提示
+			const successMsg = document.createElement('div');
+			successMsg.innerHTML = `
+				<div style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; background: var(--success); color: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center;">
+					<i class="fas fa-check-circle" style="margin-right: 10px; font-size: 1.5rem;"></i>
+					<div>
+						<div style="font-weight: bold; margin-bottom: 5px;">Download Started!</div>
+						<div style="font-size: 0.9rem;">${getProductName(productId)} manual in ${getLanguageName(langId)}</div>
+					</div>
+				</div>
+			`;
+			document.body.appendChild(successMsg);
+			
+			// 5秒后移除提示
+			setTimeout(() => {
+				document.body.removeChild(successMsg);
+			}, 5000);
+		}
+    
+
+
+        
+        // Helper function to get product name
+        function getProductName(productId) {
+            const productNames = {
+                'V4_V6.7': 'V4/V6.7',
+                'V4_Pro_V6.7_Pro': 'V4 Pro/V6.7 Pro',
+                'V75100': 'V75100',
+                'V75200': 'V75200',
+                'V75300': 'V75300'
+            };
+            
+            return productNames[productId] || productId;
+        }
+        
+        // Helper function to get language name
+        function getLanguageName(langId) {
+            const languageNames = {
+                'en': 'English',
+                'zh': '中文 (Chinese)',
+                'es': 'Español',
+                'fr': 'Français',
+                'de': 'Deutsch',
+                'ja': '日本語 (Japanese)'
+            };
+            
+            return languageNames[langId] || langId;
+        }
+        
+        // Event bindings
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the app
             init();
-            setupEventListeners();
             
-            // 检查URL参数以决定是否直接显示选择器
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('showLang')) {
-                showLanguageSelector();
-            }
+            // Product card selection
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product');
+                    selectProduct(productId);
+                });
+            });
+            
+            // Language card selection
+            document.querySelectorAll('.language-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const langId = this.getAttribute('data-lang');
+                    selectLanguage(langId);
+                });
+            });
+            
+            // Navigation buttons
+            productNextBtn.addEventListener('click', showLanguageSelector);
+            
+            languageBackBtn.addEventListener('click', function() {
+                showProductSelector();
+            });
+            
+            languageDownloadBtn.addEventListener('click', function() {
+                if (selectedProduct && selectedLanguage) {
+                    downloadManual(selectedProduct, selectedLanguage);
+                }
+            });
+            
+            changeProductBtn.addEventListener('click', showProductSelector);
+            
+            // Manual redirect button
+            redirectButton.addEventListener('click', function() {
+                if (selectedProduct && selectedLanguage) {
+                    downloadManual(selectedProduct, selectedLanguage);
+                } else {
+                    showProductSelector();
+                }
+            });
+            
+            // Handle browser back button
+            window.addEventListener('popstate', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const productParam = urlParams.get('product');
+                const langParam = urlParams.get('lang');
+                
+                if (productParam && langParam) {
+                    selectProduct(productParam);
+                    selectLanguage(langParam);
+                    showLanguageSelector();
+                } else if (productParam) {
+                    selectProduct(productParam);
+                    showLanguageSelector();
+                } else {
+                    showProductSelector();
+                }
+            });
         });
     </script>
     
