@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AESC Product Manual | 产品说明书</title>
+    <title>Product Manual | 产品说明书</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -54,7 +54,7 @@
         .header {
             background: linear-gradient(120deg, var(--primary), var(--secondary));
             color: white;
-            padding: 30px 20px;
+            padding: 30px 20px 25px; /* 底部内边距减少 */
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -113,11 +113,19 @@
         
         h1 {
             font-size: 2.8rem;
-            margin: 15px 0 10px;
+            margin: 15px 0 25px; /* 增加底部外边距 */
             font-weight: 700;
             letter-spacing: 0.5px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             position: relative;
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+            font-weight: 300;
         }
         
         h2.selector-title {
@@ -141,32 +149,8 @@
             border-radius: 2px;
         }
         
-        .subtitle {
-            font-size: 1.4rem;
-            opacity: 0.95;
-            margin-bottom: 15px;
-            position: relative;
-            font-weight: 300;
-        }
-        
-        .product-image {
-            width: 100%;
-            max-width: 500px;
-            height: auto;
-            margin: 10px auto 0;
-            display: block;
-            border: 12px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            border-radius: 15px;
-            transform: translateY(30px);
-            position: relative;
-            z-index: 2;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            padding: 15px;
-        }
-        
         .content {
-            padding: 70px 20px 40px;
+            padding: 40px 20px 40px; /* 顶部内边距减少 */
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -188,6 +172,7 @@
             font-weight: 500;
             max-width: 600px;
             line-height: 1.8;
+            text-align: center;
         }
         
         .timer {
@@ -850,14 +835,15 @@
                 font-size: 1.5rem;
                 margin-top: 65px;
                 padding: 0 15px;
+                margin-bottom: 15px;
+            }
+            .header-subtitle {
+                font-size: 0.95rem;
+                padding: 0 15px;
             }
             h2.selector-title {
                 font-size: 1.3rem;
                 margin-bottom: 20px;
-            }
-            .subtitle {
-                font-size: 1.2rem;
-                padding: 0 20px;
             }
             .selector-container {
                 grid-template-columns: 1fr;
@@ -871,13 +857,9 @@
                 width: 70px;
                 height: 70px;
             }
-            .product-image {
-                max-width: 85%;
-                transform: translateY(15px);
-            }
             .header {
                 padding-top: 20px;
-                padding-bottom: 25px;
+                padding-bottom: 20px;
             }
             .logo-container {
                 top: 15px;
@@ -992,9 +974,6 @@
                 font-size: 1.8rem;
                 margin-top: 55px;
             }
-            .subtitle {
-                font-size: 1.0rem;
-            }
             .logo {
                 height: 45px;
             }
@@ -1028,8 +1007,7 @@
                 <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" alt="AESC Logo" class="logo">
             </div>
             <h1>Product Manual</h1>
-            <div class="subtitle">Select your product for the correct manual</div>
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 280'><rect width='500' height='280' rx='20' fill='%231e3a8a'/><rect x='30' y='30' width='440' height='220' rx='10' fill='%233b82f6'/><text x='250' y='150' font-family='Arial' font-size='25' fill='white' text-anchor='middle' font-weight='bold'>High Performance Motor Controller</text><text x='250' y='200' font-family='Arial' font-size='24' fill='white' text-anchor='middle'>AESC</text></svg>" alt="Product Image" class="product-image">
+            <div class="header-subtitle">Select your product model to download the appropriate user manual</div>
         </div>
         
         <div class="content">
@@ -1150,9 +1128,6 @@
         "company": "Autoro",
         "logo": {
             "svg": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>"
-        },
-        "image": {
-            "svg": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 280'><rect width='500' height='280' rx='20' fill='%231e3a8a'/><rect x='30' y='30' width='440' height='220' rx='10' fill='%233b82f6'/><text x='250' y='150' font-family='Arial' font-size='25' fill='white' text-anchor='middle' font-weight='bold'>High Performance Motor Controller</text><text x='250' y='200' font-family='Arial' font-size='24' fill='white' text-anchor='middle'>AESC</text></svg>"
         },
         "contact": {
             "website": "www.autorotech.com",
@@ -1489,9 +1464,8 @@ function init() {
         </div>
     `;
     
-    // Set logo and main image
+    // Set logo
     document.querySelector('.logo').src = config.logo.svg;
-    document.querySelector('.product-image').src = config.image.svg;
     
     // Hide sections initially
     document.getElementById('manual-redirect-btn').style.display = 'none';
