@@ -22,7 +22,6 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --sidebar-width: 250px;
         }
         
         body {
@@ -124,7 +123,7 @@
         h2.selector-title {
             font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             font-weight: 600;
             position: relative;
             display: inline-block;
@@ -411,17 +410,6 @@
             background: linear-gradient(to right, #94a3b8, #cbd5e1);
         }
         
-        .language-unavailable-message {
-            background-color: #fef2f2;
-            color: var(--danger);
-            padding: 15px;
-            border-radius: 12px;
-            margin: 25px auto 15px;
-            max-width: 700px;
-            border-left: 4px solid var(--danger);
-            text-align: left;
-        }
-        
         .product-selection-bar {
             display: none;
             background: var(--light);
@@ -621,95 +609,58 @@
             vertical-align: middle;
         }
         
-        /* New sidebar styles */
-        .main-content-wrapper {
+        /* New category dropdown */
+        .category-selector-container {
             display: flex;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .category-sidebar {
-            width: var(--sidebar-width);
+        .category-select {
             background: white;
-            border-right: 1px solid var(--border);
-            padding: 30px 15px;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
-            border-radius: 15px;
-            margin-right: 30px;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-            max-height: calc(100vh - 100px);
-            overflow-y: auto;
-        }
-        
-        .category-header {
-            display: flex;
-            align-items: center;
-            padding: 0 10px 15px;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 15px;
-        }
-        
-        .category-header i {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-right: 10px;
-        }
-        
-        .category-header h2 {
-            font-size: 1.4rem;
-            color: var(--primary);
-        }
-        
-        .category-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .category-item {
-            padding: 12px 15px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            color: var(--dark);
             font-weight: 500;
-            color: #475569;
+            min-width: 280px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e3a8a' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 16px;
+            padding-right: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
         
-        .category-item:hover {
-            background-color: var(--light);
+        .category-select:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.15);
+        }
+        
+        .category-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .category-label {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: var(--primary);
         }
         
-        .category-item.active {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        .category-item i {
+        .category-label i {
             margin-right: 10px;
-            font-size: 1.2rem;
-            width: 24px;
-            text-align: center;
-        }
-        
-        .product-count {
-            background-color: var(--accent);
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-left: auto;
-        }
-        
-        .products-container {
-            flex: 1;
+            font-size: 1.3rem;
         }
         
         .category-title {
@@ -718,6 +669,9 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 30px;
         }
         
         .category-title i {
@@ -732,6 +686,7 @@
             border: 2px dashed var(--border);
             color: #64748b;
             margin-top: 30px;
+            grid-column: 1 / -1;
         }
         
         .no-products-message i {
@@ -851,37 +806,43 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
+        /* WeChat browser alert */
+        .wechat-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffcd32;
+            color: #333;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .wechat-alert i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .close-alert {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        
         @keyframes pulse {
             0% { opacity: 0.6; transform: scale(0.95); }
             50% { opacity: 1; transform: scale(1); }
             100% { opacity: 0.6; transform: scale(0.95); }
-        }
-        
-        @media (max-width: 992px) {
-            .main-content-wrapper {
-                flex-direction: column;
-                padding: 0;
-            }
-            
-            .category-sidebar {
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 30px;
-                position: relative;
-                top: 0;
-                padding: 20px;
-                max-height: none;
-            }
-            
-            .category-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            .category-item {
-                margin-bottom: 0;
-            }
         }
         
         @media (max-width: 768px) {
@@ -1015,16 +976,14 @@
                 width: 100%;
                 justify-content: center;
             }
-        }
-        
-        @media (max-width: 576px) {
-            .category-list {
+            
+            .category-selector-container {
                 flex-direction: column;
-                gap: 5px;
+                text-align: center;
             }
             
-            .category-item {
-                width: 100%;
+            .category-select {
+                min-width: 100%;
             }
         }
         
@@ -1051,13 +1010,17 @@
             .product-text, .language-text {
                 font-size: 0.85rem;
             }
-            .product-specs {
-                font-size: 0.8rem;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- WeChat browser alert -->
+    <div class="wechat-alert" id="wechat-alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="wechat-message">请在浏览器中打开此页面以获得最佳体验</span>
+        <button class="close-alert" id="close-alert">&times;</button>
+    </div>
+    
     <div class="container">
         <div class="header">
             <div class="logo-container">
@@ -1089,35 +1052,23 @@
             <div id="product-selector">
                 <h2 class="selector-title">Select Product Model / 选择产品型号</h2>
                 
-                <div class="main-content-wrapper">
-                    <!-- Category sidebar -->
-                    <div class="category-sidebar">
-                        <div class="category-header">
-                            <i class="fas fa-layer-group"></i>
-                            <h2>Product Categories</h2>
-                        </div>
-                        <ul class="category-list" id="category-list">
-                            <!-- Categories will be dynamically generated here -->
-                        </ul>
+                <!-- Category dropdown -->
+                <div class="category-selector-container">
+                    <div class="category-label">
+                        <i class="fas fa-filter"></i> Filter by Category:
                     </div>
-                    
-                    <!-- Products container -->
-                    <div class="products-container">
-                        <h2 class="category-title" id="current-category-title">
-                            <i class="fas fa-microchip"></i>
-                            <span id="current-category">All Products</span>
-                        </h2>
-                        
-                        <div class="selector-container" id="product-container">
-                            <!-- Product cards will be dynamically generated here -->
-                        </div>
-                    </div>
+                    <select id="category-select" class="category-select">
+                        <!-- Categories will be dynamically generated here -->
+                    </select>
                 </div>
                 
-                <div class="navigation-buttons">
-                    <button id="product-next-btn" class="nav-btn" disabled>
-                        <i class="fas fa-arrow-right"></i> Next: Select Language
-                    </button>
+                <h2 class="category-title" id="current-category-title">
+                    <i class="fas fa-microchip"></i>
+                    <span id="current-category">All Products</span>
+                </h2>
+                
+                <div class="selector-container" id="product-container">
+                    <!-- Product cards will be dynamically generated here -->
                 </div>
             </div>
             
@@ -1139,11 +1090,6 @@
             <div id="language-selector">
                 <h2 class="selector-title">Select Manual Language / 选择说明书语言</h2>
                 
-                <div class="language-unavailable-message" id="unavailable-message" style="display: none;">
-                    <i class="fas fa-info-circle"></i> Some languages are currently unavailable for this product. 
-                    We're working to add more language support in the future.
-                </div>
-                
                 <div class="selector-container" id="language-container">
                     <!-- Language cards will be dynamically generated here -->
                 </div>
@@ -1151,9 +1097,6 @@
                 <div class="navigation-buttons">
                     <button id="language-back-btn" class="nav-btn nav-btn-secondary">
                         <i class="fas fa-arrow-left"></i> Back to Products
-                    </button>
-                    <button id="language-download-btn" class="nav-btn" disabled>
-                        <i class="fas fa-download"></i> Download Manual
                     </button>
                 </div>
             </div>
@@ -1187,7 +1130,7 @@
             <div class="contact-info">
                 <div class="contact-item">
                     <i class="fas fa-globe"></i>
-                    <span>www.autoro.cn</span>
+                    <span>www.autorotech.com</span>
                 </div>
                 <div class="contact-item">
                     <i class="fas fa-envelope"></i>
@@ -1212,7 +1155,7 @@
             "svg": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 280'><rect width='500' height='280' rx='20' fill='%231e3a8a'/><rect x='30' y='30' width='440' height='220' rx='10' fill='%233b82f6'/><text x='250' y='150' font-family='Arial' font-size='25' fill='white' text-anchor='middle' font-weight='bold'>High Performance Motor Controller</text><text x='250' y='200' font-family='Arial' font-size='24' fill='white' text-anchor='middle'>AESC</text></svg>"
         },
         "contact": {
-            "website": "www.autoro.cn",
+            "website": "www.autorotech.com",
             "email": "Autoro.service@hotmail.com",
             "phone": "+1 (800) 123-4567"
         },
@@ -1307,7 +1250,7 @@
                 "tag": "Pro",
                 "tagClass": "tag-pro",
                 "icon": "fas fa-rocket",
-                "languages": []
+                "languages": ["en", "zh"]
             },
             {
                 "id": "V75100",
@@ -1419,22 +1362,22 @@ const languageSelectorSection = document.getElementById('language-selector');
 const productSelectionBar = document.querySelector('.product-selection-bar');
 const selectedProductText = document.getElementById('selected-product-text');
 const changeProductBtn = document.getElementById('change-product-btn');
-const productNextBtn = document.getElementById('product-next-btn');
 const languageBackBtn = document.getElementById('language-back-btn');
-const languageDownloadBtn = document.getElementById('language-download-btn');
 const redirectButton = document.getElementById('redirect-button');
 const languageContainer = document.getElementById('language-container');
 const productContainer = document.getElementById('product-container');
-const unavailableMessage = document.getElementById('unavailable-message');
 const countdownEl = document.getElementById('countdown');
 const loaderContainer = document.querySelector('.loader-container');
 const redirectText = document.querySelector('.redirect-text');
-const categoryList = document.getElementById('category-list');
 const currentCategoryEl = document.getElementById('current-category');
 const currentCategoryTitle = document.getElementById('current-category-title');
 const fileStatusSection = document.getElementById('file-status');
 const statusProductName = document.getElementById('status-product-name');
 const statusProductLanguage = document.getElementById('status-product-language');
+const categorySelect = document.getElementById('category-select');
+const wechatAlert = document.getElementById('wechat-alert');
+const wechatMessage = document.getElementById('wechat-message');
+const closeAlert = document.getElementById('close-alert');
 
 // Initialize mappings
 function initMappings() {
@@ -1491,57 +1434,42 @@ function createProductCards() {
     });
 }
 
-// Create category sidebar
-function createCategorySidebar() {
-    categoryList.innerHTML = '';
+// Create category dropdown
+function createCategoryDropdown() {
+    categorySelect.innerHTML = '';
     
     config.categories.forEach(category => {
-        const count = category.id === "all" 
-            ? config.products.length 
-            : config.products.filter(p => p.category === category.id).length;
-        
-        const categoryItem = document.createElement('li');
-        categoryItem.className = `category-item ${selectedCategory === category.id ? 'active' : ''}`;
-        categoryItem.dataset.category = category.id;
-        
-        categoryItem.innerHTML = `
-            <i class="${category.icon}"></i>
-            <span>${category.name}</span>
-            <span class="product-count">${count}</span>
-        `;
-        
-        categoryItem.addEventListener('click', () => {
-            selectCategory(category.id);
-        });
-        
-        categoryList.appendChild(categoryItem);
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        if (selectedCategory === category.id) {
+            option.selected = true;
+        }
+        categorySelect.appendChild(option);
+    });
+    
+    // Add event listener for category change
+    categorySelect.addEventListener('change', function() {
+        selectedCategory = this.value;
+        updateCategoryTitle();
+        createProductCards();
     });
 }
 
-// Select a category
-function selectCategory(categoryId) {
-    selectedCategory = categoryId;
-    
-    // Update UI
-    document.querySelectorAll('.category-item').forEach(item => {
-        item.classList.toggle('active', item.dataset.category === categoryId);
-    });
-    
-    // Update category title
-    const category = config.categories.find(c => c.id === categoryId);
+// Update category title
+function updateCategoryTitle() {
+    const category = config.categories.find(c => c.id === selectedCategory);
     if (category) {
         currentCategoryEl.textContent = category.name;
         currentCategoryTitle.querySelector('i').className = category.icon;
     }
-    
-    // Update products
-    createProductCards();
 }
 
 // Initialize the app
 function init() {
     initMappings();
-    createCategorySidebar();
+    createCategoryDropdown();
+    updateCategoryTitle();
     createProductCards();
     
     // Set contact info from config
@@ -1571,9 +1499,6 @@ function init() {
     languageSelectorSection.style.display = 'none';
     productSelectionBar.style.display = 'none';
     fileStatusSection.style.display = 'none';
-    productNextBtn.style.display = 'none';
-    languageDownloadBtn.style.display = 'none';
-
     
     // Start countdown
     startCountdown();
@@ -1591,6 +1516,9 @@ function init() {
         clearInterval(countdownInterval);
         handleProductSelection(productParam);
     }
+    
+    // Check if in WeChat browser
+    detectWechatBrowser();
 }
 
 // Start countdown function
@@ -1690,10 +1618,9 @@ function showFileStatusResult(status, productId, langId, errorType = null) {
                 <span class="status-product-name">${product ? product.name : productId}</span> manual in 
                 <span class="status-product-language">${lang ? lang.name : langId}</span>
             </div>
-                <button class="status-btn secondary" id="back-to-products-btn">
-                    <i class="fas fa-arrow-left"></i> Back to Products
-                </button>
-            </div>
+            <button class="status-btn secondary" id="back-to-products-btn">
+                <i class="fas fa-arrow-left"></i> Back to Products
+            </button>
         `;
     }
     else if (status === 'not-found') {
@@ -1765,13 +1692,6 @@ function updateLanguageOptions() {
     if (!selectedProduct || !languageContainer) return;
     
     const availableLanguages = productLanguages[selectedProduct] || [];
-    const allLanguages = config.languages.map(lang => lang.id);
-    const showUnavailableMessage = allLanguages.some(lang => !availableLanguages.includes(lang));
-    
-    if (unavailableMessage) {
-        unavailableMessage.style.display = showUnavailableMessage ? 'block' : 'none';
-    }
-    
     languageContainer.innerHTML = '';
     
     // Check if product has any available languages
@@ -1879,11 +1799,25 @@ async function downloadManualWithStatus(productId, langId) {
     }
 }
 
+// Get category name by ID
+function getCategoryNameById(productId) {
+
+    // 获取产品对象
+    const product = config.products.find(p => p.id === productId);
+    if (!product) {
+        reject(new Error('Product not found'));
+        return;
+    }
+    const category = config.categories.find(c => c.id === product.category);
+    return category ? category.name : 'Unknown Category';
+}
+
 // Check if PDF file exists
 async function checkFileExists(productId, langId) {
     const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
+    const pdfDir = getCategoryNameById(productId) + '/' + productId + '/';
     const pdfFileName = `${productId}_${langId}.pdf`;
-    const pdfUrl = pdfBaseUrl + pdfFileName;
+    const pdfUrl = pdfBaseUrl + pdfDir + pdfFileName;
     
     try {
         // Send HEAD request to check if file exists
@@ -1906,8 +1840,9 @@ async function checkFileExists(productId, langId) {
 // View the manual in a new tab
 function viewManual(productId, langId) {
     const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
+    const pdfDir = getCategoryNameById(productId) + '/' + productId + '/';
     const pdfFileName = `${productId}_${langId}.pdf`;
-    const pdfUrl = pdfBaseUrl + pdfFileName;
+    const pdfUrl = pdfBaseUrl + pdfDir + pdfFileName;
     
     window.open(pdfUrl, '_blank');
 }
@@ -1920,9 +1855,10 @@ function downloadManual(productId, langId) {
             return;
         }
         
-        const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
-        const pdfFileName = `${productId}_${langId}.pdf`;
-        const pdfUrl = pdfBaseUrl + pdfFileName;
+    const pdfBaseUrl = "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/USER_MANUAL/";
+    const pdfDir = getCategoryNameById(productId) + '/' + productId + '/';
+    const pdfFileName = `${productId}_${langId}.pdf`;
+    const pdfUrl = pdfBaseUrl + pdfDir + pdfFileName;
         
         const downloadLink = document.createElement('a');
         downloadLink.href = pdfUrl;
@@ -1949,6 +1885,26 @@ function downloadManual(productId, langId) {
     });
 }
 
+// Detect if user is in WeChat browser
+function detectWechatBrowser() {
+    const ua = navigator.userAgent.toLowerCase();
+    const isWeChat = /micromessenger/i.test(ua);
+    
+    if (isWeChat) {
+        // Get browser language
+        const lang = navigator.language || navigator.userLanguage;
+        const isChinese = lang.includes('zh');
+        
+        // Set appropriate message
+        wechatMessage.textContent = isChinese 
+            ? "请在浏览器中打开此页面以获得最佳体验" 
+            : "Please open this page in a browser for the best experience";
+        
+        // Show the alert
+        wechatAlert.style.display = 'block';
+    }
+}
+
 // Initialize product and language mappings
 const productNames = {};
 const languageNames = {};
@@ -1965,13 +1921,6 @@ document.addEventListener('DOMContentLoaded', function() {
             handleProductSelection(productId);
         });
     });
-    
-    // Navigation buttons
-    if (productNextBtn) {
-        productNextBtn.addEventListener('click', function() {
-            showLanguageSelector();
-        });
-    }
     
     if (languageBackBtn) {
         languageBackBtn.addEventListener('click', function() {
@@ -2009,6 +1958,13 @@ document.addEventListener('DOMContentLoaded', function() {
             showProductSelector();
         }
     });
+    
+    // Close WeChat alert
+    if (closeAlert) {
+        closeAlert.addEventListener('click', function() {
+            wechatAlert.style.display = 'none';
+        });
+    }
     
     // Fallback mechanism
     setTimeout(() => {
