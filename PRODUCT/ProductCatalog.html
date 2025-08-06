@@ -17,7 +17,8 @@
                     colors: {
                         primary: '#165DFF',
                         secondary: '#36BFFA',
-                        neutral: '#F5F7FA'
+                        neutral: '#F5F7FA',
+                        dark: '#1D2129'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -41,18 +42,53 @@
             .lang-hidden {
                 @apply hidden;
             }
+            .animate-pop {
+                animation: pop 0.4s ease-out;
+            }
+            @keyframes pop {
+                0% { transform: scale(0.95); opacity: 0; }
+                70% { transform: scale(1.05); }
+                100% { transform: scale(1); opacity: 1; }
+            }
         }
     </style>
 </head>
-<body class="bg-neutral min-h-screen flex flex-col">
+<body class="bg-neutral min-h-screen flex flex-col relative">
+    <!-- 微信/支付宝提示层 -->
+    <div id="browser-tip" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl max-w-md w-full animate-pop">
+            <div class="p-6">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                        <i class="fa fa-exclamation-triangle text-red-500 text-2xl"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-3">
+                    <span class="lang-zh">请在浏览器中打开</span>
+                    <span class="lang-en lang-hidden">Please Open in Browser</span>
+                </h3>
+                <p class="text-gray-600 text-center mb-5">
+                    <span class="lang-zh">当前在微信/支付宝中浏览，为了更好的体验，请点击右上角选择在浏览器中打开。</span>
+                    <span class="lang-en lang-hidden">You are currently browsing in WeChat/Alipay. For a better experience, please open in your browser.</span>
+                </p>
+                <div class="flex justify-center">
+                    <button id="close-tip" class="px-5 py-2 bg-primary text-white rounded-lg">
+                        <span class="lang-zh">我知道了</span>
+                        <span class="lang-en lang-hidden">OK</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 页面头部 -->
     <header class="bg-white shadow-sm py-4">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center">
-                <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-gray-800">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-gray-800 flex items-center">
                     <i class="fa fa-file-pdf-o text-primary mr-2"></i>
                     <span class="lang-zh">产品目录</span>
-                    <span class="lang-en lang-hidden">Product Catalog</span>
+                    <span class="lang-en lang-hidden">Product<br class="sm:hidden"> Catalog</span>
                 </h1>
                 
                 <!-- 语言切换按钮 -->
@@ -74,7 +110,7 @@
                     </div>
                     <h2 class="text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-gray-800 mb-2">
                         <span class="lang-zh">产品目录 PDF</span>
-                        <span class="lang-en lang-hidden">Product Catalog PDF</span>
+                        <span class="lang-en lang-hidden">Product<br class="sm:hidden"> Catalog PDF</span>
                     </h2>
                     <p class="text-gray-600 max-w-md mx-auto">
                         <span class="lang-zh">下载我们的产品目录，了解完整的产品信息、规格参数和详细介绍。</span>
@@ -121,6 +157,8 @@
         const enElements = document.querySelectorAll('.lang-en');
         const btnZh = document.getElementById('btn-zh');
         const btnEn = document.getElementById('btn-en');
+        const browserTip = document.getElementById('browser-tip');
+        const closeTip = document.getElementById('close-tip');
         
         // 切换到中文
         function switchToChinese() {
@@ -153,12 +191,38 @@
             }
         }
         
-        // 初始化页面时检测语言
-        document.addEventListener('DOMContentLoaded', detectBrowserLanguage);
+        // 检测是否在微信或支付宝中打开
+        function checkInAppBrowser() {
+            const ua = window.navigator.userAgent.toLowerCase();
+            const isWeixin = ua.indexOf('micromessenger') !== -1;
+            const isAlipay = ua.indexOf('alipay') !== -1;
+            
+            if (isWeixin || isAlipay) {
+                browserTip.classList.remove('hidden');
+                // 根据系统语言设置提示语言
+                const lang = navigator.language || navigator.userLanguage;
+                if (lang.includes('zh')) {
+                    switchToChinese();
+                } else {
+                    switchToEnglish();
+                }
+            }
+        }
+        
+        // 初始化页面时检测语言和浏览器环境
+        document.addEventListener('DOMContentLoaded', function() {
+            detectBrowserLanguage();
+            checkInAppBrowser();
+        });
         
         // 绑定语言切换按钮事件
         btnZh.addEventListener('click', switchToChinese);
         btnEn.addEventListener('click', switchToEnglish);
+        
+        // 关闭提示层
+        closeTip.addEventListener('click', function() {
+            browserTip.classList.add('hidden');
+        });
         
         // 下载按钮交互反馈
         document.querySelector('a[download]').addEventListener('click', function() {
