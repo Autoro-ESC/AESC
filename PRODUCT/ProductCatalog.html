@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外贸电子产品目录</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e6f7ff, #c2e9fb);
+            color: #2c3e50;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            color: #1a5a96;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #3a6ea5;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 105, 148, 0.1);
+            border: 1px solid rgba(173, 216, 230, 0.4);
+        }
+        
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            transition: all 0.3s ease;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(26, 90, 150, 0.2);
+            border-radius: 50%;
+            border-top-color: #1a5a96;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .progress-container {
+            width: 100%;
+            max-width: 300px;
+            background: rgba(173, 216, 230, 0.3);
+            border-radius: 10px;
+            height: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4da6ff, #1a75bb);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+        
+        .pdf-container {
+            display: none;
+            flex-direction: column;
+            min-height: 500px;
+        }
+        
+        #pdf-viewer {
+            width: 100%;
+            height: 65vh;
+            border-radius: 8px;
+            overflow: auto;
+            background: #f8fbff;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            border: 1px solid #c2e0f9;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 10px 0;
+        }
+        
+        .btn {
+            background: rgba(77, 166, 255, 0.15);
+            color: #1a5a96;
+            border: 1px solid rgba(77, 166, 255, 0.3);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: rgba(77, 166, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .page-info {
+            font-size: 16px;
+            font-weight: 500;
+            min-width: 100px;
+            text-align: center;
+            color: #1a5a96;
+        }
+        
+        .zoom-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 0 10px;
+            color: #3a6ea5;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+            
+            .page-info {
+                order: -1;
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .zoom-controls {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            color: #1a5a96;
+            cursor: pointer;
+            border: 1px solid rgba(77, 166, 255, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .lang-switch:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lang-switch" id="langSwitch">English</div>
+        
+        <header>
+            <h1 id="title">产品目录</h1>
+            <p class="subtitle" id="subtitle">在线预览最新电子产品，支持多设备访问</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <div class="loading-container" id="loading">
+                    <div class="spinner"></div>
+                    <h3 id="loadingText">正在加载产品目录...</h3>
+                    <p id="loadingSubtext">请稍候，正在从云端加载PDF文档</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress"></div>
+                    </div>
+                </div>
+                
+                <div class="pdf-container" id="pdf-container">
+                    <div id="pdf-viewer"></div>
+                    
+                    <div class="controls">
+                        <button class="btn" id="prev-page">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"></path>
+                            </svg>
+                            <span id="prevText">上一页</span>
+                        </button>
+                        
+                        <div class="page-info">
+                            <span id="page-num">1</span> / <span id="page-count">1</span>
+                        </div>
+                        
+                        <button class="btn" id="next-page">
+                            <span id="nextText">下一页</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"></path>
+                            </svg>
+                        </button>
+                        
+                        <div class="zoom-controls">
+                            <button class="btn" id="zoom-out" title="缩小">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </button>
+                            <button class="btn" id="zoom-in" title="放大">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p id="footerText">© 2025 Autoro. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 语言设置
+        let currentLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
+        
+        // 语言文本
+        const translations = {
+            zh: {
+                title: "产品目录",
+                subtitle: "在线预览最新电子产品，支持多设备访问",
+                loadingText: "正在加载产品目录...",
+                loadingSubtext: "请稍候，正在从云端加载PDF文档",
+                prevText: "上一页",
+                nextText: "下一页",
+                footerText: "© 2025 Autoro. All rights reserved.",
+                switchLang: "English"
+            },
+            en: {
+                title: "Product Catalog",
+                subtitle: "Online preview of the latest electronic products, multi-device support",
+                loadingText: "Loading product catalog...",
+                loadingSubtext: "Please wait, loading PDF document from cloud",
+                prevText: "Previous",
+                nextText: "Next",
+                footerText: "© 2025 Autoro. All rights reserved.",
+                switchLang: "中文"
+            }
+        };
+        
+        // 应用语言
+        function applyLanguage() {
+            const lang = translations[currentLang];
+            document.getElementById('title').textContent = lang.title;
+            document.getElementById('subtitle').textContent = lang.subtitle;
+            document.getElementById('loadingText').textContent = lang.loadingText;
+            document.getElementById('loadingSubtext').textContent = lang.loadingSubtext;
+            document.getElementById('prevText').textContent = lang.prevText;
+            document.getElementById('nextText').textContent = lang.nextText;
+            document.getElementById('footerText').textContent = lang.footerText;
+            document.getElementById('langSwitch').textContent = lang.switchLang;
+        }
+        
+        // 切换语言
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            applyLanguage();
+        }
+        
+        // 初始化语言
+        applyLanguage();
+        
+        // PDF文档URL
+        const pdfUrl = 'https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC/PRODUCT/ProductCatalog.pdf';
+        
+        // 初始化变量
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        let scale = 1.5;
+        
+        // 获取DOM元素
+        const loadingContainer = document.getElementById('loading');
+        const pdfContainer = document.getElementById('pdf-container');
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const progressBar = document.getElementById('progress');
+        const pageNumElement = document.getElementById('page-num');
+        const pageCountElement = document.getElementById('page-count');
+        const prevPageBtn = document.getElementById('prev-page');
+        const nextPageBtn = document.getElementById('next-page');
+        const zoomInBtn = document.getElementById('zoom-in');
+        const zoomOutBtn = document.getElementById('zoom-out');
+        const langSwitchBtn = document.getElementById('langSwitch');
+        
+        // 模拟加载进度
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(progressInterval);
+            }
+            progressBar.style.width = `${progress}%`;
+        }, 300);
+        
+        // 加载PDF文档
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+            pdfDoc = pdf;
+            
+            // 更新页面总数
+            pageCountElement.textContent = pdfDoc.numPages;
+            
+            // 隐藏加载状态，显示PDF容器
+            loadingContainer.style.display = 'none';
+            pdfContainer.style.display = 'flex';
+            
+            // 渲染第一页
+            renderPage(pageNum);
+        }).catch(err => {
+            // 处理加载错误
+            console.error('PDF加载错误:', err);
+            loadingContainer.innerHTML = `
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="#e74c3c" style="margin-bottom: 20px;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <h3>${currentLang === 'zh' ? '加载失败' : 'Load Failed'}</h3>
+                <p>${currentLang === 'zh' ? '无法加载PDF文档，请检查网络连接' : 'Failed to load PDF, check your network'}</p>
+            `;
+        });
+        
+        // 渲染指定页面
+        function renderPage(num) {
+            pageRendering = true;
+            
+            // 使用promise获取页面
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale: scale });
+                
+                // 准备Canvas用于渲染
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                // 清空PDF查看器并添加Canvas
+                pdfViewer.innerHTML = '';
+                pdfViewer.appendChild(canvas);
+                
+                // 渲染PDF页面到Canvas
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                
+                const renderTask = page.render(renderContext);
+                
+                // 等待渲染完成
+                renderTask.promise.then(() => {
+                    pageRendering = false;
+                    
+                    // 更新页面信息
+                    pageNumElement.textContent = num;
+                    
+                    // 如果还有待处理的页面渲染，立即渲染
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+        }
+        
+        // 队列渲染页面
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+        
+        // 上一页
+        function onPrevPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+        
+        // 下一页
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+        
+        // 放大
+        function zoomIn() {
+            if (scale >= 3) return;
+            scale += 0.1;
+            renderPage(pageNum);
+        }
+        
+        // 缩小
+        function zoomOut() {
+            if (scale <= 0.5) return;
+            scale -= 0.1;
+            renderPage(pageNum);
+        }
+        
+        // 事件监听
+        prevPageBtn.addEventListener('click', onPrevPage);
+        nextPageBtn.addEventListener('click', onNextPage);
+        zoomInBtn.addEventListener('click', zoomIn);
+        zoomOutBtn.addEventListener('click', zoomOut);
+        langSwitchBtn.addEventListener('click', toggleLanguage);
+    </script>
+</body>
+</html>
