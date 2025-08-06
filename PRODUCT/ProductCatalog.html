@@ -118,6 +118,9 @@
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
             border: 1px solid #c2e0f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .controls {
@@ -166,6 +169,18 @@
             gap: 8px;
         }
         
+        .zoom-level {
+            background: rgba(77, 166, 255, 0.15);
+            border: 1px solid rgba(77, 166, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            min-width: 70px;
+            text-align: center;
+            color: #1a5a96;
+        }
+        
         footer {
             text-align: center;
             padding: 25px 0 10px;
@@ -202,6 +217,10 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            #pdf-viewer {
+                height: 55vh;
+            }
         }
         
         .lang-switch {
@@ -221,6 +240,31 @@
         .lang-switch:hover {
             background: rgba(255, 255, 255, 0.9);
         }
+        
+        /* 移动设备优化 */
+        .mobile-optimized .canvas-wrapper {
+            overflow: auto;
+            max-width: 100%;
+            max-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto !important;
+        }
+        
+        .fit-width-btn {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .fit-width-btn {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -229,7 +273,7 @@
         
         <header>
             <h1 id="title">产品目录</h1>
-            <p class="subtitle" id="subtitle">在线预览最新电子产品，支持多设备访问</p>
+            <p class="subtitle" id="subtitle">高清预览 | 手机自适应 | 外贸电子产品</p>
         </header>
         
         <div class="main-content">
@@ -237,14 +281,14 @@
                 <div class="loading-container" id="loading">
                     <div class="spinner"></div>
                     <h3 id="loadingText">正在加载产品目录...</h3>
-                    <p id="loadingSubtext">请稍候，正在从云端加载PDF文档</p>
+                    <p id="loadingSubtext">优化移动设备显示效果</p>
                     <div class="progress-container">
                         <div class="progress-bar" id="progress"></div>
                     </div>
                 </div>
                 
                 <div class="pdf-container" id="pdf-container">
-                    <div id="pdf-viewer"></div>
+                    <div id="pdf-viewer" class="mobile-optimized"></div>
                     
                     <div class="controls">
                         <button class="btn" id="prev-page">
@@ -265,11 +309,20 @@
                             </svg>
                         </button>
                         
+                        <div class="zoom-level" id="zoom-level">100%</div>
+                        
                         <div class="zoom-controls">
                             <button class="btn" id="zoom-out" title="缩小">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                            </button>
+                            <button class="btn" id="fit-width" title="适应宽度">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                                    <line x1="9" y1="21" x2="9" y2="9"></line>
                                 </svg>
                             </button>
                             <button class="btn" id="zoom-in" title="放大">
@@ -298,9 +351,9 @@
         const translations = {
             zh: {
                 title: "产品目录",
-                subtitle: "在线预览最新电子产品，支持多设备访问",
+                subtitle: "高清预览 | 手机自适应 | 外贸电子产品",
                 loadingText: "正在加载产品目录...",
-                loadingSubtext: "请稍候，正在从云端加载PDF文档",
+                loadingSubtext: "优化移动设备显示效果",
                 prevText: "上一页",
                 nextText: "下一页",
                 footerText: "© 2025 Autoro. All rights reserved.",
@@ -308,9 +361,9 @@
             },
             en: {
                 title: "Product Catalog",
-                subtitle: "Online preview of the latest electronic products, multi-device support",
+                subtitle: "HD Preview | Mobile Optimized | Electronic Products",
                 loadingText: "Loading product catalog...",
-                loadingSubtext: "Please wait, loading PDF document from cloud",
+                loadingSubtext: "Optimizing for mobile devices",
                 prevText: "Previous",
                 nextText: "Next",
                 footerText: "© 2025 Autoro. All rights reserved.",
@@ -349,6 +402,7 @@
         let pageRendering = false;
         let pageNumPending = null;
         let scale = 1.5;
+        let baseScale = 1.0; // 用于适应宽度的基础比例
         
         // 获取DOM元素
         const loadingContainer = document.getElementById('loading');
@@ -361,6 +415,8 @@
         const nextPageBtn = document.getElementById('next-page');
         const zoomInBtn = document.getElementById('zoom-in');
         const zoomOutBtn = document.getElementById('zoom-out');
+        const fitWidthBtn = document.getElementById('fit-width');
+        const zoomLevelElement = document.getElementById('zoom-level');
         const langSwitchBtn = document.getElementById('langSwitch');
         
         // 模拟加载进度
@@ -399,28 +455,52 @@
             `;
         });
         
-        // 渲染指定页面
+        // 渲染指定页面 - 移动设备优化版本
         function renderPage(num) {
             pageRendering = true;
             
             // 使用promise获取页面
             pdfDoc.getPage(num).then(page => {
-                const viewport = page.getViewport({ scale: scale });
+                // 计算合适的缩放比例 - 移动设备优化
+                const containerWidth = pdfViewer.clientWidth - 20; // 减去内边距
+                const containerHeight = pdfViewer.clientHeight - 20;
+                
+                // 获取页面原始尺寸
+                const viewport = page.getViewport({ scale: 1 });
+                const pageWidth = viewport.width;
+                const pageHeight = viewport.height;
+                
+                // 计算适应宽度的缩放比例
+                baseScale = Math.min(containerWidth / pageWidth, containerHeight / pageHeight);
+                
+                // 应用当前缩放比例
+                const currentScale = baseScale * scale;
+                
+                // 创建视口
+                const scaledViewport = page.getViewport({ scale: currentScale * window.devicePixelRatio });
                 
                 // 准备Canvas用于渲染
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
+                canvas.height = scaledViewport.height;
+                canvas.width = scaledViewport.width;
+                
+                // 设置Canvas样式
+                canvas.style.width = `${scaledViewport.width / window.devicePixelRatio}px`;
+                canvas.style.height = `${scaledViewport.height / window.devicePixelRatio}px`;
+                canvas.style.maxWidth = '100%';
                 
                 // 清空PDF查看器并添加Canvas
                 pdfViewer.innerHTML = '';
-                pdfViewer.appendChild(canvas);
+                const wrapper = document.createElement('div');
+                wrapper.className = 'canvas-wrapper';
+                wrapper.appendChild(canvas);
+                pdfViewer.appendChild(wrapper);
                 
                 // 渲染PDF页面到Canvas
                 const renderContext = {
                     canvasContext: ctx,
-                    viewport: viewport
+                    viewport: scaledViewport
                 };
                 
                 const renderTask = page.render(renderContext);
@@ -431,6 +511,9 @@
                     
                     // 更新页面信息
                     pageNumElement.textContent = num;
+                    
+                    // 更新缩放级别显示
+                    zoomLevelElement.textContent = `${Math.round(currentScale * 100)}%`;
                     
                     // 如果还有待处理的页面渲染，立即渲染
                     if (pageNumPending !== null) {
@@ -478,12 +561,31 @@
             renderPage(pageNum);
         }
         
+        // 适应宽度
+        function fitToWidth() {
+            scale = 1.0; // 重置为基本比例
+            renderPage(pageNum);
+        }
+        
+        // 窗口大小改变时重新渲染
+        let resizeTimer;
+        function handleResize() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (pdfDoc) {
+                    renderPage(pageNum);
+                }
+            }, 250);
+        }
+        
         // 事件监听
         prevPageBtn.addEventListener('click', onPrevPage);
         nextPageBtn.addEventListener('click', onNextPage);
         zoomInBtn.addEventListener('click', zoomIn);
         zoomOutBtn.addEventListener('click', zoomOut);
+        fitWidthBtn.addEventListener('click', fitToWidth);
         langSwitchBtn.addEventListener('click', toggleLanguage);
+        window.addEventListener('resize', handleResize);
     </script>
 </body>
 </html>
