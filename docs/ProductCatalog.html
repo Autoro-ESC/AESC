@@ -86,9 +86,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             display: none;
         }
-        .wechat-alert i {
-            margin-right: 10px;
-        }
         .close-alert {
             position: absolute;
             right: 15px;
@@ -170,6 +167,70 @@
             display: flex;
             justify-content: flex-end;
         }
+        /* 新增浏览器提示模态框样式 */
+        .browser-alert-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .browser-alert-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .browser-alert-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .browser-alert-modal.show .browser-alert-content {
+            transform: translateY(0);
+        }
+        .browser-alert-icon {
+            color: #ffcd32;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .browser-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .browser-alert-message {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .browser-alert-button {
+            background: #165DFF;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .browser-alert-button:hover {
+            background: #0e4dd9;
+            transform: translateY(-2px);
+        }
         @media (max-width: 768px) {
             .back-home span {
                 display: none;
@@ -186,6 +247,21 @@
         <i class="fas fa-exclamation-triangle"></i>
         <span id="wechat-message">请在浏览器中打开此页面以获得最佳体验</span>
         <button class="close-alert" id="close-alert">&times;</button>
+    </div>
+
+    <!-- 新增浏览器提示模态框 -->
+    <div class="browser-alert-modal" id="browser-alert-modal">
+        <div class="browser-alert-content">
+            <div class="browser-alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="browser-alert-title" id="browser-alert-title"></h3>
+            <p class="browser-alert-message" id="browser-alert-message"></p>
+            <button class="browser-alert-button" id="browser-alert-confirm">
+                <span class="lang-zh">取消</span>
+                <span class="lang-en lang-hidden">Cancel</span>
+            </button>
+        </div>
     </div>
 
     <!-- 页面头部 - 添加Home按钮 -->
@@ -293,10 +369,10 @@
         </div>
     </footer>
 
-        <script>
+    <script>
         // 下载源配置 - 国内CDN为主，国际CDN为备
         const downloadSources = {
-            domestic: "https://baogee.net//docs/ProductCatalog/ProductCatalog_V1.0.pdf",
+            domestic: "https://baogee.net/docs/ProductCatalog/ProductCatalog_V1.0.pdf",
             international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/ProductCatalog/ProductCatalog_V1.0.pdf"
         };
         
@@ -308,6 +384,12 @@
         const downloadLink = document.getElementById('downloadLink');
         const wechatMessage = document.getElementById('wechat-message');
         const copyright = document.getElementById('copyright');
+        
+        // 浏览器提示模态框元素
+        const browserAlertModal = document.getElementById('browser-alert-modal');
+        const browserAlertTitle = document.getElementById('browser-alert-title');
+        const browserAlertMessage = document.getElementById('browser-alert-message');
+        const browserAlertConfirm = document.getElementById('browser-alert-confirm');
         
         // 检测国内环境（微信、QQ、支付宝等）
         function isDomesticEnvironment() {
@@ -378,11 +460,32 @@
             }
         }
         
+        // 显示浏览器提示模态框
+        function showBrowserAlert() {
+            if (currentLanguage === 'zh') {
+                browserAlertTitle.textContent = '浏览器提示';
+                browserAlertMessage.textContent = '请在系统浏览器中打开此页面以下载文件';
+            } else {
+                browserAlertTitle.textContent = 'Browser Notice';
+                browserAlertMessage.textContent = 'Please open this page in your system browser to download the file';
+            }
+            
+            browserAlertModal.classList.add('show');
+        }
+        
+        // 关闭浏览器提示模态框
+        function closeBrowserAlert() {
+            browserAlertModal.classList.remove('show');
+        }
+        
         // 初始化页面
         document.addEventListener('DOMContentLoaded', () => {
             detectBrowserLanguage();
             detectWechatBrowser();
             setDownloadLink(); // 初始设置下载链接
+            
+            // 绑定浏览器提示确认按钮事件
+            browserAlertConfirm.addEventListener('click', closeBrowserAlert);
         });
         
         // 绑定语言切换按钮事件
@@ -395,7 +498,14 @@
         });
         
         // 下载按钮交互反馈
-        downloadLink.addEventListener('click', function() {
+        downloadLink.addEventListener('click', function(e) {
+            // 如果是在微信等国内环境，则显示提示框并阻止下载
+            if (isDomesticEnvironment()) {
+                e.preventDefault();
+                showBrowserAlert();
+                return;
+            }
+            
             const originalContent = this.innerHTML;
             const loadingZh = '<i class="fas fa-spinner fa-spin mr-2"></i> 正在下载...';
             const loadingEn = '<i class="fas fa-spinner fa-spin mr-2"></i> Downloading...';
@@ -418,5 +528,4 @@
         });
     </script>
 </body>
-
 </html>
