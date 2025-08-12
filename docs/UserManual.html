@@ -1056,70 +1056,94 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
+            /* 修改头部布局 */
+            .header-top {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            
+            .header-left {
+                width: auto;
+                justify-content: flex-start;
+                margin-bottom: 0;
+            }
+            
+            .header-center {
+                width: auto;
+                flex: none;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .header-right {
+                width: auto;
+                justify-content: flex-end;
+            }
+            
+            .logo-container {
+                margin-bottom: 0;
+            }
+            
+            .back-home {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+            
+            .back-home span {
+                display: none;
+            }
+            
+            .back-home i {
+                margin-right: 0;
+            }
+            
             h1 {
                 font-size: 1.5rem;
                 margin-top: 65px;
                 padding: 0 15px;
                 margin-bottom: 80px;
             }
+            
             .header-subtitle {
                 font-size: 0.95rem;
                 padding: 0 15px;
             }
+            
             h2.selector-title {
                 font-size: 1.3rem;
                 margin-bottom: 20px;
             }
+            
             .selector-container {
                 grid-template-columns: 1fr;
                 max-width: 400px;
                 gap: 18px;
             }
+            
             .logo {
                 height: 50px;
             }
+            
             .logo-rings {
                 width: 70px;
                 height: 70px;
             }
+            
             .header {
                 padding-top: 20px;
                 padding-bottom: 20px;
             }
-            .logo-container {
-                margin-right: 15px;
-            }
-            .back-home {
-                font-size: 0.8rem;
-                padding: 6px 12px;
-            }
-            .back-home span {
-                display: none;
-            }
-            .back-home i {
-                margin-right: 0;
-            }
-            .header-top {
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 15px;
-            }
-            .header-left, .header-center, .header-right {
-                width: 100%;
-                justify-content: center;
-            }
-            .header-left {
-                margin-bottom: 10px;
-            }
-            .logo-container {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
+            
             .navigation-buttons {
                 flex-direction: column;
                 gap: 15px;
                 margin-top: 30px;
             }
+            
             .product-selection-bar {
                 flex-direction: column;
                 border-radius: 15px;
@@ -1127,47 +1151,58 @@
                 padding: 12px;
                 margin-bottom: 20px;
             }
+            
             .product-selection-label {
                 margin-right: 0;
                 margin-bottom: 8px;
             }
+            
             .selected-product-display {
                 margin-bottom: 8px;
                 padding: 6px 15px;
             }
+            
             .product-card, .language-card {
                 padding: 16px 14px;
                 border-radius: 12px;
             }
+            
             .product-icon, .language-icon {
                 font-size: 1.8rem;
                 margin-bottom: 12px;
             }
+            
             .product-name, .language-name {
                 font-size: 1.2rem;
                 margin-bottom: 8px;
             }
+            
             .product-text, .language-text {
                 font-size: 0.95rem;
                 margin-bottom: 10px;
             }
+            
             .product-specs {
                 font-size: 0.85rem;
                 margin-bottom: 8px;
             }
+            
             .product-tag {
                 padding: 4px 10px;
                 font-size: 0.75rem;
             }
+            
             .nav-btn {
                 padding: 12px 30px;
                 font-size: 1rem;
             }
+            
             .redirect-message {
                 font-size: 1.1rem;
                 margin-bottom: 30px;
                 padding: 0 15px;
             }
+            
             .timer {
                 font-size: 1.1rem;
                 padding: 6px 16px;
@@ -1240,18 +1275,23 @@
                 font-size: 1.8rem;
                 margin-top: 55px;
             }
+            
             .logo {
                 height: 45px;
             }
+            
             .product-card, .language-card {
                 padding: 14px 12px;
             }
+            
             .product-icon, .language-icon {
                 font-size: 1.8rem;
             }
+            
             .product-name, .language-name {
                 font-size: 1.1rem;
             }
+            
             .product-text, .language-text {
                 font-size: 0.85rem;
             }
