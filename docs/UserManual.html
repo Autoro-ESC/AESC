@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Product Manual | 产品说明书</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+	 /* 添加语言切换按钮样式 */
+        .lang-switch-container {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 10;
+        }
+        .lang-hidden {
+            display: none;
+        }
+        .lang-switch-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .lang-switch-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .lang-switch-btn i {
+            font-size: 1.1rem;
+        }
+		
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #165DFF;
+            --secondary: #36BFFA;
+            --accent: #3b82f6;
+            --light: #F5F7FA;
+            --dark: #0F172A;
+            --border: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --neutral: #f0f9ff;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 45, 104, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 85vh;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        
+        /* 新头部样式 - 匹配index.html风格 */
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 20px 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2" d="M 0,100 Q 50,50 100,100 T 200,100" /></svg>');
+            background-size: 300px 300px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .header-right {
+            display: flex;
+            justify-content: flex-end;
+            width: 100px;
+        }
+        
+        .logo-container {
+            position: relative;
+        }
+        
+        .logo {
+            height: 65px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-rings {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 85px;
+            height: 85px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .logo-rings::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            height: 40px;
+        }
+        
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-home i {
+            margin-right: 8px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin: 15px 0 25px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            text-align: center;
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+            font-weight: 300;
+            text-align: center;
+        }
+        
+        h2.selector-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .selector-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            border-radius: 2px;
+        }
+        
+        .content {
+            padding: 40px 20px 40px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #auto-redirect {
+            padding: 40px 0 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .redirect-message {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: var(--primary);
+            font-weight: 500;
+            max-width: 600px;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        .timer {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-top: 25px;
+            font-weight: 500;
+            padding: 8px 20px;
+            background: #dbeafe;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .timer i {
+            margin-right: 8px;
+        }
+        
+        #product-selector,
+        #language-selector {
+            display: none;
+            padding: 30px 0 20px;
+            width: 100%;
+        }
+        
+        .selector-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 28px 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+            border-color: var(--accent);
+            background: white;
+        }
+        
+        .product-card.selected {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+        }
+        
+        .product-card.selected::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--success), var(--accent));
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+        }
+        
+        .product-icon {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+        }
+        
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-text {
+            font-size: 1.05rem;
+            color: #4b5563;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .product-specs {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .product-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .tag-standard {
+            background-color: #dbeafe;
+            color: var(--primary);
+        }
+        
+        .tag-pro {
+            background-color: #ede9fe;
+            color: #8b5cf6;
+        }
+        
+        .tag-premium {
+            background-color: #f0fdf4;
+            color: var(--success);
+        }
+        
+        .tag-max {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+        
+        .language-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 28px 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .language-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+            border-color: var(--accent);
+            background: white;
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+        }
+        
+        .language-icon {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+        }
+        
+        .language-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .language-text {
+            font-size: 1.05rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        .language-card.unavailable {
+            background-color: #f8fafc;
+            cursor: not-allowed;
+            opacity: 0.5;
+            border-color: #e2e8f0;
+        }
+        
+        .language-card.unavailable::after {
+            content: 'Coming Soon';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .language-card.unavailable:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .language-card.unavailable::before {
+            background: linear-gradient(to right, #94a3b8, #cbd5e1);
+        }
+        
+        .product-selection-bar {
+            display: none;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 50px;
+            margin: 20px auto 30px;
+            max-width: 600px;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+        }
+        
+        .product-selection-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-selection-label i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        .selected-product-display {
+            background: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+        }
+        
+        .selected-product-display i {
+            margin-right: 8px;
+            color: var(--success);
+        }
+        
+        .change-product-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-left: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        
+        .change-product-btn:hover {
+            color: var(--accent);
+        }
+        
+        .change-product-btn i {
+            margin-right: 5px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .nav-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        
+        .nav-btn i {
+            margin-right: 8px;
+        }
+        
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0 50px;
+        }
+        
+        .loader {
+            border: 10px solid rgba(30, 58, 138, 0.1);
+            border-top: 10px solid var(--primary);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1.4s linear infinite;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .redirect-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+        
+        .redirect-text i {
+            margin-right: 8px;
+        }
+        
+        .footer {
+            background: var(--light);
+            padding: 25px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: #475569;
+            margin-top: auto;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item i {
+            color: var(--secondary);
+        }
+        
+        .manual-redirect {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .manual-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .manual-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .language-flag {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 1.4rem;
+            vertical-align: middle;
+        }
+        
+        /* New category dropdown */
+        .category-selector-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .category-select {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            color: var(--dark);
+            font-weight: 500;
+            min-width: 280px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e3a8a' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 16px;
+            padding-right: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-select:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.15);
+        }
+        
+        .category-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .category-label {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .category-label i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .category-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .category-title i {
+            margin-right: 10px;
+        }
+        
+        .no-products-message {
+            background-color: #f8fafc;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px dashed var(--border);
+            color: #64748b;
+            margin-top: 30px;
+            grid-column: 1 / -1;
+        }
+        
+        .no-products-message i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #94a3b8;
+        }
+        
+        /* File status messages */
+        .file-status-container {
+            display: none;
+            padding: 40px 0;
+            flex-grow: 1;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .file-status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+        }
+        
+        .status-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+        }
+        
+        .status-icon.loading {
+            color: var(--primary);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-icon.success {
+            color: var(--success);
+        }
+        
+        .status-icon.error {
+            color: var(--danger);
+        }
+        
+        .status-title {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .status-message {
+            font-size: 1.2rem;
+            color: #475569;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        
+        .status-product-info {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-size: 1.1rem;
+        }
+        
+        .status-product-name {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .status-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .status-btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .status-btn.primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .status-btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        
+        .status-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+		
+		/* 新增弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            position: relative;
+            text-align: center;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .modal-message {
+            font-size: 1.1rem;
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .modal-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            border: none;
+        }
+        
+        .modal-btn.primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .modal-btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        
+        /* WeChat browser alert */
+        .wechat-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffcd32;
+            color: #333;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .wechat-alert i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .close-alert {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.6; transform: scale(0.95); }
+        }
+        
+        /* 下载状态反馈 */
+        .download-status {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        
+        .download-status.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .download-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .download-message {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-top: 65px;
+                padding: 0 15px;
+                margin-bottom: 80px;
+            }
+            .header-subtitle {
+                font-size: 0.95rem;
+                padding: 0 15px;
+            }
+            h2.selector-title {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            .selector-container {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                gap: 18px;
+            }
+            .logo {
+                height: 50px;
+            }
+            .logo-rings {
+                width: 70px;
+                height: 70px;
+            }
+            .header {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            .logo-container {
+                margin-right: 15px;
+            }
+            .back-home {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+            .back-home span {
+                display: none;
+            }
+            .back-home i {
+                margin-right: 0;
+            }
+            .header-top {
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+            .header-left, .header-center, .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+            .header-left {
+                margin-bottom: 10px;
+            }
+            .logo-container {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 30px;
+            }
+            .product-selection-bar {
+                flex-direction: column;
+                border-radius: 15px;
+                text-align: center;
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+            .product-selection-label {
+                margin-right: 0;
+                margin-bottom: 8px;
+            }
+            .selected-product-display {
+                margin-bottom: 8px;
+                padding: 6px 15px;
+            }
+            .product-card, .language-card {
+                padding: 16px 14px;
+                border-radius: 12px;
+            }
+            .product-icon, .language-icon {
+                font-size: 1.8rem;
+                margin-bottom: 12px;
+            }
+            .product-name, .language-name {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+            .product-text, .language-text {
+                font-size: 0.95rem;
+                margin-bottom: 10px;
+            }
+            .product-specs {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+            }
+            .product-tag {
+                padding: 4px 10px;
+                font-size: 0.75rem;
+            }
+            .nav-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            .redirect-message {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+                padding: 0 15px;
+            }
+            .timer {
+                font-size: 1.1rem;
+                padding: 6px 16px;
+            }
+            
+            .category-title {
+                font-size: 1.5rem;
+            }
+            
+            .file-status-card {
+                padding: 30px 20px;
+            }
+            
+            .status-icon {
+                font-size: 4rem;
+            }
+            
+            .status-title {
+                font-size: 1.8rem;
+            }
+            
+            .status-message {
+                font-size: 1.1rem;
+            }
+            
+            .status-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .status-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .category-selector-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .category-select {
+                min-width: 100%;
+            }
+			
+			.modal-content {
+                padding: 25px 20px;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-message {
+                font-size: 1rem;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            h1 {
+                font-size: 1.8rem;
+                margin-top: 55px;
+            }
+            .logo {
+                height: 45px;
+            }
+            .product-card, .language-card {
+                padding: 14px 12px;
+            }
+            .product-icon, .language-icon {
+                font-size: 1.8rem;
+            }
+            .product-name, .language-name {
+                font-size: 1.1rem;
+            }
+            .product-text, .language-text {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+	
+<body>
+
+	<div class="modal-overlay" id="browser-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal-btn">&times;</button>
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="modal-title" id="modal-title">
+                <span class="lang-en">Open in Browser</span>
+                <span class="lang-zh lang-hidden">请在浏览器中打开</span>
+            </h2>
+            <p class="modal-message" id="modal-message">
+                <span class="lang-en">For the best experience and to download manuals, please open this page in your mobile browser.</span>
+                <span class="lang-zh lang-hidden">为了获得最佳体验并下载手册，请在手机浏览器中打开此页面。</span>
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" id="cancel-modal-btn">
+                    <span class="lang-en">Cancel</span>
+                    <span class="lang-zh lang-hidden">取消</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- WeChat browser alert -->
+    <div class="wechat-alert" id="wechat-alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="wechat-message">请在浏览器中打开此页面以获得最佳体验</span>
+        <button class="close-alert" id="close-alert">&times;</button>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <!-- 添加语言切换按钮 -->
+            <div class="lang-switch-container">
+                <button id="lang-switch-btn" class="lang-switch-btn">
+                    <i class="fas fa-language"></i>
+                    <span id="current-lang">EN</span>
+                </button>
+            </div>
+            
+            <div class="header-top">
+                <div class="header-left">
+                    <a href="index.html" class="back-home">
+                        <i class="fas fa-home"></i>
+                        <span class="lang-en">Home</span>
+                        <span class="lang-zh lang-hidden">首页</span>
+                    </a>
+                </div>
+                <div class="header-center">
+                    <div class="logo-container">
+                        <div class="logo-rings"></div>
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" alt="AESC Logo" class="logo">
+                    </div>
+                </div>
+                <div class="header-right"></div>
+            </div>
+            
+            <h1>
+                <span class="lang-en">Product Manual</span>
+                <span class="lang-zh lang-hidden">产品说明书</span>
+            </h1>
+            <div class="header-subtitle">
+                <span class="lang-en">Select your product model to download the appropriate user manual</span>
+                <span class="lang-zh lang-hidden">选择您的产品型号以下载相应的用户手册</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Auto Redirect Section (initially visible) -->
+            <div id="auto-redirect">
+                <div class="loader-container">
+                    <div class="loader"></div>
+                    <p class="redirect-text">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span class="lang-en">Loading product selection...</span>
+                        <span class="lang-zh lang-hidden">正在加载产品选择...</span>
+                    </p>
+                </div>
+                <div class="redirect-message">
+                    <span class="lang-en">We're getting the latest product manuals. If the product selection doesn't load automatically in a few seconds, you'll be able to select manually.</span>
+                    <span class="lang-zh lang-hidden">我们正在获取最新的产品手册。如果产品选择没有在几秒钟内自动加载，您将能够手动选择。</span>
+                </div>
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span class="lang-en">Loading product selection in: </span>
+                    <span class="lang-zh lang-hidden">产品选择将在: </span>
+                    <span id="countdown">3</span>
+                    <span class="lang-en"> seconds</span>
+                    <span class="lang-zh lang-hidden"> 秒内加载</span>
+                </div>
+            </div>
+            
+            <!-- Product Selector Section -->
+            <div id="product-selector">       
+                <!-- Category dropdown -->
+                <div class="category-selector-container">
+                    <div class="category-label">
+                        <i class="fas fa-filter"></i>
+                        <span class="lang-en">Filter by Category:</span>
+                        <span class="lang-zh lang-hidden">按类别筛选:</span>
+                    </div>
+                    <select id="category-select" class="category-select">
+                        <!-- Categories will be dynamically generated here -->
+                    </select>
+                </div>
+                
+                <h2 class="category-title" id="current-category-title">
+                    <i class="fas fa-microchip"></i>
+                    <span id="current-category">All Products</span>
+                </h2>
+                
+                <div class="selector-container" id="product-container">
+                    <!-- Product cards will be dynamically generated here -->
+                </div>
+            </div>
+            
+            <!-- Selected Product Display -->
+            <div class="product-selection-bar">
+                <span class="product-selection-label">
+                    <i class="fas fa-microchip"></i>
+                    <span class="lang-en">Selected Product:</span>
+                    <span class="lang-zh lang-hidden">已选产品:</span>
+                </span>
+                <span class="selected-product-display">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="selected-product-text">
+                        <span class="lang-en">None selected</span>
+                        <span class="lang-zh lang-hidden">未选择</span>
+                    </span>
+                </span>
+                <button class="change-product-btn" id="change-product-btn">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="lang-en">Change Product</span>
+                    <span class="lang-zh lang-hidden">更换产品</span>
+                </button>
+            </div>
+            
+            <!-- Language Selector Section -->
+            <div id="language-selector">
+                <h2 class="selector-title">
+                    <span class="lang-en">Select Manual Language</span>
+                    <span class="lang-zh lang-hidden">选择说明书语言</span>
+                </h2>
+                
+                <div class="selector-container" id="language-container">
+                    <!-- Language cards will be dynamically generated here -->
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="language-back-btn" class="nav-btn nav-btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="lang-en">Back to Products</span>
+                        <span class="lang-zh lang-hidden">返回产品选择</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- File Status Section -->
+            <div id="file-status" class="file-status-container">
+                <div class="file-status-card">
+                    <div class="status-icon loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                    <h2 class="status-title">
+                        <span class="lang-en">Preparing Your Manual</span>
+                        <span class="lang-zh lang-hidden">正在准备手册</span>
+                    </h2>
+                    <p class="status-message">
+                        <span class="lang-en">We're preparing your manual for download. Please wait a moment...</span>
+                        <span class="lang-zh lang-hidden">我们正在为您准备下载的手册，请稍候...</span>
+                    </p>
+                    <div class="status-product-info">
+                        <span class="lang-en"><span class="status-product-name" id="status-product-name">V4 / V6.7</span> manual in <span class="status-product-language" id="status-product-language">English</span></span>
+                        <span class="lang-zh lang-hidden"><span class="status-product-name" id="status-product-name-zh">V4 / V6.7</span> 的 <span class="status-product-language" id="status-product-language-zh">英文</span> 手册</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="manual-redirect-btn" class="manual-redirect">
+                <button class="manual-btn" id="redirect-button">
+                    <i class="fas fa-file-download"></i>
+                    <span class="lang-en">Download Manual Again</span>
+                    <span class="lang-zh lang-hidden">重新下载手册</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Autoro. 
+                <span class="lang-en">All rights reserved.</span>
+                <span class="lang-zh lang-hidden">保留所有权利。</span>
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>www.autorotech.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Autoro.service@hotmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+1 (800) 123-4567</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Configuration File Object -->
+    <script id="config-data" type="application/json">
+    {
+        "company": "Autoro",
+        "logo": {
+            "svg": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>"
+        },
+        "contact": {
+            "website": "www.autorotech.com",
+            "email": "Autoro.service@hotmail.com",
+            "phone": "+1 (800) 123-4567"
+        },
+        "languages": [
+            {
+                "id": "en",
+                "icon": "🇬🇧",
+                "name": "English",
+                "name_zh": "英语",
+                "description": "English Manual",
+                "description_zh": "英文说明书"
+            },
+            {
+                "id": "zh",
+                "icon": "🇨🇳",
+                "name": "中文 (Chinese)",
+                "name_zh": "中文",
+                "description": "中文说明书",
+                "description_zh": "中文说明书"
+            },
+            {
+                "id": "es",
+                "icon": "🇪🇸",
+                "name": "Español",
+                "name_zh": "西班牙语",
+                "description": "Manual en Español",
+                "description_zh": "西班牙语说明书"
+            },
+            {
+                "id": "fr",
+                "icon": "🇫🇷",
+                "name": "Français",
+                "name_zh": "法语",
+                "description": "Manuel en Français",
+                "description_zh": "法语说明书"
+            },
+            {
+                "id": "de",
+                "icon": "🇩🇪",
+                "name": "Deutsch",
+                "name_zh": "德语",
+                "description": "Deutsche Anleitung",
+                "description_zh": "德语说明书"
+            },
+            {
+                "id": "ja",
+                "icon": "🇯🇵",
+                "name": "日本語 (Japanese)",
+                "name_zh": "日语",
+                "description": "日本語マニュアル",
+                "description_zh": "日语说明书"
+            }
+        ],
+        "categories": [
+            {
+                "id": "all",
+                "name": "All Products",
+                "name_zh": "所有产品",
+                "icon": "fas fa-boxes"
+            },
+            {
+                "id": "esc",
+                "name": "ESC",
+                "name_zh": "电调",
+                "icon": "fas fa-bolt"
+            },
+            {
+                "id": "bms",
+                "name": "BMS",
+                "name_zh": "电池管理系统",
+                "icon": "fas fa-battery-full"
+            },
+            {
+                "id": "switch",
+                "name": "Switch",
+                "name_zh": "开关",
+                "icon": "fas fa-toggle-on"
+            },
+            {
+                "id": "bluetooth",
+                "name": "Bluetooth",
+                "name_zh": "蓝牙模块",
+                "icon": "fas fa-bluetooth"
+            },
+            {
+                "id": "accessory",
+                "name": "Accessories",
+                "name_zh": "配件",
+                "icon": "fas fa-tools"
+            }
+        ],
+"products": [
+            {
+                "id": "V4_V6.7",
+                "name": "V4 / V6.7",
+                "name_zh": "V4 / V6.7",
+                "category": "esc",
+                "description": "Standard Version",
+                "description_zh": "标准版",
+                "specs": "Current: 50A Continuous<br>Voltage: 3S-12S",
+                "specs_zh": "电流: 50A持续<br>电压: 3S-12S",
+                "tag": "Standard",
+                "tag_zh": "标准",
+                "tagClass": "tag-standard",
+                "icon": "fas fa-bolt",
+                "languages": ["en"]
+            },
+            {
+                "id": "V4_Pro_V6.7_Pro",
+                "name": "V4 Pro / V6.7 Pro",
+                "name_zh": "V4 Pro / V6.7 Pro",
+                "category": "esc",
+                "description": "Professional Version",
+                "description_zh": "专业版",
+                "specs": "Current: 80A Continuous<br>Voltage: 3S-12S",
+                "specs_zh": "电流: 80A持续<br>电压: 3S-12S",
+                "tag": "Pro",
+                "tag_zh": "专业",
+                "tagClass": "tag-pro",
+                "icon": "fas fa-rocket",
+                "languages": ["en"]
+            },
+            {
+                "id": "AB50",
+                "name": "AB50",
+                "name_zh": "AB50",
+                "category": "bms",
+                "description": "Balance Discharge Dual Battery Parallel Connector",
+                "description_zh": "平衡放电双电池并联连接器",
+                "specs": "Voltage: 6-80V<br>Input Current: 50A per channel<br>Max Output Current: 100A",
+                "specs_zh": "电压: 6-80V<br>输入电流: 每通道50A<br>最大输出电流: 100A",
+                "tag": "Standard",
+                "tag_zh": "标准",
+                "tagClass": "tag-standard",
+                "icon": "fas fa-battery-three-quarters",
+                "languages": []
+            },
+            {
+                "id": "AS100",
+                "name": "AS100",
+                "name_zh": "AS100",
+                "category": "switch",
+                "description": "Anti Spark Switch",
+                "description_zh": "防火花开关",
+                "specs": "Voltage: 6-84V<br>Current: 100A",
+                "specs_zh": "电压: 6-84V<br>电流: 100A",
+                "tag": "Standard",
+                "tag_zh": "标准",
+                "tagClass": "tag-standard",
+                "icon": "fas fa-toggle-on",
+                "languages": ["en"]
+            },
+            {
+                "id": "BT Nano",
+                "name": "BT Nano",
+                "name_zh": "BT Nano",
+                "category": "bluetooth",
+                "description": "Bluetooth Module",
+                "description_zh": "蓝牙模块",
+                "specs": "Range: 20m<br>Protocol: Bluetooth 5.0",
+                "specs_zh": "范围: 20米<br>协议: 蓝牙5.0",
+                "tag": "Standard",
+                "tag_zh": "标准",
+                "tagClass": "tag-standard",
+                "icon": "fas fa-bluetooth",
+                "languages": ["en"]
+            }
+        ]
+    }
+    </script>
+    
+    <script>
+		// 在文件顶部定义下载源配置
+	const downloadSources = {
+		domestic: "https://baogee.net/docs/UserManual",
+		international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/UserManual"
+	};
+	// Get configuration from JSON
+	const config = JSON.parse(document.getElementById('config-data').textContent);
+
+	// State variables
+	let selectedProduct = null;
+	let selectedLanguage = null;
+	let manualDownloaded = false;
+	let countdownInterval = null;
+	let selectedCategory = "all";
+	let currentLang = 'en'; // 默认语言
+
+	// 检测国内环境（微信、QQ、支付宝等）
+	function isDomesticEnvironment() {
+		const ua = navigator.userAgent.toLowerCase();
+		return /micromessenger|qq|alipay/i.test(ua);
+	}
+
+	// 获取文件URL（根据环境选择源）
+	function getFileUrl(productId, langId) {
+		const baseUrl = isDomesticEnvironment() ? downloadSources.domestic : downloadSources.international;
+		const categoryId = getCategoryNameById(productId);
+		return `${baseUrl}/${categoryId}/${productId}_${langId}.pdf`;
+	}
+
+	// 添加语言切换功能
+	function switchLanguage(lang) {
+		currentLang = lang;
+		
+		// 更新按钮显示
+		document.getElementById('current-lang').textContent = lang === 'en' ? 'EN' : '中文';
+		
+		// 更新所有文本
+		document.querySelectorAll('.lang-en, .lang-zh').forEach(element => {
+			if (element.classList.contains(`lang-${lang}`)) {
+				element.classList.remove('lang-hidden');
+			} else {
+				element.classList.add('lang-hidden');
+			}
+		});
+		
+		// 更新弹窗内容
+		document.querySelectorAll('#modal-title .lang-en, #modal-title .lang-zh').forEach(el => {
+			if (el.classList.contains(`lang-${lang}`)) {
+				el.classList.remove('lang-hidden');
+			} else {
+				el.classList.add('lang-hidden');
+			}
+		});
+		
+		document.querySelectorAll('#modal-message .lang-en, #modal-message .lang-zh').forEach(el => {
+			if (el.classList.contains(`lang-${lang}`)) {
+				el.classList.remove('lang-hidden');
+			} else {
+				el.classList.add('lang-hidden');
+			}
+		});
+		// 更新动态内容
+		updateCategoryDropdown();
+		updateCategoryTitle();
+		createProductCards();
+		updateLanguageOptions();
+		
+		// 保存语言偏好
+		localStorage.setItem('userLanguage', lang);
+	}
+
+	// 根据浏览器语言设置初始语言
+	function setInitialLanguage() {
+		const savedLang = localStorage.getItem('userLanguage');
+		const browserLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
+		const initialLang = savedLang || browserLang;
+		switchLanguage(initialLang);
+	}
+
+	// Element references
+	const autoRedirectSection = document.getElementById('auto-redirect');
+	const productSelectorSection = document.getElementById('product-selector');
+	const languageSelectorSection = document.getElementById('language-selector');
+	const productSelectionBar = document.querySelector('.product-selection-bar');
+	const selectedProductText = document.getElementById('selected-product-text');
+	const changeProductBtn = document.getElementById('change-product-btn');
+	const languageBackBtn = document.getElementById('language-back-btn');
+	const redirectButton = document.getElementById('redirect-button');
+	const languageContainer = document.getElementById('language-container');
+	const productContainer = document.getElementById('product-container');
+	const countdownEl = document.getElementById('countdown');
+	const loaderContainer = document.querySelector('.loader-container');
+	const redirectText = document.querySelector('.redirect-text');
+	const currentCategoryEl = document.getElementById('current-category');
+	const currentCategoryTitle = document.getElementById('current-category-title');
+	const fileStatusSection = document.getElementById('file-status');
+	const statusProductName = document.getElementById('status-product-name');
+	const statusProductLanguage = document.getElementById('status-product-language');
+	const categorySelect = document.getElementById('category-select');
+	const wechatAlert = document.getElementById('wechat-alert');
+	const wechatMessage = document.getElementById('wechat-message');
+	const closeAlert = document.getElementById('close-alert');
+	const langSwitchBtn = document.getElementById('lang-switch-btn');
+
+	// Initialize mappings
+	function initMappings() {
+		// Initialize product mappings
+		config.products.forEach(product => {
+			productNames[product.id] = product.name;
+			productLanguages[product.id] = product.languages;
+		});
+		
+		// Initialize language mappings
+		config.languages.forEach(language => {
+			languageNames[language.id] = language.name;
+		});
+	}
+
+	// Create product cards from config
+	function createProductCards() {
+		productContainer.innerHTML = '';
+		
+		// Filter products by selected category
+		const filteredProducts = selectedCategory === "all" 
+			? config.products 
+			: config.products.filter(p => p.category === selectedCategory);
+		
+		if (filteredProducts.length === 0) {
+			productContainer.innerHTML = `
+				<div class="no-products-message">
+					<i class="fas fa-box-open"></i>
+					<h3 class="lang-en">No products in this category</h3>
+					<h3 class="lang-zh lang-hidden">此类别无产品</h3>
+					<p class="lang-en">There are no products available in the selected category.</p>
+					<p class="lang-zh lang-hidden">所选类别中没有可用产品。</p>
+				</div>
+			`;
+			return;
+		}
+		
+		filteredProducts.forEach(product => {
+			const productCard = document.createElement('div');
+			productCard.className = 'product-card';
+			productCard.dataset.product = product.id;
+			
+			const name = currentLang === 'zh' && product.name_zh ? product.name_zh : product.name;
+			const description = currentLang === 'zh' && product.description_zh ? product.description_zh : product.description;
+			const specs = currentLang === 'zh' && product.specs_zh ? product.specs_zh : product.specs;
+			const tag = currentLang === 'zh' && product.tag_zh ? product.tag_zh : product.tag;
+			
+			productCard.innerHTML = `
+				${tag ? `<div class="product-tag ${product.tagClass}">${tag}</div>` : ''}
+				<div class="product-icon"><i class="${product.icon}"></i></div>
+				<div class="product-name">${name}</div>
+				<div class="product-text">${description}</div>
+				<div class="product-specs">${specs}</div>
+			`;
+			
+			productCard.addEventListener('click', () => {
+				handleProductSelection(product.id);
+			});
+			
+			productContainer.appendChild(productCard);
+		});
+	}
+
+// 新增函数：显示浏览器提示弹窗
+        function showBrowserModal() {
+            const modal = document.getElementById('browser-modal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+        
+        // 新增函数：隐藏浏览器提示弹窗
+        function hideBrowserModal() {
+            const modal = document.getElementById('browser-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }
+			
+	// Create category dropdown
+	function createCategoryDropdown() {
+		categorySelect.innerHTML = '';
+		
+		config.categories.forEach(category => {
+			const option = document.createElement('option');
+			option.value = category.id;
+			option.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+			if (selectedCategory === category.id) {
+				option.selected = true;
+			}
+			categorySelect.appendChild(option);
+		});
+	}
+
+	// Update category dropdown (when language changes)
+	function updateCategoryDropdown() {
+		categorySelect.innerHTML = '';
+		
+		config.categories.forEach(category => {
+			const option = document.createElement('option');
+			option.value = category.id;
+			option.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+			if (selectedCategory === category.id) {
+				option.selected = true;
+			}
+			categorySelect.appendChild(option);
+		});
+	}
+
+	// Update category title
+	function updateCategoryTitle() {
+		const category = config.categories.find(c => c.id === selectedCategory);
+		if (category) {
+			currentCategoryEl.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+			currentCategoryTitle.querySelector('i').className = category.icon;
+		}
+	}
+
+	// 处理类别变化
+	function handleCategoryChange() {
+		selectedCategory = categorySelect.value;
+		updateCategoryTitle();
+		createProductCards(); // 确保在类别变化时刷新产品列表
+	}
+
+
+// Initialize the app
+function init() {
+    initMappings();
+    setInitialLanguage(); // 设置初始语言
+    createCategoryDropdown();
+    updateCategoryTitle();
+    createProductCards();
+    // 添加类别选择事件监听器
+    categorySelect.addEventListener('change', handleCategoryChange);
+			
+    // Set contact info from config
+    const contactInfo = document.querySelector('.contact-info');
+    contactInfo.innerHTML = `
+        <div class="contact-item">
+            <i class="fas fa-globe"></i>
+            <span>${config.contact.website}</span>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>${config.contact.email}</span>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>${config.contact.phone}</span>
+        </div>
+    `;
+    
+    // Set logo
+    document.querySelector('.logo').src = config.logo.svg;
+    
+    // Hide sections initially
+    document.getElementById('manual-redirect-btn').style.display = 'none';
+    productSelectorSection.style.display = 'none';
+    languageSelectorSection.style.display = 'none';
+    productSelectionBar.style.display = 'none';
+    fileStatusSection.style.display = 'none';
+    
+    // Start countdown
+    startCountdown();
+    
+    // Check if in WeChat browser
+    detectWechatBrowser();
+
+}
+
+// Start countdown function
+function startCountdown() {
+    let seconds = 3;
+    countdownEl.textContent = seconds;
+    
+    if (countdownInterval) clearInterval(countdownInterval);
+    
+    countdownInterval = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        
+        if (seconds <= 0) {
+            clearInterval(countdownInterval);
+            showProductSelector();
+        }
+    }, 1000);
+}
+
+// Show the product selector
+function showProductSelector() {
+    if (!autoRedirectSection || !productSelectorSection) return;
+    
+    autoRedirectSection.style.display = 'none';
+    productSelectorSection.style.display = 'block';
+    languageSelectorSection.style.display = 'none';
+    productSelectionBar.style.display = 'none';
+    fileStatusSection.style.display = 'none';
+	// 修复：重置下载状态
+	manualDownloaded = false;
+	selectedProduct = null;
+	selectedLanguage = null;
+	
+	// 清除选择状态
+	document.querySelectorAll('.product-card').forEach(card => {
+		card.classList.remove('selected');
+	});
+	
+	// 更新产品显示文本
+	selectedProductText.innerHTML = 
+		currentLang === 'zh' ? '未选择' : 'None selected';
+
+}
+
+// Show the language selector
+function showLanguageSelector() {
+    if (!selectedProduct) return;
+    
+    if (!autoRedirectSection || !productSelectorSection || !languageSelectorSection) return;
+    
+    autoRedirectSection.style.display = 'none';
+    productSelectorSection.style.display = 'none';
+    languageSelectorSection.style.display = 'block';
+    productSelectionBar.style.display = 'flex';
+    fileStatusSection.style.display = 'none';
+    
+    updateLanguageOptions();
+}
+
+// Show file status section
+function showFileStatus(productId, langId) {
+    const product = config.products.find(p => p.id === productId);
+    const lang = config.languages.find(l => l.id === langId);
+    
+    // 根据当前语言准备文本
+    const preparingTitle = currentLang === 'zh' ? '正在准备手册' : 'Preparing Your Manual';
+    const preparingMessage = currentLang === 'zh' ? 
+        '我们正在为您准备下载的手册，请稍候...' : 
+        "We're preparing your manual for download. Please wait a moment...";
+    
+    const productName = product ? 
+        (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
+        productId;
+    
+    const langName = lang ? 
+        (currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name) : 
+        langId;
+    
+    // 准备产品信息文本
+    const productInfoEn = `<span class="status-product-name">${productName}</span> manual in <span class="status-product-language">${langName}</span>`;
+    const productInfoZh = `<span class="status-product-name">${productName}</span> 的 <span class="status-product-language">${langName}</span> 手册`;
+    
+    autoRedirectSection.style.display = 'none';
+    productSelectorSection.style.display = 'none';
+    languageSelectorSection.style.display = 'none';
+    productSelectionBar.style.display = 'none';
+    fileStatusSection.style.display = 'flex';
+    
+    // 创建状态卡片HTML - 使用动态语言内容
+    fileStatusSection.querySelector('.file-status-card').innerHTML = `
+        <div class="status-icon loading">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <h2 class="status-title">${preparingTitle}</h2>
+        <p class="status-message">${preparingMessage}</p>
+        <div class="status-product-info">
+            <span class="lang-en">${productInfoEn}</span>
+            <span class="lang-zh lang-hidden">${productInfoZh}</span>
+        </div>
+    `;
+    
+    // 确保正确显示当前语言
+    document.querySelectorAll('.lang-en, .lang-zh').forEach(el => {
+        if (el.classList.contains(`lang-${currentLang}`)) {
+            el.classList.remove('lang-hidden');
+        } else {
+            el.classList.add('lang-hidden');
+        }
+    });
+}
+
+// Show file status result
+function showFileStatusResult(status, productId, langId, errorType = null) {
+    const product = config.products.find(p => p.id === productId);
+    const lang = config.languages.find(l => l.id === langId);
+    
+    const card = fileStatusSection.querySelector('.file-status-card');
+    
+    // 根据当前语言设置文本内容
+    const title = {
+        success: currentLang === 'zh' ? '手册已就绪!' : 'Manual Ready!',
+        'not-found': currentLang === 'zh' ? '手册未找到' : 'Manual Not Found',
+        error: currentLang === 'zh' ? '下载失败' : 'Download Failed'
+    }[status];
+    
+    const message = {
+        success: '',
+        'not-found': currentLang === 'zh' ? 
+            '很抱歉，找不到您选择的产品和语言的手册。请稍后再试或联系支持。' : 
+            "We're sorry, but the manual for your selected product and language could not be found. Please try again later or contact support.",
+        error: currentLang === 'zh' ? 
+            `下载手册时出错。${errorType || '请稍后再试。'}` : 
+            `There was an error downloading your manual. ${errorType || 'Please try again later.'}`
+    }[status];
+    
+    const backButtonText = currentLang === 'zh' ? '返回产品选择' : 'Back to Products';
+    const tryAgainText = currentLang === 'zh' ? '重试' : 'Try Again';
+    
+    const productName = product ? 
+        (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
+        productId;
+    
+    const languageName = lang ? 
+        (currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name) : 
+        langId;
+    
+    const productInfoText = currentLang === 'zh' ?
+        `${productName} 的 ${languageName} 手册` :
+        `${productName} manual in ${languageName}`;
+    
+    // 根据状态生成不同的UI
+    if (status === 'success') {
+        card.innerHTML = `
+            <div class="status-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="status-title">${title}</h2>
+            <p class="status-message">${message}</p>
+            <div class="status-product-info">${productInfoText}</div>
+            <button class="status-btn secondary" id="back-to-products-btn">
+                <i class="fas fa-arrow-left"></i>
+                ${backButtonText}
+            </button>
+        `;
+    }
+    else if (status === 'not-found') {
+        card.innerHTML = `
+            <div class="status-icon error">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="status-title">${title}</h2>
+            <p class="status-message">${message}</p>
+            <div class="status-product-info">${productInfoText}</div>
+            <div class="status-actions">
+                <button class="status-btn primary" id="try-again-btn">
+                    <i class="fas fa-redo"></i>
+                    ${tryAgainText}
+                </button>
+                <button class="status-btn secondary" id="back-to-products-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    ${backButtonText}
+                </button>
+            </div>
+        `;
+    }
+    else if (status === 'error') {
+        card.innerHTML = `
+            <div class="status-icon error">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="status-title">${title}</h2>
+            <p class="status-message">${message}</p>
+            <div class="status-product-info">${productInfoText}</div>
+            <div class="status-actions">
+                <button class="status-btn primary" id="try-again-btn">
+                    <i class="fas fa-redo"></i>
+                    ${tryAgainText}
+                </button>
+                <button class="status-btn secondary" id="back-to-products-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    ${backButtonText}
+                </button>
+            </div>
+        `;
+    }
+    
+    // 添加事件监听器
+    const tryAgainBtn = document.getElementById('try-again-btn');
+    if (tryAgainBtn) {
+        tryAgainBtn.addEventListener('click', () => {
+            downloadManualWithStatus(productId, langId);
+        });
+    }
+    
+    const backToProductsBtn = document.getElementById('back-to-products-btn');
+    if (backToProductsBtn) {
+        backToProductsBtn.addEventListener('click', () => {
+            showProductSelector();
+        });
+    }
+}
+
+// Update language cards based on selected product
+function updateLanguageOptions() {
+    if (!selectedProduct || !languageContainer) return;
+    
+    const availableLanguages = productLanguages[selectedProduct] || [];
+    languageContainer.innerHTML = '';
+    
+    // Check if product has any available languages
+    const hasNoLanguages = availableLanguages.length === 0;
+    if (hasNoLanguages) {
+        languageContainer.innerHTML = `
+            <div class="no-languages-message" style="grid-column: 1 / -1; text-align: center; padding: 30px; background: #fff5f5; border-radius: 16px; color: #e53e3e; border: 2px solid #fed7d7;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                <h3 class="lang-en" style="margin-bottom: 10px;">Language Support Unavailable</h3>
+                <h3 class="lang-zh lang-hidden" style="margin-bottom: 10px;">暂无语言支持</h3>
+                <p class="lang-en">We're currently working on providing manuals for this product. Please check back later.</p>
+                <p class="lang-zh lang-hidden">我们正在为此产品提供手册，请稍后再试。</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Create new language cards
+    config.languages.forEach(lang => {
+        const isAvailable = availableLanguages.includes(lang.id);
+        if(isAvailable)
+        {
+            const langCard = document.createElement('div');
+            langCard.className = `language-card ${isAvailable ? '' : 'unavailable'}`;
+            langCard.dataset.lang = lang.id;
+            
+            const name = currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name;
+            const description = currentLang === 'zh' && lang.description_zh ? lang.description_zh : lang.description;
+            
+            langCard.innerHTML = `
+                <div class="language-icon">${lang.icon}</div>
+                <div class="language-name">${name}</div>
+                <div class="language-text">${description}</div>
+            `;
+            
+            if (isAvailable) {
+				langCard.addEventListener('click', function() {
+					// 添加下载状态反馈
+					const icon = this.querySelector('.language-icon');
+					const originalIcon = icon.innerHTML;
+					
+					// 显示加载状态
+					icon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+					this.style.pointerEvents = 'none';
+					
+					// 重置文件状态显示
+					fileStatusSection.style.display = 'none';
+					
+					// 执行下载
+					downloadManualWithStatus(selectedProduct, lang.id);
+					
+					// 延迟恢复原始状态
+					setTimeout(() => {
+						icon.innerHTML = originalIcon;
+						this.style.pointerEvents = 'auto';
+					}, 3000);
+				});
+			}
+            
+            languageContainer.appendChild(langCard);
+        }
+
+    });
+}
+
+// Handle product selection
+function handleProductSelection(productId, skipAnimation = false, langId = null) {
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+	// 修复：重置下载状态
+	manualDownloaded = false;
+	fileStatusSection.style.display = 'none';		
+    const selectedCard = document.querySelector(`.product-card[data-product="${productId}"]`);
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+        selectedProduct = productId;
+        
+        // Update the product display bar
+        if (selectedProductText) {
+            const product = config.products.find(p => p.id === productId);
+            selectedProductText.innerHTML = product ? 
+                (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
+                (currentLang === 'zh' ? '未选择' : 'None selected');
+        }
+        
+        // Redirect directly to download if language is provided
+        if (langId) {
+            downloadManualWithStatus(productId, langId);
+        } else {
+            setTimeout(() => {
+                showLanguageSelector();
+            }, 300);
+        }
+    }
+}
+
+// Download manual with status handling
+function downloadManualWithStatus(productId, langId) {
+
+	// 检测是否在国内环境（微信/QQ/支付宝）
+	if (isDomesticEnvironment()) {
+		showBrowserModal();
+		return; // 不执行下载
+	}
+    showFileStatus(productId, langId);
+    
+    // 直接尝试下载
+    try {
+        // 创建下载链接
+        const downloadLink = document.createElement('a');
+        const pdfUrl = getFileUrl(productId, langId);
+        downloadLink.href = pdfUrl;
+        downloadLink.target = '_blank';
+        
+        // 设置文件名
+        const product = config.products.find(p => p.id === productId);
+        const lang = config.languages.find(l => l.id === langId);
+        const productName = product ? product.name.replace(/[\/\s]/g, '_') : productId;
+        const langName = lang ? lang.name.replace(/\s/g, '_') : langId;
+        downloadLink.download = `AESC_${productName}_${langName}_Manual.pdf`;
+        
+        // 触发下载
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        
+        // 清理DOM
+        // 修复：下载完成后重置状态
+		setTimeout(() => {
+			document.body.removeChild(downloadLink);
+			showFileStatusResult('success', productId, langId);
+			
+			// 重置下载状态标志
+			manualDownloaded = false;
+		}, 100);
+        
+    } catch (error) {
+        // 错误处理
+        setTimeout(() => {
+            let errorMsg = '';
+            
+            if (error.message.includes('NetworkError')) {
+                errorMsg = currentLang === 'zh' ? 
+                    '网络错误，请检查您的连接' : 
+                    'Network error, please check your connection';
+            } else {
+                errorMsg = currentLang === 'zh' ? 
+                    '下载失败，请重试' : 
+                    'Download failed, please try again';
+            }
+            
+            showFileStatusResult('error', productId, langId, errorMsg);
+        }, 1500);
+    }
+}
+
+
+// Get category name by ID
+function getCategoryNameById(productId) {
+
+    // 获取产品对象
+    const product = config.products.find(p => p.id === productId);
+    if (!product) {
+        reject(new Error('Product not found'));
+        return;
+    }
+    const category = config.categories.find(c => c.id === product.category);
+    //return currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+	return category.name;
+}
+
+// Check if PDF file exists
+async function checkFileExists(productId, langId) {
+    const pdfUrl = getFileUrl(productId, langId);
+    
+    try {
+        const response = await fetch(pdfUrl, { method: 'HEAD' });
+        return response.ok;
+    } catch (error) {
+        console.error('Error checking file existence:', error);
+        return false;
+    }
+}
+
+// View the manual in a new tab
+function viewManual(productId, langId) {
+    const pdfUrl = getFileUrl(productId, langId);
+    window.open(pdfUrl, '_blank');
+}
+
+// Download the manual
+function downloadManual(productId, langId) {
+    return new Promise((resolve, reject) => {
+        if (!productId || !langId) {
+            reject(new Error('Invalid product or language'));
+            return;
+        }
+        const pdfUrl = getFileUrl(productId, langId);
+		
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pdfUrl;
+        downloadLink.target = '_blank';
+        
+        // Get language and product names
+        const langInfo = config.languages.find(l => l.id === langId);
+        const langName = langInfo ? langInfo.name : langId;
+        
+        const productInfo = config.products.find(p => p.id === productId);
+        const productName = productInfo ? productInfo.name : productId;
+        
+        downloadLink.download = `AESC_${productName.replace(/[\/\s]/g, '_')}_${langName.replace(/\s/g, '_')}_Manual.pdf`;
+        
+        // Add link to document and trigger download
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        
+        // Clean up
+        setTimeout(() => {
+            document.body.removeChild(downloadLink);
+            resolve(true);
+        }, 1000);
+    });
+}
+
+// Detect if user is in WeChat browser
+function detectWechatBrowser() {
+    if (isDomesticEnvironment()) {
+        wechatMessage.innerHTML = currentLang === 'zh' 
+            ? "请在浏览器中打开此页面以获得最佳体验" 
+            : "Please open this page in a browser for the best experience";
+        wechatAlert.style.display = 'block';
+    }
+}
+
+// Initialize product and language mappings
+const productNames = {};
+const languageNames = {};
+const productLanguages = {};
+
+// Event bindings
+document.addEventListener('DOMContentLoaded', function() {
+    init();
+    
+	document.getElementById('close-modal-btn').addEventListener('click', hideBrowserModal);
+    document.getElementById('cancel-modal-btn').addEventListener('click', hideBrowserModal);
+			
+    // 添加语言切换事件
+    langSwitchBtn.addEventListener('click', function() {
+        const newLang = currentLang === 'en' ? 'zh' : 'en';
+        switchLanguage(newLang);
+        
+        // 更新微信警告信息（如果可见）
+        if (wechatAlert.style.display === 'block') {
+            wechatMessage.innerHTML = newLang === 'zh' 
+                ? "请在浏览器中打开此页面以获得最佳体验" 
+                : "Please open this page in a browser for the best experience";
+        }
+    });
+    
+    // Product card selection
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product');
+            handleProductSelection(productId);
+        });
+    });
+    
+    if (languageBackBtn) {
+        languageBackBtn.addEventListener('click', function() {
+            showProductSelector();
+        });
+    }
+    
+    if (changeProductBtn) {
+        changeProductBtn.addEventListener('click', function() {
+            showProductSelector();
+        });
+    }
+    
+    if (redirectButton) {
+        redirectButton.addEventListener('click', function() {
+            if (selectedProduct && selectedLanguage) {
+                downloadManualWithStatus(selectedProduct, selectedLanguage);
+            } else {
+                showProductSelector();
+            }
+        });
+    }
+    
+    // Close WeChat alert
+    if (closeAlert) {
+        closeAlert.addEventListener('click', function() {
+            wechatAlert.style.display = 'none';
+        });
+    }
+    
+    // Fallback mechanism
+    setTimeout(() => {
+        if (loaderContainer && loaderContainer.offsetParent !== null) {
+            if (autoRedirectSection && autoRedirectSection.style.display !== 'none') {
+                showProductSelector();
+            }
+        }
+    }, 10000);
+});
+
+</script>
+
+</body>
+</html>
