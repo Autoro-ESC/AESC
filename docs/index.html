@@ -1,1 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>AESC 技术支持中心 | Autoro Technical Support Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        neutral: '#F5F7FA',
+                        dark: '#0F172A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* 添加语言切换按钮样式 */
+        .lang-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        .lang-switch-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .lang-switch-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .lang-switch-btn i {
+            font-size: 1.1rem;
+        }
+        
+        @layer utilities {
+            .btn-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .nav-card {
+                @apply bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 
+                       border-2 border-gray-200 overflow-hidden transform hover:-translate-y-2;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            }
+            .nav-card:hover {
+                border-color: #36BFFA;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 15px 10px -6px rgba(0, 0, 0, 0.1);
+            }
+            .nav-card-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .nav-card-description {
+                flex-grow: 1;
+            }
+            .section-gradient {
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            }
+            .lang-switcher {
+                @apply px-3 py-1.5 md:px-4 md:py-2 rounded-md font-medium transition-colors duration-200;
+            }
+            .lang-active {
+                @apply bg-primary text-white;
+            }
+            .lang-inactive {
+                @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+            }
+            .hidden {
+                display: none;
+            }
+        }
+        
+        .wechat-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffcd32;
+            color: #333;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+        }
+        .wechat-alert i {
+            margin-right: 10px;
+        }
+        .close-alert {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+		
+        .footer {
+            background: var(--light);
+            padding: 25px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: #475569;
+            margin-top: auto;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-item i {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen flex flex-col">
+    <!-- WeChat browser alert -->
+    <div class="wechat-alert" id="wechat-alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="wechat-message">请在浏览器中打开此页面以获得最佳体验</span>
+        <button class="close-alert" id="close-alert">&times;</button>
+    </div>
+    <!-- 主导航页 -->
+    <div id="main-nav" class="min-h-screen flex flex-col">
+        <!-- 页头 -->
+        <header class="bg-gradient-to-r from-primary to-secondary py-12 px-4 text-center relative">
+            <!-- 添加语言切换按钮 -->
+            <div class="lang-switch-container">
+                <button id="lang-switch-btn" class="lang-switch-btn">
+                    <i class="fas fa-language"></i>
+                    <span id="current-lang">EN</span>
+                </button>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-between items-start">
+                    <div class="flex-1"></div> <!-- 左侧占位 -->
+                    <div class="flex-1 flex justify-center">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" 
+                            alt="AESC Logo" class="h-24 mx-auto mb-6">
+                    </div>
+                    <!-- 占位元素保持平衡 -->
+                    <div class="flex-1"></div>
+                </div>
+                
+                <h1 id="main-title" class="text-4xl md:text-5xl font-bold text-white mb-4">AESC 技术支持中心</h1>
+                <p id="subtitle" class="text-xl text-blue-100 max-w-2xl mx-auto">一站式获取产品手册、目录和技术文档</p>
+            </div>
+        </header>
 
+        <!-- 主要内容区 -->
+        <main class="flex-grow py-12 px-4 section-gradient">
+            <div class="max-w-6xl mx-auto">
+                <h2 id="section-title" class="text-3xl font-bold text-center text-dark mb-12">选择您需要的资源</h2>
+                
+                <!-- 卡片容器 -->
+                <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 用户手册卡片 -->
+                    <a href="UserManual.html" class="nav-card">
+                        <div class="p-6 flex flex-col h-full">
+                            <div class="nav-card-content">
+                                <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 mx-auto">
+                                    <i class="fas fa-book text-3xl text-primary"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-center text-dark mb-3">用户手册</h3>
+                                <p class="text-gray-600 text-center mb-6 nav-card-description">查找您产品型号的详细使用说明和技术参数</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- 产品目录卡片 -->
+                    <a href="ProductCatalog.html" class="nav-card">
+                        <div class="p-6 flex flex-col h-full">
+                            <div class="nav-card-content">
+                                <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 mx-auto">
+                                    <i class="fas fa-file-pdf text-3xl text-primary"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-center text-dark mb-3">产品目录</h3>
+                                <p class="text-gray-600 text-center mb-6 nav-card-description">下载最新产品系列、规格参数和选型指南</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <!-- 配置教程卡片 - 已隐藏 -->
+                    <div id="config-card" class="nav-card hidden">
+                        <div class="p-6 flex flex-col h-full">
+                            <div class="nav-card-content">
+                                <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 mx-auto">
+                                    <i class="fas fa-wrench text-3xl text-primary"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-center text-dark mb-3">配置教程</h3>
+                                <p class="text-gray-600 text-center mb-6 nav-card-description">产品安装、网络配置和高级功能设置指南</p>
+                            </div>
+                            <div class="w-full py-3 bg-gray-300 text-white font-medium rounded-lg mt-auto text-center">
+                                <span id="coming-soon-text">即将上线</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+		
+        <div class="footer">
+            <p id="copyright">© 2025 Autoro. All rights reserved.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>www.autorotech.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Autoro.service@hotmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+1 (800) 123-4567</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 当前语言状态
+        let currentLanguage = 'zh';
+        
+        // 翻译映射对象
+        const translations = {
+            zh: {
+                title: "AESC 技术支持中心",
+                subtitle: " ",
+                sectionTitle: "选择您需要的资源",
+                copyright: "© 2025 Autoro. All rights reserved.",
+                card1: { title: "用户手册", desc: "查找您产品型号的详细使用说明和技术参数" },
+                card2: { title: "产品目录", desc: "下载最新产品系列、规格参数和选型指南" },
+                card3: { title: "配置教程", desc: "产品安装、网络配置和高级功能设置指南" },
+                wechatMessage: "请在浏览器中打开此页面以获得最佳体验",
+                comingSoon: "即将上线"
+            },
+            en: {
+                title: "AESC Technical Support Hub",
+                subtitle: " ",
+                sectionTitle: "Select the resource you need",
+                copyright: "© 2025 Autoro. All rights reserved.",
+                card1: { title: "User Manual", desc: "Find detailed instructions and technical specifications for your product model" },
+                card2: { title: "Product Catalog", desc: "Download latest product series, specifications and selection guides" },
+                card3: { title: "Configuration Guides", desc: "Installation, network setup and advanced feature configuration" },
+                wechatMessage: "Please open this page in a browser for the best experience",
+                comingSoon: "Coming Soon"
+            }
+        };
+        
+		// 检测国内环境（微信、QQ、支付宝等）
+        function isDomesticEnvironment() {
+            const ua = navigator.userAgent.toLowerCase();
+            return /micromessenger|qq|alipay/i.test(ua);
+        }
+		
+        // 检测微信浏览器
+        function detectWechatBrowser() {
+            const isDomestic = isDomesticEnvironment();
+            if (isDomestic) {
+                document.getElementById('wechat-alert').style.display = 'block';
+            }
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取语言切换按钮
+            const langSwitchBtn = document.getElementById('lang-switch-btn');
+            
+            // 更新页面文本
+            function updatePageText(lang) {
+                const data = translations[lang];
+                
+                // 更新标题和副标题
+                document.getElementById('main-title').textContent = data.title;
+                document.getElementById('subtitle').textContent = data.subtitle;
+                document.getElementById('section-title').textContent = data.sectionTitle;
+                document.getElementById('copyright').textContent = data.copyright;
+                document.getElementById('wechat-message').textContent = data.wechatMessage;
+                document.getElementById('coming-soon-text').textContent = data.comingSoon;
+                
+                // 更新所有卡片内容
+                const cards = document.querySelectorAll('.nav-card');
+                cards.forEach((card, index) => {
+                    const cardData = data[`card${index + 1}`];
+                    if (cardData) {
+                        const titleElement = card.querySelector('h3');
+                        const descElement = card.querySelector('.nav-card-description');
+                        
+                        if (titleElement) titleElement.textContent = cardData.title;
+                        if (descElement) descElement.textContent = cardData.desc;
+                    }
+                });
+            }
+            
+            // 切换到中文
+            function switchToChinese() {
+                currentLanguage = 'zh';
+                document.getElementById('current-lang').textContent = '中文';
+                updatePageText('zh');
+                localStorage.setItem('userLanguage', 'zh');
+            }
+            
+            // 切换到英文
+            function switchToEnglish() {
+                currentLanguage = 'en';
+                document.getElementById('current-lang').textContent = 'EN';
+                updatePageText('en');
+                localStorage.setItem('userLanguage', 'en');
+            }
+            
+            // 绑定语言切换按钮事件
+            langSwitchBtn.addEventListener('click', function() {
+                if (currentLanguage === 'zh') {
+                    switchToEnglish();
+                } else {
+                    switchToChinese();
+                }
+            });
+            
+            // 检测浏览器语言
+            function detectBrowserLanguage() {
+                const savedLang = localStorage.getItem('userLanguage');
+                if (savedLang) {
+                    if (savedLang === 'en') {
+                        switchToEnglish();
+                    } else {
+                        switchToChinese();
+                    }
+                } else {
+                    const lang = navigator.language || navigator.userLanguage;
+                    if (lang.includes('zh')) {
+                        switchToChinese();
+                    } else {
+                        switchToEnglish();
+                    }
+                }
+            }
+            
+            // 初始化语言
+            detectBrowserLanguage();
+            
+            // 绑定关闭按钮
+            document.getElementById('close-alert').addEventListener('click', function() {
+                document.getElementById('wechat-alert').style.display = 'none';
+            });
+            
+            // 执行检测
+            detectWechatBrowser();
+        });
+    </script>
+</body>
+</html>
