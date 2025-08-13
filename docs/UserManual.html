@@ -7,7 +7,7 @@
     <title>Product Manual | 产品说明书</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-	 /* 添加语言切换按钮样式 */
+        /* 添加语言切换按钮样式 */
         .lang-switch-container {
             position: absolute;
             top: 30px;
@@ -40,7 +40,7 @@
         .lang-switch-btn i {
             font-size: 1.1rem;
         }
-		
+        
         * {
             margin: 0;
             padding: 0;
@@ -874,8 +874,8 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-		
-		/* 新增弹窗样式 */
+        
+        /* 新增弹窗样式 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1246,8 +1246,8 @@
             .category-select {
                 min-width: 100%;
             }
-			
-			.modal-content {
+            
+            .modal-content {
                 padding: 25px 20px;
             }
             
@@ -1298,10 +1298,10 @@
         }
     </style>
 </head>
-	
+    
 <body>
 
-	<div class="modal-overlay" id="browser-modal">
+    <div class="modal-overlay" id="browser-modal">
         <div class="modal-content">
             <button class="close-modal" id="close-modal-btn">&times;</button>
             <div class="modal-icon">
@@ -1379,16 +1379,8 @@
                     </p>
                 </div>
                 <div class="redirect-message">
-                    <span class="lang-en">We're getting the latest product manuals. If the product selection doesn't load automatically in a few seconds, you'll be able to select manually.</span>
-                    <span class="lang-zh lang-hidden">我们正在获取最新的产品手册。如果产品选择没有在几秒钟内自动加载，您将能够手动选择。</span>
-                </div>
-                <div class="timer">
-                    <i class="fas fa-clock"></i>
-                    <span class="lang-en">Loading product selection in: </span>
-                    <span class="lang-zh lang-hidden">产品选择将在: </span>
-                    <span id="countdown">3</span>
-                    <span class="lang-en"> seconds</span>
-                    <span class="lang-zh lang-hidden"> 秒内加载</span>
+                    <span class="lang-en">We're getting the latest product manuals.</span>
+                    <span class="lang-zh lang-hidden">我们正在获取最新的产品手册。</span>
                 </div>
             </div>
             
@@ -1609,7 +1601,7 @@
                 "icon": "fas fa-tools"
             }
         ],
-"products": [
+        "products": [
             {
                 "id": "V4_V6.7",
                 "name": "V4 / V6.7",
@@ -1671,7 +1663,7 @@
                 "languages": ["en"]
             },
             {
-                "id": "BT Nano",
+                "id": "BT_Nano",
                 "name": "BT Nano",
                 "name_zh": "BT Nano",
                 "category": "bluetooth",
@@ -1690,173 +1682,769 @@
     </script>
     
     <script>
-		// 在文件顶部定义下载源配置
-	const downloadSources = {
-		domestic: "https://baogee.net/docs/UserManual",
-		international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/UserManual"
-	};
-	// Get configuration from JSON
-	const config = JSON.parse(document.getElementById('config-data').textContent);
+        // 在文件顶部定义下载源配置
+        const downloadSources = {
+            domestic: "https://baogee.net/UserManual",
+            international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/UserManual"
+        };
+        
+        // Get configuration from JSON
+        const config = JSON.parse(document.getElementById('config-data').textContent);
 
-	// State variables
-	let selectedProduct = null;
-	let selectedLanguage = null;
-	let manualDownloaded = false;
-	let countdownInterval = null;
-	let selectedCategory = "all";
-	let currentLang = 'en'; // 默认语言
+        // State variables
+        let selectedProduct = null;
+        let selectedLanguage = null;
+        let manualDownloaded = false;
+        let selectedCategory = "all";
+        let currentLang = 'en'; // 默认语言
 
-	// 检测国内环境（微信、QQ、支付宝等）
-	function isDomesticEnvironment() {
-		const ua = navigator.userAgent.toLowerCase();
-		return /micromessenger|alipay/i.test(ua);
-	}
+        // 检测国内环境（微信、QQ、支付宝等）
+        function isDomesticEnvironment() {
+            const ua = navigator.userAgent.toLowerCase();
+            return /micromessenger|qq|alipay/i.test(ua);
+        }
 
-	// 获取文件URL（根据环境选择源）
-	function getFileUrl(productId, langId) {
-		const baseUrl = isDomesticEnvironment() ? downloadSources.domestic : downloadSources.international;
-		const categoryId = getCategoryNameById(productId);
-		return `${baseUrl}/${categoryId}/${productId}_${langId}.pdf`;
-	}
+        // 获取文件URL（根据环境选择源）
+        function getFileUrl(productId, langId) {
+            const baseUrl = isDomesticEnvironment() ? downloadSources.domestic : downloadSources.international;
+            const categoryId = getCategoryNameById(productId);
+            return `${baseUrl}/${categoryId}/${productId}_${langId}.pdf`;
+        }
 
-	// 添加语言切换功能
-	function switchLanguage(lang) {
-		currentLang = lang;
-		
-		// 更新按钮显示
-		document.getElementById('current-lang').textContent = lang === 'en' ? 'EN' : '中文';
-		
-		// 更新所有文本
-		document.querySelectorAll('.lang-en, .lang-zh').forEach(element => {
-			if (element.classList.contains(`lang-${lang}`)) {
-				element.classList.remove('lang-hidden');
-			} else {
-				element.classList.add('lang-hidden');
-			}
-		});
-		
-		// 更新弹窗内容
-		document.querySelectorAll('#modal-title .lang-en, #modal-title .lang-zh').forEach(el => {
-			if (el.classList.contains(`lang-${lang}`)) {
-				el.classList.remove('lang-hidden');
-			} else {
-				el.classList.add('lang-hidden');
-			}
-		});
-		
-		document.querySelectorAll('#modal-message .lang-en, #modal-message .lang-zh').forEach(el => {
-			if (el.classList.contains(`lang-${lang}`)) {
-				el.classList.remove('lang-hidden');
-			} else {
-				el.classList.add('lang-hidden');
-			}
-		});
-		// 更新动态内容
-		updateCategoryDropdown();
-		updateCategoryTitle();
-		createProductCards();
-		updateLanguageOptions();
-		
-		// 保存语言偏好
-		localStorage.setItem('userLanguage', lang);
-	}
+        // 添加语言切换功能
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            // 更新按钮显示
+            document.getElementById('current-lang').textContent = lang === 'en' ? 'EN' : '中文';
+            
+            // 更新所有文本
+            document.querySelectorAll('.lang-en, .lang-zh').forEach(element => {
+                if (element.classList.contains(`lang-${lang}`)) {
+                    element.classList.remove('lang-hidden');
+                } else {
+                    element.classList.add('lang-hidden');
+                }
+            });
+            
+            // 更新弹窗内容
+            document.querySelectorAll('#modal-title .lang-en, #modal-title .lang-zh').forEach(el => {
+                if (el.classList.contains(`lang-${lang}`)) {
+                    el.classList.remove('lang-hidden');
+                } else {
+                    el.classList.add('lang-hidden');
+                }
+            });
+            
+            document.querySelectorAll('#modal-message .lang-en, #modal-message .lang-zh').forEach(el => {
+                if (el.classList.contains(`lang-${lang}`)) {
+                    el.classList.remove('lang-hidden');
+                } else {
+                    el.classList.add('lang-hidden');
+                }
+            });
+            
+            // 更新动态内容
+            updateCategoryDropdown();
+            updateCategoryTitle();
+            createProductCards();
+            updateLanguageOptions();
+            
+            // 保存语言偏好
+            localStorage.setItem('userLanguage', lang);
+        }
 
-	// 根据浏览器语言设置初始语言
-	function setInitialLanguage() {
-		const savedLang = localStorage.getItem('userLanguage');
-		const browserLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
-		const initialLang = savedLang || browserLang;
-		switchLanguage(initialLang);
-	}
+        // 根据浏览器语言设置初始语言
+        function setInitialLanguage() {
+            const savedLang = localStorage.getItem('userLanguage');
+            const browserLang = navigator.language.startsWith('zh') ? 'zh' : 'en';
+            const initialLang = savedLang || browserLang;
+            switchLanguage(initialLang);
+        }
 
-	// Element references
-	const autoRedirectSection = document.getElementById('auto-redirect');
-	const productSelectorSection = document.getElementById('product-selector');
-	const languageSelectorSection = document.getElementById('language-selector');
-	const productSelectionBar = document.querySelector('.product-selection-bar');
-	const selectedProductText = document.getElementById('selected-product-text');
-	const changeProductBtn = document.getElementById('change-product-btn');
-	const languageBackBtn = document.getElementById('language-back-btn');
-	const redirectButton = document.getElementById('redirect-button');
-	const languageContainer = document.getElementById('language-container');
-	const productContainer = document.getElementById('product-container');
-	const countdownEl = document.getElementById('countdown');
-	const loaderContainer = document.querySelector('.loader-container');
-	const redirectText = document.querySelector('.redirect-text');
-	const currentCategoryEl = document.getElementById('current-category');
-	const currentCategoryTitle = document.getElementById('current-category-title');
-	const fileStatusSection = document.getElementById('file-status');
-	const statusProductName = document.getElementById('status-product-name');
-	const statusProductLanguage = document.getElementById('status-product-language');
-	const categorySelect = document.getElementById('category-select');
-	const wechatAlert = document.getElementById('wechat-alert');
-	const wechatMessage = document.getElementById('wechat-message');
-	const closeAlert = document.getElementById('close-alert');
-	const langSwitchBtn = document.getElementById('lang-switch-btn');
+        // Element references
+        const autoRedirectSection = document.getElementById('auto-redirect');
+        const productSelectorSection = document.getElementById('product-selector');
+        const languageSelectorSection = document.getElementById('language-selector');
+        const productSelectionBar = document.querySelector('.product-selection-bar');
+        const selectedProductText = document.getElementById('selected-product-text');
+        const changeProductBtn = document.getElementById('change-product-btn');
+        const languageBackBtn = document.getElementById('language-back-btn');
+        const redirectButton = document.getElementById('redirect-button');
+        const languageContainer = document.getElementById('language-container');
+        const productContainer = document.getElementById('product-container');
+        const loaderContainer = document.querySelector('.loader-container');
+        const redirectText = document.querySelector('.redirect-text');
+        const currentCategoryEl = document.getElementById('current-category');
+        const currentCategoryTitle = document.getElementById('current-category-title');
+        const fileStatusSection = document.getElementById('file-status');
+        const statusProductName = document.getElementById('status-product-name');
+        const statusProductLanguage = document.getElementById('status-product-language');
+        const categorySelect = document.getElementById('category-select');
+        const wechatAlert = document.getElementById('wechat-alert');
+        const wechatMessage = document.getElementById('wechat-message');
+        const closeAlert = document.getElementById('close-alert');
+        const langSwitchBtn = document.getElementById('lang-switch-btn');
 
-	// Initialize mappings
-	function initMappings() {
-		// Initialize product mappings
-		config.products.forEach(product => {
-			productNames[product.id] = product.name;
-			productLanguages[product.id] = product.languages;
-		});
-		
-		// Initialize language mappings
-		config.languages.forEach(language => {
-			languageNames[language.id] = language.name;
-		});
-	}
+        // Initialize mappings
+        function initMappings() {
+            // Initialize product mappings
+            config.products.forEach(product => {
+                productNames[product.id] = product.name;
+                productLanguages[product.id] = product.languages;
+            });
+            
+            // Initialize language mappings
+            config.languages.forEach(language => {
+                languageNames[language.id] = language.name;
+            });
+        }
 
-	// Create product cards from config
-	function createProductCards() {
-		productContainer.innerHTML = '';
-		
-		// Filter products by selected category
-		const filteredProducts = selectedCategory === "all" 
-			? config.products 
-			: config.products.filter(p => p.category === selectedCategory);
-		
-		if (filteredProducts.length === 0) {
-			productContainer.innerHTML = `
-				<div class="no-products-message">
-					<i class="fas fa-box-open"></i>
-					<h3 class="lang-en">No products in this category</h3>
-					<h3 class="lang-zh lang-hidden">此类别无产品</h3>
-					<p class="lang-en">There are no products available in the selected category.</p>
-					<p class="lang-zh lang-hidden">所选类别中没有可用产品。</p>
-				</div>
-			`;
-			return;
-		}
-		
-		filteredProducts.forEach(product => {
-			const productCard = document.createElement('div');
-			productCard.className = 'product-card';
-			productCard.dataset.product = product.id;
-			
-			const name = currentLang === 'zh' && product.name_zh ? product.name_zh : product.name;
-			const description = currentLang === 'zh' && product.description_zh ? product.description_zh : product.description;
-			const specs = currentLang === 'zh' && product.specs_zh ? product.specs_zh : product.specs;
-			const tag = currentLang === 'zh' && product.tag_zh ? product.tag_zh : product.tag;
-			
-			productCard.innerHTML = `
-				${tag ? `<div class="product-tag ${product.tagClass}">${tag}</div>` : ''}
-				<div class="product-icon"><i class="${product.icon}"></i></div>
-				<div class="product-name">${name}</div>
-				<div class="product-text">${description}</div>
-				<div class="product-specs">${specs}</div>
-			`;
-			
-			productCard.addEventListener('click', () => {
-				handleProductSelection(product.id);
-			});
-			
-			productContainer.appendChild(productCard);
-		});
-	}
+        // Create product cards from config
+        function createProductCards() {
+            productContainer.innerHTML = '';
+            
+            // Filter products by selected category
+            const filteredProducts = selectedCategory === "all" 
+                ? config.products 
+                : config.products.filter(p => p.category === selectedCategory);
+            
+            if (filteredProducts.length === 0) {
+                productContainer.innerHTML = `
+                    <div class="no-products-message">
+                        <i class="fas fa-box-open"></i>
+                        <h3 class="lang-en">No products in this category</h3>
+                        <h3 class="lang-zh lang-hidden">此类别无产品</h3>
+                        <p class="lang-en">There are no products available in the selected category.</p>
+                        <p class="lang-zh lang-hidden">所选类别中没有可用产品。</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.dataset.product = product.id;
+                
+                const name = currentLang === 'zh' && product.name_zh ? product.name_zh : product.name;
+                const description = currentLang === 'zh' && product.description_zh ? product.description_zh : product.description;
+                const specs = currentLang === 'zh' && product.specs_zh ? product.specs_zh : product.specs;
+                const tag = currentLang === 'zh' && product.tag_zh ? product.tag_zh : product.tag;
+                
+                productCard.innerHTML = `
+                    ${tag ? `<div class="product-tag ${product.tagClass}">${tag}</div>` : ''}
+                    <div class="product-icon"><i class="${product.icon}"></i></div>
+                    <div class="product-name">${name}</div>
+                    <div class="product-text">${description}</div>
+                    <div class="product-specs">${specs}</div>
+                `;
+                
+                productCard.addEventListener('click', () => {
+                    handleProductSelection(product.id);
+                });
+                
+                productContainer.appendChild(productCard);
+            });
+        }
 
-// 新增函数：显示浏览器提示弹窗
+        // Create category dropdown
+        function createCategoryDropdown() {
+            categorySelect.innerHTML = '';
+            
+            config.categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+                if (selectedCategory === category.id) {
+                    option.selected = true;
+                }
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Update category dropdown (when language changes)
+        function updateCategoryDropdown() {
+            categorySelect.innerHTML = '';
+            
+            config.categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+                if (selectedCategory === category.id) {
+                    option.selected = true;
+                }
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Update category title
+        function updateCategoryTitle() {
+            const category = config.categories.find(c => c.id === selectedCategory);
+            if (category) {
+                currentCategoryEl.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+                currentCategoryTitle.querySelector('i').className = category.icon;
+            }
+        }
+
+        // 处理类别变化
+        function handleCategoryChange() {
+            selectedCategory = categorySelect.value;
+            updateCategoryTitle();
+            createProductCards();
+        }
+
+        // Initialize the app
+        function init() {
+            initMappings();
+            setInitialLanguage();
+            createCategoryDropdown();
+            updateCategoryTitle();
+            createProductCards();
+            
+            // 添加类别选择事件监听器
+            categorySelect.addEventListener('change', handleCategoryChange);
+                    
+            // Set contact info from config
+            const contactInfo = document.querySelector('.contact-info');
+            contactInfo.innerHTML = `
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>${config.contact.website}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>${config.contact.email}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>${config.contact.phone}</span>
+                </div>
+            `;
+            
+            // Set logo
+            document.querySelector('.logo').src = config.logo.svg;
+            
+            // Hide sections initially
+            document.getElementById('manual-redirect-btn').style.display = 'none';
+            productSelectorSection.style.display = 'none';
+            languageSelectorSection.style.display = 'none';
+            productSelectionBar.style.display = 'none';
+            fileStatusSection.style.display = 'none';
+            
+            // 显示加载动画，然后快速切换到产品选择
+            setTimeout(() => {
+                showProductSelector();
+            }, 300); // 仅显示300毫秒加载动画
+            
+            // Check if in WeChat browser
+            detectWechatBrowser();
+        }
+
+        // Show the product selector
+        function showProductSelector() {
+            if (!autoRedirectSection || !productSelectorSection) return;
+            
+            autoRedirectSection.style.display = 'none';
+            productSelectorSection.style.display = 'block';
+            languageSelectorSection.style.display = 'none';
+            productSelectionBar.style.display = 'none';
+            fileStatusSection.style.display = 'none';
+            // 修复：重置下载状态
+            manualDownloaded = false;
+            selectedProduct = null;
+            selectedLanguage = null;
+            
+            // 清除选择状态
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 更新产品显示文本
+            selectedProductText.innerHTML = 
+                currentLang === 'zh' ? '未选择' : 'None selected';
+        }
+
+        // Show the language selector
+        function showLanguageSelector() {
+            if (!selectedProduct) return;
+            
+            if (!autoRedirectSection || !productSelectorSection || !languageSelectorSection) return;
+            
+            autoRedirectSection.style.display = 'none';
+            productSelectorSection.style.display = 'none';
+            languageSelectorSection.style.display = 'block';
+            productSelectionBar.style.display = 'flex';
+            fileStatusSection.style.display = 'none';
+            
+            updateLanguageOptions();
+        }
+
+        // Show file status section
+        function showFileStatus(productId, langId) {
+            const product = config.products.find(p => p.id === productId);
+            const lang = config.languages.find(l => l.id === langId);
+            
+            // 根据当前语言准备文本
+            const preparingTitle = currentLang === 'zh' ? '正在准备手册' : 'Preparing Your Manual';
+            const preparingMessage = currentLang === 'zh' ? 
+                '我们正在为您准备下载的手册，请稍候...' : 
+                "We're preparing your manual for download. Please wait a moment...";
+            
+            const productName = product ? 
+                (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
+                productId;
+            
+            const langName = lang ? 
+                (currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name) : 
+                langId;
+            
+            // 准备产品信息文本
+            const productInfoEn = `<span class="status-product-name">${productName}</span> manual in <span class="status-product-language">${langName}</span>`;
+            const productInfoZh = `<span class="status-product-name">${productName}</span> 的 <span class="status-product-language">${langName}</span> 手册`;
+            
+            autoRedirectSection.style.display = 'none';
+            productSelectorSection.style.display = 'none';
+            languageSelectorSection.style.display = 'none';
+            productSelectionBar.style.display = 'none';
+            fileStatusSection.style.display = 'flex';
+            
+            // 创建状态卡片HTML - 使用动态语言内容
+            fileStatusSection.querySelector('.file-status-card').innerHTML = `
+                <div class="status-icon loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <h2 class="status-title">${preparingTitle}</h2>
+                <p class="status-message">${preparingMessage}</p>
+                <div class="status-product-info">
+                    <span class="lang-en">${productInfoEn}</span>
+                    <span class="lang-zh lang-hidden">${productInfoZh}</span>
+                </div>
+            `;
+            
+            // 确保正确显示当前语言
+            document.querySelectorAll('.lang-en, .lang-zh').forEach(el => {
+                if (el.classList.contains(`lang-${currentLang}`)) {
+                    el.classList.remove('lang-hidden');
+                } else {
+                    el.classList.add('lang-hidden');
+                }
+            });
+        }
+
+        // Show file status result
+        function showFileStatusResult(status, productId, langId, errorType = null) {
+            const product = config.products.find(p => p.id === productId);
+            const lang = config.languages.find(l => l.id === langId);
+            
+            const card = fileStatusSection.querySelector('.file-status-card');
+            
+            // 根据当前语言设置文本内容
+            const title = {
+                success: currentLang === 'zh' ? '手册已就绪!' : 'Manual Ready!',
+                'not-found': currentLang === 'zh' ? '手册未找到' : 'Manual Not Found',
+                error: currentLang === 'zh' ? '下载失败' : 'Download Failed'
+            }[status];
+            
+            const message = {
+                success: '',
+                'not-found': currentLang === 'zh' ? 
+                    '很抱歉，找不到您选择的产品和语言的手册。请稍后再试或联系支持。' : 
+                    "We're sorry, but the manual for your selected product and language could not be found. Please try again later or contact support.",
+                error: currentLang === 'zh' ? 
+                    `下载手册时出错。${errorType || '请稍后再试。'}` : 
+                    `There was an error downloading your manual. ${errorType || 'Please try again later.'}`
+            }[status];
+            
+            const backButtonText = currentLang === 'zh' ? '返回产品选择' : 'Back to Products';
+            const tryAgainText = currentLang === 'zh' ? '重试' : 'Try Again';
+            
+            const productName = product ? 
+                (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
+                productId;
+            
+            const languageName = lang ? 
+                (currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name) : 
+                langId;
+            
+            const productInfoText = currentLang === 'zh' ?
+                `${productName} 的 ${languageName} 手册` :
+                `${productName} manual in ${languageName}`;
+            
+            // 根据状态生成不同的UI
+            if (status === 'success') {
+                card.innerHTML = `
+                    <div class="status-icon success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2 class="status-title">${title}</h2>
+                    <p class="status-message">${message}</p>
+                    <div class="status-product-info">${productInfoText}</div>
+                    <button class="status-btn secondary" id="back-to-products-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        ${backButtonText}
+                    </button>
+                `;
+            }
+            else if (status === 'not-found') {
+                card.innerHTML = `
+                    <div class="status-icon error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2 class="status-title">${title}</h2>
+                    <p class="status-message">${message}</p>
+                    <div class="status-product-info">${productInfoText}</div>
+                    <div class="status-actions">
+                        <button class="status-btn primary" id="try-again-btn">
+                            <i class="fas fa-redo"></i>
+                            ${tryAgainText}
+                        </button>
+                        <button class="status-btn secondary" id="back-to-products-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            ${backButtonText}
+                        </button>
+                    </div>
+                `;
+            }
+            else if (status === 'error') {
+                card.innerHTML = `
+                    <div class="status-icon error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2 class="status-title">${title}</h2>
+                    <p class="status-message">${message}</p>
+                    <div class="status-product-info">${productInfoText}</div>
+                    <div class="status-actions">
+                        <button class="status-btn primary" id="try-again-btn">
+                            <i class="fas fa-redo"></i>
+                            ${tryAgainText}
+                        </button>
+                        <button class="status-btn secondary" id="back-to-products-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            ${backButtonText}
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // 添加事件监听器
+            const tryAgainBtn = document.getElementById('try-again-btn');
+            if (tryAgainBtn) {
+                tryAgainBtn.addEventListener('click', () => {
+                    downloadManualWithStatus(productId, langId);
+                });
+            }
+            
+            const backToProductsBtn = document.getElementById('back-to-products-btn');
+            if (backToProductsBtn) {
+                backToProductsBtn.addEventListener('click', () => {
+                    showProductSelector();
+                });
+            }
+        }
+
+        // Update language cards based on selected product
+        function updateLanguageOptions() {
+            if (!selectedProduct || !languageContainer) return;
+            
+            const availableLanguages = productLanguages[selectedProduct] || [];
+            languageContainer.innerHTML = '';
+            
+            // Check if product has any available languages
+            const hasNoLanguages = availableLanguages.length === 0;
+            if (hasNoLanguages) {
+                languageContainer.innerHTML = `
+                    <div class="no-languages-message" style="grid-column: 1 / -1; text-align: center; padding: 30px; background: #fff5f5; border-radius: 16px; color: #e53e3e; border: 2px solid #fed7d7;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <h3 class="lang-en" style="margin-bottom: 10px;">Language Support Unavailable</h3>
+                        <h3 class="lang-zh lang-hidden" style="margin-bottom: 10px;">暂无语言支持</h3>
+                        <p class="lang-en">We're currently working on providing manuals for this product. Please check back later.</p>
+                        <p class="lang-zh lang-hidden">我们正在为此产品提供手册，请稍后再试。</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create new language cards
+            config.languages.forEach(lang => {
+                const isAvailable = availableLanguages.includes(lang.id);
+                if(isAvailable)
+                {
+                    const langCard = document.createElement('div');
+                    langCard.className = `language-card ${isAvailable ? '' : 'unavailable'}`;
+                    langCard.dataset.lang = lang.id;
+                    
+                    const name = currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name;
+                    const description = currentLang === 'zh' && lang.description_zh ? lang.description_zh : lang.description;
+                    
+                    langCard.innerHTML = `
+                        <div class="language-icon">${lang.icon}</div>
+                        <div class="language-name">${name}</div>
+                        <div class="language-text">${description}</div>
+                    `;
+                    
+                    if (isAvailable) {
+                        langCard.addEventListener('click', function() {
+                            // 添加下载状态反馈
+                            const icon = this.querySelector('.language-icon');
+                            const originalIcon = icon.innerHTML;
+                            
+                            // 显示加载状态
+                            icon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            this.style.pointerEvents = 'none';
+                            
+                            // 重置文件状态显示
+                            fileStatusSection.style.display = 'none';
+                            
+                            // 执行下载
+                            downloadManualWithStatus(selectedProduct, lang.id);
+                            
+                            // 延迟恢复原始状态
+                            setTimeout(() => {
+                                icon.innerHTML = originalIcon;
+                                this.style.pointerEvents = 'auto';
+                            }, 3000);
+                        });
+                    }
+                    
+                    languageContainer.appendChild(langCard);
+                }
+
+            });
+        }
+
+        // Handle product selection
+        function handleProductSelection(productId, skipAnimation = false, langId = null) {
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // 修复：重置下载状态
+            manualDownloaded = false;
+            fileStatusSection.style.display = 'none';		
+            const selectedCard = document.querySelector(`.product-card[data-product="${productId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+                selectedProduct = productId;
+                
+                // Update the product display bar
+                if (selectedProductText) {
+                    const product = config.products.find(p => p.id === productId);
+                    selectedProductText.innerHTML = product ? 
+                        (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
+                        (currentLang === 'zh' ? '未选择' : 'None selected');
+                }
+                
+                // Redirect directly to download if language is provided
+                if (langId) {
+                    downloadManualWithStatus(productId, langId);
+                } else {
+                    setTimeout(() => {
+                        showLanguageSelector();
+                    }, 300);
+                }
+            }
+        }
+
+        // Download manual with status handling
+        function downloadManualWithStatus(productId, langId) {
+
+            // 检测是否在国内环境（微信/QQ/支付宝）
+            if (isDomesticEnvironment()) {
+                showBrowserModal();
+                return; // 不执行下载
+            }
+            showFileStatus(productId, langId);
+            
+            // 直接尝试下载
+            try {
+                // 创建下载链接
+                const downloadLink = document.createElement('a');
+                const pdfUrl = getFileUrl(productId, langId);
+                downloadLink.href = pdfUrl;
+                downloadLink.target = '_blank';
+                
+                // 设置文件名
+                const product = config.products.find(p => p.id === productId);
+                const lang = config.languages.find(l => l.id === langId);
+                const productName = product ? product.name.replace(/[\/\s]/g, '_') : productId;
+                const langName = lang ? lang.name.replace(/\s/g, '_') : langId;
+                downloadLink.download = `AESC_${productName}_${langName}_Manual.pdf`;
+                
+                // 触发下载
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                
+                // 清理DOM
+                // 修复：下载完成后重置状态
+                setTimeout(() => {
+                    document.body.removeChild(downloadLink);
+                    showFileStatusResult('success', productId, langId);
+                    
+                    // 重置下载状态标志
+                    manualDownloaded = false;
+                }, 100);
+                
+            } catch (error) {
+                // 错误处理
+                setTimeout(() => {
+                    let errorMsg = '';
+                    
+                    if (error.message.includes('NetworkError')) {
+                        errorMsg = currentLang === 'zh' ? 
+                            '网络错误，请检查您的连接' : 
+                            'Network error, please check your connection';
+                    } else {
+                        errorMsg = currentLang === 'zh' ? 
+                            '下载失败，请重试' : 
+                            'Download failed, please try again';
+                    }
+                    
+                    showFileStatusResult('error', productId, langId, errorMsg);
+                }, 1500);
+            }
+        }
+
+        // Get category name by ID
+        function getCategoryNameById(productId) {
+
+            // 获取产品对象
+            const product = config.products.find(p => p.id === productId);
+            if (!product) {
+                reject(new Error('Product not found'));
+                return;
+            }
+            const category = config.categories.find(c => c.id === product.category);
+            //return currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
+            return category.name;
+        }
+
+        // Check if PDF file exists
+        async function checkFileExists(productId, langId) {
+            const pdfUrl = getFileUrl(productId, langId);
+            
+            try {
+                const response = await fetch(pdfUrl, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                console.error('Error checking file existence:', error);
+                return false;
+            }
+        }
+
+        // View the manual in a new tab
+        function viewManual(productId, langId) {
+            const pdfUrl = getFileUrl(productId, langId);
+            window.open(pdfUrl, '_blank');
+        }
+
+        // Download the manual
+        function downloadManual(productId, langId) {
+            return new Promise((resolve, reject) => {
+                if (!productId || !langId) {
+                    reject(new Error('Invalid product or language'));
+                    return;
+                }
+                const pdfUrl = getFileUrl(productId, langId);
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = pdfUrl;
+                downloadLink.target = '_blank';
+                
+                // Get language and product names
+                const langInfo = config.languages.find(l => l.id === langId);
+                const langName = langInfo ? langInfo.name : langId;
+                
+                const productInfo = config.products.find(p => p.id === productId);
+                const productName = productInfo ? productInfo.name : productId;
+                
+                downloadLink.download = `AESC_${productName.replace(/[\/\s]/g, '_')}_${langName.replace(/\s/g, '_')}_Manual.pdf`;
+                
+                // Add link to document and trigger download
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(downloadLink);
+                    resolve(true);
+                }, 1000);
+            });
+        }
+
+        // Detect if user is in WeChat browser
+        function detectWechatBrowser() {
+            if (isDomesticEnvironment()) {
+                wechatMessage.innerHTML = currentLang === 'zh' 
+                    ? "请在浏览器中打开此页面以获得最佳体验" 
+                    : "Please open this page in a browser for the best experience";
+                wechatAlert.style.display = 'block';
+            }
+        }
+
+        // Initialize product and language mappings
+        const productNames = {};
+        const languageNames = {};
+        const productLanguages = {};
+
+        // Event bindings
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            
+            document.getElementById('close-modal-btn').addEventListener('click', hideBrowserModal);
+            document.getElementById('cancel-modal-btn').addEventListener('click', hideBrowserModal);
+                    
+            // 添加语言切换事件
+            langSwitchBtn.addEventListener('click', function() {
+                const newLang = currentLang === 'en' ? 'zh' : 'en';
+                switchLanguage(newLang);
+                
+                // 更新微信警告信息（如果可见）
+                if (wechatAlert.style.display === 'block') {
+                    wechatMessage.innerHTML = newLang === 'zh' 
+                        ? "请在浏览器中打开此页面以获得最佳体验" 
+                        : "Please open this page in a browser for the best experience";
+                }
+            });
+            
+            // Product card selection
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-product');
+                    handleProductSelection(productId);
+                });
+            });
+            
+            if (languageBackBtn) {
+                languageBackBtn.addEventListener('click', function() {
+                    showProductSelector();
+                });
+            }
+            
+            if (changeProductBtn) {
+                changeProductBtn.addEventListener('click', function() {
+                    showProductSelector();
+                });
+            }
+            
+            if (redirectButton) {
+                redirectButton.addEventListener('click', function() {
+                    if (selectedProduct && selectedLanguage) {
+                        downloadManualWithStatus(selectedProduct, selectedLanguage);
+                    } else {
+                        showProductSelector();
+                    }
+                });
+            }
+            
+            // Close WeChat alert
+            if (closeAlert) {
+                closeAlert.addEventListener('click', function() {
+                    wechatAlert.style.display = 'none';
+                });
+            }
+        });
+
+        // 新增函数：显示浏览器提示弹窗
         function showBrowserModal() {
             const modal = document.getElementById('browser-modal');
             modal.classList.add('active');
@@ -1869,632 +2457,7 @@
             modal.classList.remove('active');
             document.body.style.overflow = ''; // 恢复背景滚动
         }
-			
-	// Create category dropdown
-	function createCategoryDropdown() {
-		categorySelect.innerHTML = '';
-		
-		config.categories.forEach(category => {
-			const option = document.createElement('option');
-			option.value = category.id;
-			option.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
-			if (selectedCategory === category.id) {
-				option.selected = true;
-			}
-			categorySelect.appendChild(option);
-		});
-	}
-
-	// Update category dropdown (when language changes)
-	function updateCategoryDropdown() {
-		categorySelect.innerHTML = '';
-		
-		config.categories.forEach(category => {
-			const option = document.createElement('option');
-			option.value = category.id;
-			option.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
-			if (selectedCategory === category.id) {
-				option.selected = true;
-			}
-			categorySelect.appendChild(option);
-		});
-	}
-
-	// Update category title
-	function updateCategoryTitle() {
-		const category = config.categories.find(c => c.id === selectedCategory);
-		if (category) {
-			currentCategoryEl.textContent = currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
-			currentCategoryTitle.querySelector('i').className = category.icon;
-		}
-	}
-
-	// 处理类别变化
-	function handleCategoryChange() {
-		selectedCategory = categorySelect.value;
-		updateCategoryTitle();
-		createProductCards(); // 确保在类别变化时刷新产品列表
-	}
-
-
-// Initialize the app
-function init() {
-    initMappings();
-    setInitialLanguage(); // 设置初始语言
-    createCategoryDropdown();
-    updateCategoryTitle();
-    createProductCards();
-    // 添加类别选择事件监听器
-    categorySelect.addEventListener('change', handleCategoryChange);
-			
-    // Set contact info from config
-    const contactInfo = document.querySelector('.contact-info');
-    contactInfo.innerHTML = `
-        <div class="contact-item">
-            <i class="fas fa-globe"></i>
-            <span>${config.contact.website}</span>
-        </div>
-        <div class="contact-item">
-            <i class="fas fa-envelope"></i>
-            <span>${config.contact.email}</span>
-        </div>
-        <div class="contact-item">
-            <i class="fas fa-phone"></i>
-            <span>${config.contact.phone}</span>
-        </div>
-    `;
-    
-    // Set logo
-    document.querySelector('.logo').src = config.logo.svg;
-    
-    // Hide sections initially
-    document.getElementById('manual-redirect-btn').style.display = 'none';
-    productSelectorSection.style.display = 'none';
-    languageSelectorSection.style.display = 'none';
-    productSelectionBar.style.display = 'none';
-    fileStatusSection.style.display = 'none';
-    
-    // Start countdown
-    startCountdown();
-    
-    // Check if in WeChat browser
-    detectWechatBrowser();
-
-}
-
-// Start countdown function
-function startCountdown() {
-    let seconds = 3;
-    countdownEl.textContent = seconds;
-    
-    if (countdownInterval) clearInterval(countdownInterval);
-    
-    countdownInterval = setInterval(() => {
-        seconds--;
-        countdownEl.textContent = seconds;
-        
-        if (seconds <= 0) {
-            clearInterval(countdownInterval);
-            showProductSelector();
-        }
-    }, 1000);
-}
-
-// Show the product selector
-function showProductSelector() {
-    if (!autoRedirectSection || !productSelectorSection) return;
-    
-    autoRedirectSection.style.display = 'none';
-    productSelectorSection.style.display = 'block';
-    languageSelectorSection.style.display = 'none';
-    productSelectionBar.style.display = 'none';
-    fileStatusSection.style.display = 'none';
-	// 修复：重置下载状态
-	manualDownloaded = false;
-	selectedProduct = null;
-	selectedLanguage = null;
-	
-	// 清除选择状态
-	document.querySelectorAll('.product-card').forEach(card => {
-		card.classList.remove('selected');
-	});
-	
-	// 更新产品显示文本
-	selectedProductText.innerHTML = 
-		currentLang === 'zh' ? '未选择' : 'None selected';
-
-}
-
-// Show the language selector
-function showLanguageSelector() {
-    if (!selectedProduct) return;
-    
-    if (!autoRedirectSection || !productSelectorSection || !languageSelectorSection) return;
-    
-    autoRedirectSection.style.display = 'none';
-    productSelectorSection.style.display = 'none';
-    languageSelectorSection.style.display = 'block';
-    productSelectionBar.style.display = 'flex';
-    fileStatusSection.style.display = 'none';
-    
-    updateLanguageOptions();
-}
-
-// Show file status section
-function showFileStatus(productId, langId) {
-    const product = config.products.find(p => p.id === productId);
-    const lang = config.languages.find(l => l.id === langId);
-    
-    // 根据当前语言准备文本
-    const preparingTitle = currentLang === 'zh' ? '正在准备手册' : 'Preparing Your Manual';
-    const preparingMessage = currentLang === 'zh' ? 
-        '我们正在为您准备下载的手册，请稍候...' : 
-        "We're preparing your manual for download. Please wait a moment...";
-    
-    const productName = product ? 
-        (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
-        productId;
-    
-    const langName = lang ? 
-        (currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name) : 
-        langId;
-    
-    // 准备产品信息文本
-    const productInfoEn = `<span class="status-product-name">${productName}</span> manual in <span class="status-product-language">${langName}</span>`;
-    const productInfoZh = `<span class="status-product-name">${productName}</span> 的 <span class="status-product-language">${langName}</span> 手册`;
-    
-    autoRedirectSection.style.display = 'none';
-    productSelectorSection.style.display = 'none';
-    languageSelectorSection.style.display = 'none';
-    productSelectionBar.style.display = 'none';
-    fileStatusSection.style.display = 'flex';
-    
-    // 创建状态卡片HTML - 使用动态语言内容
-    fileStatusSection.querySelector('.file-status-card').innerHTML = `
-        <div class="status-icon loading">
-            <i class="fas fa-spinner fa-spin"></i>
-        </div>
-        <h2 class="status-title">${preparingTitle}</h2>
-        <p class="status-message">${preparingMessage}</p>
-        <div class="status-product-info">
-            <span class="lang-en">${productInfoEn}</span>
-            <span class="lang-zh lang-hidden">${productInfoZh}</span>
-        </div>
-    `;
-    
-    // 确保正确显示当前语言
-    document.querySelectorAll('.lang-en, .lang-zh').forEach(el => {
-        if (el.classList.contains(`lang-${currentLang}`)) {
-            el.classList.remove('lang-hidden');
-        } else {
-            el.classList.add('lang-hidden');
-        }
-    });
-}
-
-// Show file status result
-function showFileStatusResult(status, productId, langId, errorType = null) {
-    const product = config.products.find(p => p.id === productId);
-    const lang = config.languages.find(l => l.id === langId);
-    
-    const card = fileStatusSection.querySelector('.file-status-card');
-    
-    // 根据当前语言设置文本内容
-    const title = {
-        success: currentLang === 'zh' ? '手册已就绪!' : 'Manual Ready!',
-        'not-found': currentLang === 'zh' ? '手册未找到' : 'Manual Not Found',
-        error: currentLang === 'zh' ? '下载失败' : 'Download Failed'
-    }[status];
-    
-    const message = {
-        success: '',
-        'not-found': currentLang === 'zh' ? 
-            '很抱歉，找不到您选择的产品和语言的手册。请稍后再试或联系支持。' : 
-            "We're sorry, but the manual for your selected product and language could not be found. Please try again later or contact support.",
-        error: currentLang === 'zh' ? 
-            `下载手册时出错。${errorType || '请稍后再试。'}` : 
-            `There was an error downloading your manual. ${errorType || 'Please try again later.'}`
-    }[status];
-    
-    const backButtonText = currentLang === 'zh' ? '返回产品选择' : 'Back to Products';
-    const tryAgainText = currentLang === 'zh' ? '重试' : 'Try Again';
-    
-    const productName = product ? 
-        (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
-        productId;
-    
-    const languageName = lang ? 
-        (currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name) : 
-        langId;
-    
-    const productInfoText = currentLang === 'zh' ?
-        `${productName} 的 ${languageName} 手册` :
-        `${productName} manual in ${languageName}`;
-    
-    // 根据状态生成不同的UI
-    if (status === 'success') {
-        card.innerHTML = `
-            <div class="status-icon success">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2 class="status-title">${title}</h2>
-            <p class="status-message">${message}</p>
-            <div class="status-product-info">${productInfoText}</div>
-            <button class="status-btn secondary" id="back-to-products-btn">
-                <i class="fas fa-arrow-left"></i>
-                ${backButtonText}
-            </button>
-        `;
-    }
-    else if (status === 'not-found') {
-        card.innerHTML = `
-            <div class="status-icon error">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h2 class="status-title">${title}</h2>
-            <p class="status-message">${message}</p>
-            <div class="status-product-info">${productInfoText}</div>
-            <div class="status-actions">
-                <button class="status-btn primary" id="try-again-btn">
-                    <i class="fas fa-redo"></i>
-                    ${tryAgainText}
-                </button>
-                <button class="status-btn secondary" id="back-to-products-btn">
-                    <i class="fas fa-arrow-left"></i>
-                    ${backButtonText}
-                </button>
-            </div>
-        `;
-    }
-    else if (status === 'error') {
-        card.innerHTML = `
-            <div class="status-icon error">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h2 class="status-title">${title}</h2>
-            <p class="status-message">${message}</p>
-            <div class="status-product-info">${productInfoText}</div>
-            <div class="status-actions">
-                <button class="status-btn primary" id="try-again-btn">
-                    <i class="fas fa-redo"></i>
-                    ${tryAgainText}
-                </button>
-                <button class="status-btn secondary" id="back-to-products-btn">
-                    <i class="fas fa-arrow-left"></i>
-                    ${backButtonText}
-                </button>
-            </div>
-        `;
-    }
-    
-    // 添加事件监听器
-    const tryAgainBtn = document.getElementById('try-again-btn');
-    if (tryAgainBtn) {
-        tryAgainBtn.addEventListener('click', () => {
-            downloadManualWithStatus(productId, langId);
-        });
-    }
-    
-    const backToProductsBtn = document.getElementById('back-to-products-btn');
-    if (backToProductsBtn) {
-        backToProductsBtn.addEventListener('click', () => {
-            showProductSelector();
-        });
-    }
-}
-
-// Update language cards based on selected product
-function updateLanguageOptions() {
-    if (!selectedProduct || !languageContainer) return;
-    
-    const availableLanguages = productLanguages[selectedProduct] || [];
-    languageContainer.innerHTML = '';
-    
-    // Check if product has any available languages
-    const hasNoLanguages = availableLanguages.length === 0;
-    if (hasNoLanguages) {
-        languageContainer.innerHTML = `
-            <div class="no-languages-message" style="grid-column: 1 / -1; text-align: center; padding: 30px; background: #fff5f5; border-radius: 16px; color: #e53e3e; border: 2px solid #fed7d7;">
-                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 20px;"></i>
-                <h3 class="lang-en" style="margin-bottom: 10px;">Language Support Unavailable</h3>
-                <h3 class="lang-zh lang-hidden" style="margin-bottom: 10px;">暂无语言支持</h3>
-                <p class="lang-en">We're currently working on providing manuals for this product. Please check back later.</p>
-                <p class="lang-zh lang-hidden">我们正在为此产品提供手册，请稍后再试。</p>
-            </div>
-        `;
-        return;
-    }
-    
-    // Create new language cards
-    config.languages.forEach(lang => {
-        const isAvailable = availableLanguages.includes(lang.id);
-        if(isAvailable)
-        {
-            const langCard = document.createElement('div');
-            langCard.className = `language-card ${isAvailable ? '' : 'unavailable'}`;
-            langCard.dataset.lang = lang.id;
-            
-            const name = currentLang === 'zh' && lang.name_zh ? lang.name_zh : lang.name;
-            const description = currentLang === 'zh' && lang.description_zh ? lang.description_zh : lang.description;
-            
-            langCard.innerHTML = `
-                <div class="language-icon">${lang.icon}</div>
-                <div class="language-name">${name}</div>
-                <div class="language-text">${description}</div>
-            `;
-            
-            if (isAvailable) {
-				langCard.addEventListener('click', function() {
-					// 添加下载状态反馈
-					const icon = this.querySelector('.language-icon');
-					const originalIcon = icon.innerHTML;
-					
-					// 显示加载状态
-					icon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-					this.style.pointerEvents = 'none';
-					
-					// 重置文件状态显示
-					fileStatusSection.style.display = 'none';
-					
-					// 执行下载
-					downloadManualWithStatus(selectedProduct, lang.id);
-					
-					// 延迟恢复原始状态
-					setTimeout(() => {
-						icon.innerHTML = originalIcon;
-						this.style.pointerEvents = 'auto';
-					}, 3000);
-				});
-			}
-            
-            languageContainer.appendChild(langCard);
-        }
-
-    });
-}
-
-// Handle product selection
-function handleProductSelection(productId, skipAnimation = false, langId = null) {
-    document.querySelectorAll('.product-card').forEach(card => {
-        card.classList.remove('selected');
-    });
-	// 修复：重置下载状态
-	manualDownloaded = false;
-	fileStatusSection.style.display = 'none';		
-    const selectedCard = document.querySelector(`.product-card[data-product="${productId}"]`);
-    if (selectedCard) {
-        selectedCard.classList.add('selected');
-        selectedProduct = productId;
-        
-        // Update the product display bar
-        if (selectedProductText) {
-            const product = config.products.find(p => p.id === productId);
-            selectedProductText.innerHTML = product ? 
-                (currentLang === 'zh' && product.name_zh ? product.name_zh : product.name) : 
-                (currentLang === 'zh' ? '未选择' : 'None selected');
-        }
-        
-        // Redirect directly to download if language is provided
-        if (langId) {
-            downloadManualWithStatus(productId, langId);
-        } else {
-            setTimeout(() => {
-                showLanguageSelector();
-            }, 300);
-        }
-    }
-}
-
-// Download manual with status handling
-function downloadManualWithStatus(productId, langId) {
-
-	// 检测是否在国内环境（微信/QQ/支付宝）
-	if (isDomesticEnvironment()) {
-		showBrowserModal();
-		return; // 不执行下载
-	}
-    showFileStatus(productId, langId);
-    
-    // 直接尝试下载
-    try {
-        // 创建下载链接
-        const downloadLink = document.createElement('a');
-        const pdfUrl = getFileUrl(productId, langId);
-        downloadLink.href = pdfUrl;
-        downloadLink.target = '_blank';
-        
-        // 设置文件名
-        const product = config.products.find(p => p.id === productId);
-        const lang = config.languages.find(l => l.id === langId);
-        const productName = product ? product.name.replace(/[\/\s]/g, '_') : productId;
-        const langName = lang ? lang.name.replace(/\s/g, '_') : langId;
-        downloadLink.download = `AESC_${productName}_${langName}_Manual.pdf`;
-        
-        // 触发下载
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        
-        // 清理DOM
-        // 修复：下载完成后重置状态
-		setTimeout(() => {
-			document.body.removeChild(downloadLink);
-			showFileStatusResult('success', productId, langId);
-			
-			// 重置下载状态标志
-			manualDownloaded = false;
-		}, 100);
-        
-    } catch (error) {
-        // 错误处理
-        setTimeout(() => {
-            let errorMsg = '';
-            
-            if (error.message.includes('NetworkError')) {
-                errorMsg = currentLang === 'zh' ? 
-                    '网络错误，请检查您的连接' : 
-                    'Network error, please check your connection';
-            } else {
-                errorMsg = currentLang === 'zh' ? 
-                    '下载失败，请重试' : 
-                    'Download failed, please try again';
-            }
-            
-            showFileStatusResult('error', productId, langId, errorMsg);
-        }, 1500);
-    }
-}
-
-
-// Get category name by ID
-function getCategoryNameById(productId) {
-
-    // 获取产品对象
-    const product = config.products.find(p => p.id === productId);
-    if (!product) {
-        reject(new Error('Product not found'));
-        return;
-    }
-    const category = config.categories.find(c => c.id === product.category);
-    //return currentLang === 'zh' && category.name_zh ? category.name_zh : category.name;
-	return category.name;
-}
-
-// Check if PDF file exists
-async function checkFileExists(productId, langId) {
-    const pdfUrl = getFileUrl(productId, langId);
-    
-    try {
-        const response = await fetch(pdfUrl, { method: 'HEAD' });
-        return response.ok;
-    } catch (error) {
-        console.error('Error checking file existence:', error);
-        return false;
-    }
-}
-
-// View the manual in a new tab
-function viewManual(productId, langId) {
-    const pdfUrl = getFileUrl(productId, langId);
-    window.open(pdfUrl, '_blank');
-}
-
-// Download the manual
-function downloadManual(productId, langId) {
-    return new Promise((resolve, reject) => {
-        if (!productId || !langId) {
-            reject(new Error('Invalid product or language'));
-            return;
-        }
-        const pdfUrl = getFileUrl(productId, langId);
-		
-        const downloadLink = document.createElement('a');
-        downloadLink.href = pdfUrl;
-        downloadLink.target = '_blank';
-        
-        // Get language and product names
-        const langInfo = config.languages.find(l => l.id === langId);
-        const langName = langInfo ? langInfo.name : langId;
-        
-        const productInfo = config.products.find(p => p.id === productId);
-        const productName = productInfo ? productInfo.name : productId;
-        
-        downloadLink.download = `AESC_${productName.replace(/[\/\s]/g, '_')}_${langName.replace(/\s/g, '_')}_Manual.pdf`;
-        
-        // Add link to document and trigger download
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        
-        // Clean up
-        setTimeout(() => {
-            document.body.removeChild(downloadLink);
-            resolve(true);
-        }, 1000);
-    });
-}
-
-// Detect if user is in WeChat browser
-function detectWechatBrowser() {
-    if (isDomesticEnvironment()) {
-        wechatMessage.innerHTML = currentLang === 'zh' 
-            ? "请在浏览器中打开此页面以获得最佳体验" 
-            : "Please open this page in a browser for the best experience";
-        wechatAlert.style.display = 'block';
-    }
-}
-
-// Initialize product and language mappings
-const productNames = {};
-const languageNames = {};
-const productLanguages = {};
-
-// Event bindings
-document.addEventListener('DOMContentLoaded', function() {
-    init();
-    
-	document.getElementById('close-modal-btn').addEventListener('click', hideBrowserModal);
-    document.getElementById('cancel-modal-btn').addEventListener('click', hideBrowserModal);
-			
-    // 添加语言切换事件
-    langSwitchBtn.addEventListener('click', function() {
-        const newLang = currentLang === 'en' ? 'zh' : 'en';
-        switchLanguage(newLang);
-        
-        // 更新微信警告信息（如果可见）
-        if (wechatAlert.style.display === 'block') {
-            wechatMessage.innerHTML = newLang === 'zh' 
-                ? "请在浏览器中打开此页面以获得最佳体验" 
-                : "Please open this page in a browser for the best experience";
-        }
-    });
-    
-    // Product card selection
-    document.querySelectorAll('.product-card').forEach(card => {
-        card.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product');
-            handleProductSelection(productId);
-        });
-    });
-    
-    if (languageBackBtn) {
-        languageBackBtn.addEventListener('click', function() {
-            showProductSelector();
-        });
-    }
-    
-    if (changeProductBtn) {
-        changeProductBtn.addEventListener('click', function() {
-            showProductSelector();
-        });
-    }
-    
-    if (redirectButton) {
-        redirectButton.addEventListener('click', function() {
-            if (selectedProduct && selectedLanguage) {
-                downloadManualWithStatus(selectedProduct, selectedLanguage);
-            } else {
-                showProductSelector();
-            }
-        });
-    }
-    
-    // Close WeChat alert
-    if (closeAlert) {
-        closeAlert.addEventListener('click', function() {
-            wechatAlert.style.display = 'none';
-        });
-    }
-    
-    // Fallback mechanism
-    setTimeout(() => {
-        if (loaderContainer && loaderContainer.offsetParent !== null) {
-            if (autoRedirectSection && autoRedirectSection.style.display !== 'none') {
-                showProductSelector();
-            }
-        }
-    }, 10000);
-});
-
-</script>
+    </script>
 
 </body>
 </html>
