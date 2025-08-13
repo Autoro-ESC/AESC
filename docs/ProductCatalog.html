@@ -500,11 +500,11 @@
         // 下载按钮交互反馈
         downloadLink.addEventListener('click', function(e) {
             // 如果是在微信等国内环境，则显示提示框并阻止下载
-            if (isDomesticEnvironment()) {
+            //if (isDomesticEnvironment()) {
                 e.preventDefault();
                 showBrowserAlert();
                 return;
-            }
+            //}
             
             const originalContent = this.innerHTML;
             const loadingZh = '<i class="fas fa-spinner fa-spin mr-2"></i> 正在下载...';
@@ -529,5 +529,3 @@
     </script>
 </body>
 </html>
-
-
