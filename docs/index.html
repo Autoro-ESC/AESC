@@ -16,7 +16,8 @@
                         primary: '#165DFF',
                         secondary: '#36BFFA',
                         neutral: '#F5F7FA',
-                        dark: '#0F172A'
+                        dark: '#0F172A',
+                        border: '#DBEAFE' // 添加边框颜色
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -62,15 +63,41 @@
             }
             .nav-card {
                 @apply bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 
-                       border-2 border-gray-200 overflow-hidden transform hover:-translate-y-2;
+                       overflow-hidden transform hover:-translate-y-2;
                 display: flex;
                 flex-direction: column;
                 height: 100%;
+                position: relative;
+                border: none;
+                /* 添加渐变边框 */
+                background-clip: padding-box;
+                border: solid 2px transparent;
+                background-image: linear-gradient(white, white), 
+                                  linear-gradient(135deg, #165DFF, #36BFFA);
+                background-origin: border-box;
                 box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             }
+            .nav-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(to right, #36BFFA, #165DFF);
+                border-radius: 4px 4px 0 0;
+                opacity: 0.7;
+                transition: opacity 0.3s ease;
+            }
             .nav-card:hover {
-                border-color: #36BFFA;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 15px 10px -6px rgba(0, 0, 0, 0.1);
+                background-image: linear-gradient(white, white), 
+                                  linear-gradient(135deg, #0d50d4, #2a9bd9);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 15px 10px -6px rgba(0, 0, 0, 0.1),
+                            0 0 30px rgba(22, 93, 255, 0.2);
+            }
+            .nav-card:hover::before {
+                opacity: 1;
+                background: linear-gradient(to right, #2a9bd9, #0d50d4);
             }
             .nav-card-content {
                 flex: 1;
@@ -125,7 +152,7 @@
             font-size: 1.2em;
             cursor: pointer;
         }
-		
+        
         .footer {
             background: var(--light);
             padding: 25px 20px;
@@ -240,7 +267,7 @@
                 </div>
             </div>
         </main>
-		
+        
         <div class="footer">
             <p id="copyright">© 2025 Autoro. All rights reserved.</p>
             <div class="contact-info">
@@ -290,14 +317,17 @@
             }
         };
         
-		// 检测国内环境（微信、QQ、支付宝等）
+        // 检测国内环境（微信、QQ、支付宝等）
         function isDomesticEnvironment() {
             const ua = navigator.userAgent.toLowerCase();
             return /micromessenger|alipay/i.test(ua);
         }
-		
+        
         // 检测微信浏览器
         function detectWechatBrowser() {
+            const ua = navigator.userAgent.toLowerCase();
+            const isWeChat = /micromessenger/i.test(ua);
+            const isQQ = ua.includes('qq/');
             const isDomestic = isDomesticEnvironment();
             if (isDomestic) {
                 document.getElementById('wechat-alert').style.display = 'block';
