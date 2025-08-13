@@ -1701,7 +1701,7 @@
         // 检测国内环境（微信、QQ、支付宝等）
         function isDomesticEnvironment() {
             const ua = navigator.userAgent.toLowerCase();
-            return /micromessenger|qq|alipay/i.test(ua);
+            return /micromessenger|alipay/i.test(ua);
         }
 
         // 获取文件URL（根据环境选择源）
