@@ -38,7 +38,7 @@
                 @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
             }
             .card-effect {
-                @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300;
+                @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border-2 border-secondary;
             }
             .lang-hidden {
                 @apply hidden;
@@ -121,6 +121,10 @@
         }
         .contact-item i {
             color: #36BFFA;
+        }
+		
+		.contact-item.phone-item {
+            display: none !important;
         }
         /* 新增Home按钮样式 */
         .back-home {
@@ -361,7 +365,7 @@
                     <i class="fas fa-envelope"></i>
                     <span>Autoro.service@hotmail.com</span>
                 </div>
-                <div class="contact-item">
+                <div class="contact-item phone-item">
                     <i class="fas fa-phone"></i>
                     <span>+1 (800) 123-4567</span>
                 </div>
@@ -450,7 +454,7 @@
         // 检测微信浏览器
         function detectWechatBrowser() {
 			const isWeChat = isDomesticEnvironment();
-            
+			
             if (isWeChat) {
                 document.getElementById('wechat-alert').style.display = 'block';
                 // 绑定关闭按钮
@@ -529,4 +533,3 @@
     </script>
 </body>
 </html>
-
