@@ -7,6 +7,11 @@
     <title>Product Manual | 产品说明书</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 添加隐藏电话的样式 */
+        .contact-item.phone-item {
+            display: none !important;
+        }
+        
         /* 添加语言切换按钮样式 */
         .lang-switch-container {
             position: absolute;
@@ -1342,7 +1347,7 @@
             
             <div class="header-top">
                 <div class="header-left">
-                    <a href="index" class="back-home">
+                    <a href="index.html" class="back-home">
                         <i class="fas fa-home"></i>
                         <span class="lang-en">Home</span>
                         <span class="lang-zh lang-hidden">首页</span>
@@ -1493,7 +1498,8 @@
                     <i class="fas fa-envelope"></i>
                     <span>Autoro.service@hotmail.com</span>
                 </div>
-                <div class="contact-item">
+                <!-- 电话信息已被隐藏 -->
+                <div class="contact-item phone-item">
                     <i class="fas fa-phone"></i>
                     <span>+1 (800) 123-4567</span>
                 </div>
@@ -1645,7 +1651,7 @@
                 "tag_zh": "标准",
                 "tagClass": "tag-standard",
                 "icon": "fas fa-battery-three-quarters",
-                "languages": []
+                "languages": ["en"]
             },
             {
                 "id": "AS100",
@@ -1916,7 +1922,8 @@
                     <i class="fas fa-envelope"></i>
                     <span>${config.contact.email}</span>
                 </div>
-                <div class="contact-item">
+                <!-- 电话信息已被隐藏 -->
+                <div class="contact-item phone-item">
                     <i class="fas fa-phone"></i>
                     <span>${config.contact.phone}</span>
                 </div>
