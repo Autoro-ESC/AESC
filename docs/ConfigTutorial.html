@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>配置教程 | Configuration Tutorial</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        neutral: '#F5F7FA',
+                        dark: '#0F172A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .btn-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .card-effect {
+                @apply bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border-2 border-secondary;
+            }
+            .lang-hidden {
+                @apply hidden;
+            }
+            .doc-card {
+                @apply bg-white rounded-lg shadow-md p-5 mb-6 hover:shadow-lg transition-all duration-300 border border-gray-100;
+            }
+        }
+        /* 添加语言切换按钮样式 */
+        .lang-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        .lang-switch-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .lang-switch-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .lang-switch-btn i {
+            font-size: 1.1rem;
+        }
+        .wechat-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffcd32;
+            color: #333;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none;
+        }
+        .close-alert {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .section-gradient {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .footer {
+            background: white;
+            padding: 25px 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 15px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-item i {
+            color: #36BFFA;
+        }
+		
+		.contact-item.phone-item {
+            display: none !important;
+        }
+        /* 新增Home按钮样式 */
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            height: 40px;
+        }
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .back-home i {
+            margin-right: 8px;
+        }
+        /* 头部布局调整 */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+        .header-left {
+            display: flex;
+            justify-content: flex-start;
+            flex: 1;
+        }
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        .header-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        /* 新增浏览器提示模态框样式 */
+        .browser-alert-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .browser-alert-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .browser-alert-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .browser-alert-modal.show .browser-alert-content {
+            transform: translateY(0);
+        }
+        .browser-alert-icon {
+            color: #ffcd32;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .browser-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .browser-alert-message {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .browser-alert-button {
+            background: #165DFF;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .browser-alert-button:hover {
+            background: #0e4dd9;
+            transform: translateY(-2px);
+        }
+        /* 文档列表样式 */
+        .docs-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        @media (min-width: 768px) {
+            .docs-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 767px) {
+            .back-home span {
+                display: none;
+            }
+            .back-home i {
+                margin-right: 0;
+            }
+        }
+        .doc-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .doc-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .download-all-container {
+            text-align: center;
+            margin: 2rem 0 3rem;
+        }
+        .download-progress {
+            display: none;
+            margin-top: 1rem;
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #165DFF;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen flex flex-col">
+    <!-- WeChat browser alert -->
+    <div class="wechat-alert" id="wechat-alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="wechat-message">请在浏览器中打开此页面以获得最佳体验</span>
+        <button class="close-alert" id="close-alert">&times;</button>
+    </div>
+
+    <!-- 新增浏览器提示模态框 -->
+    <div class="browser-alert-modal" id="browser-alert-modal">
+        <div class="browser-alert-content">
+            <div class="browser-alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="browser-alert-title" id="browser-alert-title"></h3>
+            <p class="browser-alert-message" id="browser-alert-message"></p>
+            <button class="browser-alert-button" id="browser-alert-confirm">
+                <span class="lang-zh">取消</span>
+                <span class="lang-en lang-hidden">Cancel</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 页面头部 - 添加Home按钮 -->
+    <header class="bg-gradient-to-r from-primary to-secondary py-12 px-4 text-center relative">
+        <div class="max-w-4xl mx-auto">
+            <!-- 新增头部布局 -->
+            <div class="header-top mb-6">
+                <div class="header-left">
+                    <!-- Home按钮 -->
+                    <a href="index" class="back-home">
+                        <i class="fas fa-home"></i>
+                        <span class="lang-zh">首页</span>
+                        <span class="lang-en lang-hidden">Home</span>
+                    </a>
+                </div>
+                <div class="header-center">
+                    <!-- Logo放在中间 -->
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%233b82f6' stroke-width='1'/><text x='32' y='38' font-family='Arial' font-size='18' fill='%231e3a8a' text-anchor='middle' font-weight='bold'>Autoro</text></svg>" 
+                        alt="AESC Logo" class="h-24">
+                </div>
+                <div class="header-right">
+                    <!-- 语言切换按钮 -->
+                    <button id="lang-switch-btn" class="lang-switch-btn">
+                        <i class="fas fa-language"></i>
+                        <span id="current-lang">EN</span>
+                    </button>
+                </div>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                <span class="lang-zh">配置教程</span>
+                <span class="lang-en lang-hidden">Configuration Tutorial</span>
+            </h1>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+                <span class="lang-zh">下载详细的配置指南和教程文档，快速掌握产品使用方法</span>
+                <span class="lang-en lang-hidden">Download detailed configuration guides and tutorials to quickly master product usage</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="flex-grow py-12 px-4 section-gradient">
+        <div class="max-w-5xl mx-auto">
+            <div class="card-effect p-6 sm:p-8">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-4">
+                        <i class="fas fa-file-alt text-4xl text-primary"></i>
+                    </div>
+                    <h2 class="text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-gray-800 mb-2">
+                        <span class="lang-zh">配置教程文档</span>
+                        <span class="lang-en lang-hidden">Configuration Documents</span>
+                    </h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto">
+                        <span class="lang-zh">以下是详细的产品配置教程和指南，您可以选择单独下载所需文档，或下载全部文档压缩包。</span>
+                        <span class="lang-en lang-hidden">Below are detailed product configuration tutorials and guides. You can download individual documents or download the complete package.</span>
+                    </p>
+                </div>
+                
+                <!-- 全部下载按钮 -->
+                <div class="download-all-container">
+                    <button 
+                        id="downloadAllBtn"
+                        class="inline-flex items-center justify-center px-8 py-3 bg-primary text-white font-medium rounded-lg btn-hover"
+                    >
+                        <i class="fas fa-download mr-2"></i>
+                        <span class="lang-zh">下载全部文档</span>
+                        <span class="lang-en lang-hidden">Download All Documents</span>
+                    </button>
+                    <div class="download-progress">
+                        <div class="progress-bar" id="downloadProgress"></div>
+                    </div>
+                </div>
+                
+                <!-- 文档列表 -->
+                <div class="docs-container" id="docsContainer">
+                    <!-- 文档1 -->
+                    <div class="doc-card">
+                        <h3 class="doc-title">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="lang-zh">如何下载VESC Tool</span>
+                            <span class="lang-en lang-hidden">How to download VESC Tool</span>
+                        </h3>
+                        <p class="doc-description">
+                            <span class="lang-zh">下载 VESC 工具的详细指南。</span>
+                            <span class="lang-en lang-hidden">Detailed Guide to Downloading VESC Tool.</span>
+                        </p>
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
+                            data-file="How_to_download_VESC_Tool_en.pdf"
+                            onclick="downloadDocument(event, this)"
+                        >
+                            <i class="fas fa-download mr-1"></i>
+                            <span class="lang-zh">下载</span>
+                            <span class="lang-en lang-hidden">Download</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 文档2 -->
+                    <div class="doc-card">
+                        <h3 class="doc-title">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="lang-zh">设置电机FOC</span>
+                            <span class="lang-en lang-hidden">Setup Motors FOC</span>
+                        </h3>
+                        <p class="doc-description">
+                            <span class="lang-zh">用于AESC的简单FOC配置。</span>
+                            <span class="lang-en lang-hidden">Simple FOC setup for AESC.</span>
+                        </p>
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
+                            data-file="Setup_Motors_FOC_en.pdf"
+                            onclick="downloadDocument(event, this)"
+                        >
+                            <i class="fas fa-download mr-1"></i>
+                            <span class="lang-zh">下载</span>
+                            <span class="lang-en lang-hidden">Download</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 文档3 -->
+                    <div class="doc-card">
+                        <h3 class="doc-title">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="lang-zh">固件更新</span>
+                            <span class="lang-en lang-hidden">Update the firmware</span>
+                        </h3>
+                        <p class="doc-description">
+                            <span class="lang-zh">详细介绍更新VESC固件的步骤。</span>
+                            <span class="lang-en lang-hidden">Detailed steps for updating VESC firmware.</span>
+                        </p>
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
+                            data-file="Update_the_firmware_en.pdf"
+                            onclick="downloadDocument(event, this)"
+                        >
+                            <i class="fas fa-download mr-1"></i>
+                            <span class="lang-zh">下载</span>
+                            <span class="lang-en lang-hidden">Download</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 文档4 -->
+                    <div class="doc-card">
+                        <h3 class="doc-title">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="lang-zh">蓝牙通信</span>
+                            <span class="lang-en lang-hidden">Bluetooth communication</span>
+                        </h3>
+                        <p class="doc-description">
+                            <span class="lang-zh">介绍如何通过蓝牙配置 AESC。</span>
+                            <span class="lang-en lang-hidden">Introduce how to configure AESC via Bluetooth.</span>
+                        </p>
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
+                            data-file="Bluetooth_communication_en.pdf"
+                            onclick="downloadDocument(event, this)"
+                        >
+                            <i class="fas fa-download mr-1"></i>
+                            <span class="lang-zh">下载</span>
+                            <span class="lang-en lang-hidden">Download</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 这里可以继续添加更多文档卡片 -->
+                </div>
+                
+                <div class="mt-8 pt-6 border-t border-gray-100 text-center text-gray-500 text-sm">
+                    <p>
+                        <span class="lang-zh">文件格式: PDF | 最后更新: 2025年9月1日</span>
+                        <span class="lang-en lang-hidden">File format: PDF | Last updated: September 1st, 2025</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="max-w-6xl mx-auto text-center">
+            <p id="copyright">
+                <span class="lang-zh">© 2025 Autoro. 保留所有权利。</span>
+                <span class="lang-en lang-hidden">© 2025 Autoro. All rights reserved.</span>
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>www.autorotech.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Autoro.service@hotmail.com</span>
+                </div>
+                <div class="contact-item phone-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+1 (800) 123-4567</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 文档下载源配置
+        const downloadSources = {
+            domestic: "https://baogee.net/ConfigTutorial/",
+            international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/ConfigTutorial/"
+        };
+        
+        // 全部文档打包下载链接
+        const allDocumentsPackage = {
+            domestic: "https://baogee.net/ConfigTutorial/AllTutorials.zip",
+            international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/ConfigTutorial/AllTutorials.zip"
+        };
+        
+        // 当前语言状态
+        let currentLanguage = 'zh';
+        
+        // 语言切换功能
+        const langSwitchBtn = document.getElementById('lang-switch-btn');
+        const wechatMessage = document.getElementById('wechat-message');
+        const copyright = document.getElementById('copyright');
+        
+        // 浏览器提示模态框元素
+        const browserAlertModal = document.getElementById('browser-alert-modal');
+        const browserAlertTitle = document.getElementById('browser-alert-title');
+        const browserAlertMessage = document.getElementById('browser-alert-message');
+        const browserAlertConfirm = document.getElementById('browser-alert-confirm');
+        
+        // 下载相关元素
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        const downloadProgress = document.getElementById('downloadProgress');
+        
+        // 检测国内环境（微信、QQ、支付宝等）
+        function isDomesticEnvironment() {
+            const ua = navigator.userAgent.toLowerCase();
+            return /micromessenger|alipay/i.test(ua);
+        }
+        
+        // 获取文档下载链接
+        function getDocumentDownloadLink(filename) {
+            const baseUrl = isDomesticEnvironment() || currentLanguage === 'zh' 
+                ? downloadSources.domestic 
+                : downloadSources.international;
+            return baseUrl + filename;
+        }
+        
+        // 获取全部文档下载链接
+        function getAllDocumentsDownloadLink() {
+            return isDomesticEnvironment() || currentLanguage === 'zh' 
+                ? allDocumentsPackage.domestic 
+                : allDocumentsPackage.international;
+        }
+        
+		// 切换到中文
+		function switchToChinese() {
+			currentLanguage = 'zh';
+			document.getElementById('current-lang').textContent = '中文';
+			document.querySelectorAll('.lang-zh').forEach(el => el.classList.remove('lang-hidden'));
+			document.querySelectorAll('.lang-en').forEach(el => el.classList.add('lang-hidden'));
+			wechatMessage.textContent = "请在浏览器中打开此页面以获得最佳体验";
+			localStorage.setItem('userLanguage', 'zh');
+		}
+
+		// 切换到英文
+		function switchToEnglish() {
+			currentLanguage = 'en';
+			document.getElementById('current-lang').textContent = 'EN';
+			document.querySelectorAll('.lang-zh').forEach(el => el.classList.add('lang-hidden'));
+			document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('lang-hidden'));
+			wechatMessage.textContent = "Please open this page in a browser for the best experience";
+			localStorage.setItem('userLanguage', 'en');
+		}
+        
+        // 自动检测浏览器语言
+        function detectBrowserLanguage() {
+            const savedLang = localStorage.getItem('userLanguage');
+            if (savedLang) {
+                if (savedLang === 'en') {
+                    switchToEnglish();
+                } else {
+                    switchToChinese();
+                }
+            } else {
+                const lang = navigator.language || navigator.userLanguage;
+                if (lang.includes('zh')) {
+                    switchToChinese();
+                } else {
+                    switchToEnglish();
+                }
+            }
+        }
+        
+        // 检测微信浏览器
+        function detectWechatBrowser() {
+			const isWeChat = isDomesticEnvironment();
+			
+            if (isWeChat) {
+                document.getElementById('wechat-alert').style.display = 'block';
+                // 绑定关闭按钮
+                document.getElementById('close-alert').addEventListener('click', function() {
+                    document.getElementById('wechat-alert').style.display = 'none';
+                });
+            }
+        }
+        
+        // 显示浏览器提示模态框
+        function showBrowserAlert() {
+            if (currentLanguage === 'zh') {
+                browserAlertTitle.textContent = '浏览器提示';
+                browserAlertMessage.textContent = '请在系统浏览器中打开此页面以下载文件';
+            } else {
+                browserAlertTitle.textContent = 'Browser Notice';
+                browserAlertMessage.textContent = 'Please open this page in your system browser to download the file';
+            }
+            
+            browserAlertModal.classList.add('show');
+        }
+        
+        // 关闭浏览器提示模态框
+        function closeBrowserAlert() {
+            browserAlertModal.classList.remove('show');
+        }
+        
+        // 下载单个文档
+        function downloadDocument(event, element) {
+            event.preventDefault();
+            
+            // 如果是在微信等国内环境，则显示提示框并阻止下载
+            if (isDomesticEnvironment()) {
+                showBrowserAlert();
+                return;
+            }
+            
+            const fileName = element.getAttribute('data-file');
+            const downloadUrl = getDocumentDownloadLink(fileName);
+            
+            // 创建一个隐藏的a标签来触发下载
+            const downloadLink = document.createElement('a');
+            downloadLink.href = downloadUrl;
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            
+            // 按钮状态反馈
+            const originalContent = element.innerHTML;
+            const loadingZh = '<i class="fas fa-spinner fa-spin mr-1"></i> 下载中...';
+            const loadingEn = '<i class="fas fa-spinner fa-spin mr-1"></i> Downloading...';
+            const successZh = '<i class="fas fa-check mr-1"></i> 已下载';
+            const successEn = '<i class="fas fa-check mr-1"></i> Downloaded';
+            
+            element.innerHTML = currentLanguage === 'zh' ? loadingZh : loadingEn;
+            element.classList.add('opacity-70', 'cursor-wait');
+            element.removeAttribute('onclick');
+            
+            // 模拟下载延迟
+            setTimeout(() => {
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                element.innerHTML = currentLanguage === 'zh' ? successZh : successEn;
+                
+                setTimeout(() => {
+                    element.innerHTML = originalContent;
+                    element.classList.remove('opacity-70', 'cursor-wait');
+                    element.setAttribute('onclick', 'downloadDocument(event, this)');
+                }, 2000);
+            }, 600);
+        }
+        
+        // 下载全部文档
+        function downloadAllDocuments() {
+            // 如果是在微信等国内环境，则显示提示框并阻止下载
+            if (isDomesticEnvironment()) {
+                showBrowserAlert();
+                return;
+            }
+            
+            const downloadUrl = getAllDocumentsDownloadLink();
+            
+            // 创建一个隐藏的a标签来触发下载
+            const downloadLink = document.createElement('a');
+            downloadLink.href = downloadUrl;
+            downloadLink.download = 'ConfigTutorial.zip';
+            document.body.appendChild(downloadLink);
+            
+            // 按钮状态反馈
+            const originalContent = downloadAllBtn.innerHTML;
+            const loadingZh = '<i class="fas fa-spinner fa-spin mr-2"></i> 正在下载全部...';
+            const loadingEn = '<i class="fas fa-spinner fa-spin mr-2"></i> Downloading all...';
+            const successZh = '<i class="fas fa-check mr-2"></i> 全部下载完成';
+            const successEn = '<i class="fas fa-check mr-2"></i> All downloaded';
+            
+            downloadAllBtn.innerHTML = currentLanguage === 'zh' ? loadingZh : loadingEn;
+            downloadAllBtn.classList.add('opacity-70', 'cursor-wait');
+            
+            // 显示进度条
+            document.querySelector('.download-progress').style.display = 'block';
+            
+            // 模拟下载进度
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 5;
+                downloadProgress.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                }
+            }, 150);
+            
+            // 触发下载
+            setTimeout(() => {
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                // 完成后恢复按钮状态
+                setTimeout(() => {
+                    downloadAllBtn.innerHTML = currentLanguage === 'zh' ? successZh : successEn;
+                    
+                    setTimeout(() => {
+                        downloadAllBtn.innerHTML = originalContent;
+                        downloadAllBtn.classList.remove('opacity-70', 'cursor-wait');
+                        downloadProgress.style.width = '0%';
+                        document.querySelector('.download-progress').style.display = 'none';
+                    }, 2000);
+                }, 800);
+            }, 1000);
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            detectBrowserLanguage();
+            detectWechatBrowser();
+            
+            // 绑定浏览器提示确认按钮事件
+            browserAlertConfirm.addEventListener('click', closeBrowserAlert);
+            
+            // 绑定全部下载按钮事件
+            downloadAllBtn.addEventListener('click', downloadAllDocuments);
+        });
+        
+        // 绑定语言切换按钮事件
+        langSwitchBtn.addEventListener('click', function() {
+            if (currentLanguage === 'zh') {
+                switchToEnglish();
+            } else {
+                switchToChinese();
+            }
+        });
+    </script>
+</body>
+</html>
