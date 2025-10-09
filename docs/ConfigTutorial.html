@@ -402,7 +402,7 @@
                         <a 
                             href="#" 
                             class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
-                            data-file="How_to_download_VESC_Tool_en.pdf"
+                            data-file="How_to_download_VESC_Tool"
                             onclick="downloadDocument(event, this)"
                         >
                             <i class="fas fa-download mr-1"></i>
@@ -425,7 +425,7 @@
                         <a 
                             href="#" 
                             class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
-                            data-file="Setup_Motors_FOC_en.pdf"
+                            data-file="Setup_Motors_FOC"
                             onclick="downloadDocument(event, this)"
                         >
                             <i class="fas fa-download mr-1"></i>
@@ -448,7 +448,7 @@
                         <a 
                             href="#" 
                             class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
-                            data-file="Update_the_firmware_en.pdf"
+                            data-file="Update_the_firmware"
                             onclick="downloadDocument(event, this)"
                         >
                             <i class="fas fa-download mr-1"></i>
@@ -471,7 +471,53 @@
                         <a 
                             href="#" 
                             class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
-                            data-file="Bluetooth_communication_en.pdf"
+                            data-file="Bluetooth_communication"
+                            onclick="downloadDocument(event, this)"
+                        >
+                            <i class="fas fa-download mr-1"></i>
+                            <span class="lang-zh">下载</span>
+                            <span class="lang-en lang-hidden">Download</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 文档5 - ADC配置教程 -->
+                    <div class="doc-card">
+                        <h3 class="doc-title">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="lang-zh">ADC配置教程</span>
+                            <span class="lang-en lang-hidden">ADC Configuration Tutorial</span>
+                        </h3>
+                        <p class="doc-description">
+                            <span class="lang-zh">学习如何使用ADC（模拟数字转换器）控制VESC。</span>
+                            <span class="lang-en lang-hidden">Learn how to control VESC using ADC (Analog to Digital Converter).</span>
+                        </p>
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
+                            data-file="ADC_control"
+                            onclick="downloadDocument(event, this)"
+                        >
+                            <i class="fas fa-download mr-1"></i>
+                            <span class="lang-zh">下载</span>
+                            <span class="lang-en lang-hidden">Download</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 文档6 - PPM配置教程 -->
+                    <div class="doc-card">
+                        <h3 class="doc-title">
+                            <i class="fas fa-file-pdf text-red-500"></i>
+                            <span class="lang-zh">PPM配置教程</span>
+                            <span class="lang-en lang-hidden">PPM Configuration Tutorial</span>
+                        </h3>
+                        <p class="doc-description">
+                            <span class="lang-zh">了解如何使用PPM（脉冲位置调制）信号控制VESC。</span>
+                            <span class="lang-en lang-hidden">Learn how to control VESC using PPM (Pulse Position Modulation) signals.</span>
+                        </p>
+                        <a 
+                            href="#" 
+                            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg btn-hover text-sm"
+                            data-file="PPM_control"
                             onclick="downloadDocument(event, this)"
                         >
                             <i class="fas fa-download mr-1"></i>
@@ -526,8 +572,8 @@
         
         // 全部文档打包下载链接
         const allDocumentsPackage = {
-            domestic: "https://baogee.net/ConfigTutorial/AllTutorials.zip",
-            international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/ConfigTutorial/AllTutorials.zip"
+            domestic: "https://baogee.net/ConfigTutorial/",
+            international: "https://cdn.jsdelivr.net/gh/Autoro-ESC/AESC@main/docs/ConfigTutorial/"
         };
         
         // 当前语言状态
@@ -554,19 +600,24 @@
             return /micromessenger|alipay/i.test(ua);
         }
         
-        // 获取文档下载链接
+        // 获取文档下载链接（多语言支持）
         function getDocumentDownloadLink(filename) {
             const baseUrl = isDomesticEnvironment() || currentLanguage === 'zh' 
                 ? downloadSources.domestic 
                 : downloadSources.international;
-            return baseUrl + filename;
+            // 根据当前语言构建文件名
+            const localizedFilename = `${filename}_${currentLanguage}.pdf`;
+            return baseUrl + localizedFilename;
         }
         
-        // 获取全部文档下载链接
+        // 获取全部文档下载链接（多语言支持）
         function getAllDocumentsDownloadLink() {
-            return isDomesticEnvironment() || currentLanguage === 'zh' 
+            const baseUrl = isDomesticEnvironment() || currentLanguage === 'zh' 
                 ? allDocumentsPackage.domestic 
                 : allDocumentsPackage.international;
+            // 根据当前语言构建压缩包文件名
+            const localizedPackageName = `AllTutorials_${currentLanguage}.zip`;
+            return baseUrl + localizedPackageName;
         }
         
 		// 切换到中文
@@ -639,7 +690,7 @@
             browserAlertModal.classList.remove('show');
         }
         
-        // 下载单个文档
+        // 下载单个文档（多语言支持）
         function downloadDocument(event, element) {
             event.preventDefault();
             
@@ -655,7 +706,8 @@
             // 创建一个隐藏的a标签来触发下载
             const downloadLink = document.createElement('a');
             downloadLink.href = downloadUrl;
-            downloadLink.download = fileName;
+            // 设置下载文件的名称（包含语言代码）
+            downloadLink.download = `${fileName}_${currentLanguage}.pdf`;
             document.body.appendChild(downloadLink);
             
             // 按钮状态反馈
@@ -684,7 +736,7 @@
             }, 600);
         }
         
-        // 下载全部文档
+        // 下载全部文档（多语言支持）
         function downloadAllDocuments() {
             // 如果是在微信等国内环境，则显示提示框并阻止下载
             if (isDomesticEnvironment()) {
@@ -697,7 +749,8 @@
             // 创建一个隐藏的a标签来触发下载
             const downloadLink = document.createElement('a');
             downloadLink.href = downloadUrl;
-            downloadLink.download = 'ConfigTutorial.zip';
+            // 设置下载文件的名称（包含语言代码）
+            downloadLink.download = `AllTutorials_${currentLanguage}.zip`;
             document.body.appendChild(downloadLink);
             
             // 按钮状态反馈
